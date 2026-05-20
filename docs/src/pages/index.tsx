@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import styles from "./index.module.css";
 import gsap from "gsap";
@@ -261,6 +262,7 @@ function Hero() {
 /* ─── Frameworks Strip ──────────────────────────────────────────────────── */
 
 function FrameworksStrip() {
+  const baseUrl = useBaseUrl;
   const frameworksRef = useRef(null);
   const labelRef = useRef(null);
   const rowRef = useRef(null);
@@ -268,32 +270,32 @@ function FrameworksStrip() {
   const frameworks = [
     {
       name: "ChatGPT OpenAI Agents",
-      logo: "/img/integrations/chatgpt.png",
+      logo: baseUrl("/img/integrations/chatgpt.png"),
       link: "/docs/frameworks/openai",
     },
     {
       name: "LangGraph",
-      logo: "/img/integrations/langgraph.png",
+      logo: baseUrl("/img/integrations/langgraph.png"),
       link: "/docs/frameworks/langgraph",
     },
     {
       name: "CrewAI",
-      logo: "/img/integrations/crewai.png",
+      logo: baseUrl("/img/integrations/crewai.png"),
       link: "/docs/frameworks/crewai",
     },
     {
       name: "Google ADK",
-      logo: "/img/integrations/googleADK.png",
+      logo: baseUrl("/img/integrations/googleADK.png"),
       link: "/docs/frameworks/google-adk",
     },
     {
       name: "Smolagents",
-      logo: "/img/integrations/smolagents.png",
+      logo: baseUrl("/img/integrations/smolagents.png"),
       link: "https://huggingface.co/docs/smolagents/index",
     },
     {
       name: "LiveKit",
-      logo: "/img/integrations/livekit.png",
+      logo: baseUrl("/img/integrations/livekit.png"),
       link: "https://docs.livekit.io/",
     },
   ];
@@ -402,6 +404,7 @@ function FrameworksStrip() {
 /* ─── Affiliations Strip ────────────────────────────────────────────────── */
 
 function AffiliationsStrip() {
+  const baseUrl = useBaseUrl;
   const sectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -466,7 +469,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src="/img/lf_membership.svg"
+              src={baseUrl("/img/lf_membership.svg")}
               alt="Linux Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -479,7 +482,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src="/img/aaif_membership.svg"
+              src={baseUrl("/img/aaif_membership.svg")}
               alt="Agentic AI Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -1527,6 +1530,7 @@ function Levels() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const baseUrl = useBaseUrl;
   const contentRef = useRef<HTMLDivElement>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [isPinned, setIsPinned] = useState(true);
@@ -1544,21 +1548,21 @@ function Levels() {
     {
       id: "01",
       title: "Business Leader",
-      image: "/img/business_leader.png",
+      image: baseUrl("/img/business_leader.png"),
       description:
         "You run or work in a business / enterprise and want to incorporate AI agentsassistants that actually work into your business workflows without needing to understand the tech.",
     },
     {
       id: "02",
       title: "Developer",
-      image: "/img/developer.png",
+      image: baseUrl("/img/developer.png"),
       description:
         "You buildwrite software but haven't built AI agents yet. You want to ship something robust and real without learning a new stack from scratch.",
     },
     {
       id: "03",
       title: "AI Engineer",
-      image: "/img/ai.png",
+      image: baseUrl("/img/ai.png"),
       description:
         "You already work with LLMs and agentic frameworks. You need a production-grade AI agent execution framework runtime that doesn't get in your way.",
     },

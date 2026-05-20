@@ -12,7 +12,7 @@ const config = {
   tagline: 'From Agent Logic to Production in Minutes.',
   favicon: 'img/branding/agent-kernel-icon-color.svg',
   url: 'https://kernel.yaala.ai',
-  baseUrl: '/',
+  baseUrl: '/agent-kernel/',
 
   // GitHub pages deployment config.
   organizationName: 'yaalalabs',

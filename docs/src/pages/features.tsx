@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import styles from "./features.module.css";
 import {
@@ -123,6 +124,7 @@ type PlantParticlesBackgroundHandle = React.ElementRef<
 /* ─── Why Agent Kernel (hero) ───────────────────────────────────────────── */
 
 function Hero() {
+  const baseUrl = useBaseUrl;
   const labelRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -212,6 +214,7 @@ function FeaturesPageMap({
 }: {
   plantParticlesBackgroundRef: React.RefObject<PlantParticlesBackgroundHandle>;
 }) {
+  const baseUrl = useBaseUrl;
   const gradId = useId().replace(/:/g, "");
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -393,7 +396,7 @@ function FeaturesPageMap({
             className={`${styles.pageMapHub} ${visible ? styles.pageMapHubIn : ""}`}
           >
             <img
-              src="/img/branding/agent-kernel-icon-color.svg"
+              src={baseUrl("/img/branding/agent-kernel-icon-color.svg")}
               alt="Agent Kernel"
               className={styles.pageMapHubIcon}
             />

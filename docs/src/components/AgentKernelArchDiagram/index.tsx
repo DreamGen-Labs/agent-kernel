@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 import {
   MdSwapHoriz,
@@ -46,6 +47,7 @@ const TEAL_HALO = 'rgba(0,221,255,0.1)';
 /* ─── Component ─────────────────────────────────────────────────────────── */
 
 export default function AgentKernelArchDiagram() {
+  const baseUrl = useBaseUrl;
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -165,7 +167,7 @@ export default function AgentKernelArchDiagram() {
               <div className={styles.hubLogoWrap}>
                 <div className={styles.hubLogoGlow} />
                 <img
-                  src="/img/branding/agent-kernel-icon-color.svg"
+                  src={baseUrl('/img/branding/agent-kernel-icon-color.svg')}
                   alt="Agent Kernel"
                   className={styles.hubLogo}
                 />

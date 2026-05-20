@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import styles from './use-cases.module.css';
 import featureStyles from './features.module.css';
@@ -220,6 +221,7 @@ const segments = [
 /* ─── Segment Modal ─────────────────────────────────────────────────────── */
 
 function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClose: () => void }) {
+  const baseUrl = useBaseUrl;
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
@@ -261,7 +263,7 @@ function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClo
           <div className={styles.diagramArrow}>→</div>
           <div className={`${styles.diagramStep} ${styles.diagramStepCenter}`}>
             <img
-              src="/img/branding/agent-kernel-icon-color.svg"
+              src={baseUrl('/img/branding/agent-kernel-icon-color.svg')}
               alt="Agent Kernel"
               className={styles.diagramStepIcon}
             />
@@ -408,6 +410,7 @@ const REAL_WORLD_USE_CASES = [
 ];
 
 function RealWorldUseCases() {
+  const baseUrl = useBaseUrl;
   const sectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -494,6 +497,7 @@ function RealWorldUseCases() {
 }
 
 function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<ParticleBackgroundHandle | null> }) {
+  const baseUrl = useBaseUrl;
   const containerRef = useRef<HTMLDivElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
   const observerStateRef = useRef(false);
@@ -582,7 +586,7 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
             <span className={styles.pulseRingDelayed} aria-hidden="true" />
             <div className={styles.orbitHubGlowCore} />
             <img
-              src="/img/branding/agent-kernel-icon-color.svg"
+              src={baseUrl('/img/branding/agent-kernel-icon-color.svg')}
               alt="Agent Kernel"
               className={styles.orbitHubIcon}
             />

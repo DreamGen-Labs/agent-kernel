@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 const FRAMEWORKS = [
@@ -147,6 +148,7 @@ function FlowColumn({
 }
 
 export default function AgentKernelRuntimeFlowDiagram() {
+  const baseUrl = useBaseUrl;
   const panelRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -210,7 +212,7 @@ export default function AgentKernelRuntimeFlowDiagram() {
             style={{ '--col-delay': '420ms' } as React.CSSProperties}
           >
             <img
-                src="/img/branding/agent-kernel-icon-color.svg"
+              src={baseUrl('/img/branding/agent-kernel-icon-color.svg')}
                 alt=""
                 className={styles.flowHubLogo}
                 aria-hidden="true"
