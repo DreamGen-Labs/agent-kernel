@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import styles from "./index.module.css";
 import gsap from "gsap";
+import { ScrambleTextPlugin } from "gsap/dist/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import AgentKernelArchDiagram from "../components/AgentKernelArchDiagram";
@@ -102,10 +103,17 @@ function WhatsNewBanner() {
 function Hero() {
   const titleRef = useRef(null);
   const taglineRef = useRef(null);
-  const bodyRef = useRef(null);
+  const bodySentenceRef = useRef(null);
   const buttonsRef = useRef(null);
+  const [activeSentenceIndex, setActiveSentenceIndex] = useState(0);
 
-  useEffect(() => {
+  const bodySentences = [
+    "Agent Kernel is the open source platform for building and deploying enterprise AI agents seamlessly at scale.",
+    "Agent Kernel reduces months of engineering work to minutes.",
+    "Works with any major Agentic technology, runs on any cloud, interfaces with all mainstream communication channels seamlessly out of the box, no framework/platform lock-in, production ready from day one.",
+  ];
+
+  useLayoutEffect(() => {
     const tl = gsap.timeline();
 
     // Set initial states
@@ -113,7 +121,7 @@ function Hero() {
       [
         titleRef.current,
         taglineRef.current,
-        bodyRef.current,
+        bodySentenceRef.current,
         buttonsRef.current,
       ],
       {
@@ -140,14 +148,14 @@ function Hero() {
         "-=0.4",
       )
       .to(
-        bodyRef.current,
+        bodySentenceRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
+          duration: 0.55,
           ease: "power2.out",
         },
-        "-=0.3",
+        "-=0.15",
       )
       .to(
         buttonsRef.current,
@@ -157,9 +165,36 @@ function Hero() {
           duration: 0.5,
           ease: "power2.out",
         },
-        "-=0.2",
+        "-=0.3",
       );
   }, []);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveSentenceIndex(
+        (currentIndex) => (currentIndex + 1) % bodySentences.length,
+      );
+    }, 5000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (!bodySentenceRef.current) {
+      return;
+    }
+
+    gsap.fromTo(
+      bodySentenceRef.current,
+      { opacity: 0, y: 14 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.55,
+        ease: "power2.out",
+      },
+    );
+  }, [activeSentenceIndex]);
 
   return (
     <section className={styles.hero}>
@@ -173,13 +208,10 @@ function Hero() {
             <br />
             Scalable & Compliant Enterprise AI Agents.
           </p>
-          <p ref={bodyRef} className={styles.heroBody}>
-            Agent Kernel is the open source platform for building and deploying
-            enterprise AI agents seamlessly at scale. Agent Kernel reduces
-            months of engineering work to minutes. Works with any major Agentic
-            technology, runs on any cloud, interfaces with all mainstream
-            communication channels seamlessly out of the box, no framework /
-            platform lock-in, production ready from day one.
+          <p className={styles.heroBody}>
+            <span ref={bodySentenceRef} className={styles.heroBodySentence}>
+              {bodySentences[activeSentenceIndex]}
+            </span>
           </p>
           <div ref={buttonsRef} className={styles.heroButtons}>
             <Link
@@ -285,7 +317,7 @@ function FrameworksStrip() {
       scrollTrigger: {
         trigger: frameworksRef.current,
         start: "top 85%",
-        toggleActions: "play none none none",
+        toggleActions: "play none none reverse",
       },
     });
 
@@ -335,9 +367,7 @@ function FrameworksStrip() {
     });
 
     // Cleanup
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    return undefined;
   }, []);
 
   return (
@@ -372,8 +402,60 @@ function FrameworksStrip() {
 /* ─── Affiliations Strip ────────────────────────────────────────────────── */
 
 function AffiliationsStrip() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const label = section.querySelector(`.${styles.affiliationsLabel}`);
+    const row = section.querySelector(`.${styles.affiliationsRow}`);
+
+    if (!label || !row) return;
+
+    if (reducedMotion) {
+      gsap.set([label, row], { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
+
+    gsap.set([label, row], { opacity: 0, y: 18 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(label, {
+      opacity: 1,
+      y: 0,
+      duration: 0.45,
+      ease: "power2.out",
+    }).to(
+      row,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      },
+      "-=0.18",
+    );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
-    <section className={styles.affiliationsStrip}>
+    <section ref={sectionRef} className={styles.affiliationsStrip}>
       <div className="container">
         <p className={styles.affiliationsLabel}>Member of</p>
         <div className={styles.affiliationsRow}>
@@ -473,6 +555,141 @@ const AGENT_SKILLS = [
 ] as const;
 
 function AgentSkills() {
+  const [activeSkillIndex, setActiveSkillIndex] = useState(0);
+  const detailContentRef = useRef<HTMLDivElement>(null);
+  const hasAnimatedSkillChangeRef = useRef(false);
+  const ActiveIcon = AGENT_SKILLS[activeSkillIndex].icon;
+
+  gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+  const cmd1Ref = useRef<HTMLSpanElement>(null); // pip install agentkernel
+  const cmd2Ref = useRef<HTMLSpanElement>(null); // ak skill install
+  const cmd3Ref = useRef<HTMLSpanElement>(null); // ak skill install --assistant claude
+  const commandsPanelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const panel = commandsPanelRef.current;
+    if (!panel) return;
+
+    const targets = Array.from(
+      panel.querySelectorAll(
+        `.${styles.agentSkillsCodeComment}, .${styles.agentSkillsCodeArg}`,
+      ),
+    ) as HTMLElement[];
+
+    targets.forEach((target) => {
+      if (!target.dataset.finalText) {
+        target.dataset.finalText = target.textContent ?? "";
+      }
+    });
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      return;
+    }
+
+    const playScramble = () => {
+      targets.forEach((target, index) => {
+        const text = target.dataset.finalText ?? target.textContent ?? "";
+        gsap.killTweensOf(target);
+        gsap.to(target, {
+          scrambleText: {
+            text,
+            chars: "lowerCase",
+            revealDelay: 0.25,
+            tweenLength: false,
+          },
+          duration: 1.6,
+          delay: index * 0.18,
+          ease: "power2.out",
+          overwrite: "auto",
+          onComplete: () => {
+            target.textContent = text;
+          },
+        });
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        if (entry.isIntersecting) {
+          playScramble();
+        }
+      },
+      {
+        threshold: 0.35,
+        rootMargin: "0px 0px -10% 0px",
+      },
+    );
+
+    observer.observe(panel);
+
+    const rect = panel.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isVisible) {
+      playScramble();
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!detailContentRef.current) {
+      return;
+    }
+
+    if (!hasAnimatedSkillChangeRef.current) {
+      hasAnimatedSkillChangeRef.current = true;
+      return;
+    }
+
+    const content = detailContentRef.current;
+    const motionTargets = content.querySelectorAll(
+      `.${styles.agentSkillsSkillHeader}, .${styles.agentSkillsSkillBody}, .${styles.agentSkillsPill}`,
+    );
+
+    gsap.killTweensOf([content, motionTargets]);
+
+    gsap.fromTo(
+      content,
+      {
+        opacity: 0.55,
+        y: 14,
+        scale: 0.985,
+        filter: "blur(4px)",
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 0.42,
+        ease: "power3.out",
+      },
+    );
+
+    gsap.fromTo(
+      Array.from(motionTargets),
+      {
+        opacity: 0,
+        y: 10,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.32,
+        ease: "power2.out",
+        stagger: 0.04,
+        delay: 0.04,
+      },
+    );
+  }, [activeSkillIndex]);
+
   return (
     <section id="agent-skills" className={styles.agentSkillsSection}>
       <div className="container">
@@ -485,77 +702,103 @@ function AgentSkills() {
               Agent Skills works with the tools you already use, like Copilot,
               Claude, Cursor, or Windsurf, to help you build and ship AI agents
               faster. No more guesswork, no more broken code suggestions.
-            </p>
+            </p>          </div>
+
+          <div className={styles.agentSkillsTopicsRow} role="tablist">
+            {AGENT_SKILLS.map((skill, idx) => (
+              <button
+                key={skill.name}
+                role="tab"
+                aria-selected={activeSkillIndex === idx}
+                className={`${styles.agentSkillsTopicButton} ${
+                  activeSkillIndex === idx
+                    ? styles.agentSkillsTopicActive
+                    : ""
+                }`}
+                onClick={() => setActiveSkillIndex(idx)}
+              >
+                {skill.name}
+              </button>
+            ))}
           </div>
 
-          <div className={styles.agentSkillsSectionLabel}>
-            Get started in two commands
-          </div>
-          <div className={styles.agentSkillsCodeBlock}>
-            <div className={styles.agentSkillsCodeComment}>
-              # 1. Install the CLI
+          <div className={styles.agentSkillsSplitGrid}>
+            <div ref={commandsPanelRef} className={styles.agentSkillsPanel}>
+              <div className={styles.agentSkillsSectionLabel}>
+                Get started in two commands
+              </div>
+              <div className={styles.agentSkillsCodeBlock}>
+                <div className={styles.agentSkillsCodeComment}>
+                  # 1. Install the CLI
+                </div>
+                <div>
+                  <span className={styles.agentSkillsCodeCmd}>$</span>{" "}
+                  <span ref={cmd1Ref} className={styles.agentSkillsCodeArg}>
+                    pip install agentkernel
+                  </span>
+                </div>
+                <br />
+                <div className={styles.agentSkillsCodeComment}>
+                  # 2. Install skills for your coding assistant
+                </div>
+                <div>
+                  <span className={styles.agentSkillsCodeCmd}>$</span>{" "}
+                  <span ref={cmd2Ref} className={styles.agentSkillsCodeArg}>
+                    ak skill install
+                  </span>
+                </div>
+                <div className={styles.agentSkillsCodeComment}>
+                  &nbsp;&nbsp;or target a specific assistant:
+                </div>
+                <div>
+                  <span className={styles.agentSkillsCodeCmd}>$</span>{" "}
+                  <span ref={cmd3Ref}className={styles.agentSkillsCodeArg}>
+                    ak skill install --assistant claude
+                  </span>
+                </div>
+              </div>
             </div>
-            <div>
-              <span className={styles.agentSkillsCodeCmd}>$</span>{" "}
-              <span className={styles.agentSkillsCodeArg}>
-                pip install agentkernel
-              </span>
-            </div>
-            <br />
-            <div className={styles.agentSkillsCodeComment}>
-              # 2. Install skills for your coding assistant
-            </div>
-            <div>
-              <span className={styles.agentSkillsCodeCmd}>$</span>{" "}
-              <span className={styles.agentSkillsCodeArg}>
-                ak skill install
-              </span>
-            </div>
-            <div className={styles.agentSkillsCodeComment}>
-              &nbsp;&nbsp;or target a specific assistant:
-            </div>
-            <div>
-              <span className={styles.agentSkillsCodeCmd}>$</span>{" "}
-              <span className={styles.agentSkillsCodeArg}>
-                ak skill install --assistant claude
-              </span>
-            </div>
-          </div>
 
-          <div className={styles.agentSkillsSectionLabel}>
-            What each skill does
-          </div>
-          <div className={styles.agentSkillsSkillList}>
-            {AGENT_SKILLS.map((skill) => {
-              const Icon = skill.icon;
-
-              return (
-                <article
-                  key={skill.name}
-                  className={styles.agentSkillsSkillCard}
+            <div className={styles.agentSkillsPanel}>
+              <div className={styles.agentSkillsSectionLabel}>
+                What each skill does
+              </div>              
+              <div className={styles.agentSkillsDetailWrap}>
+                <div
+                  ref={detailContentRef}
+                  className={styles.agentSkillsDetailBox}
                 >
                   <div className={styles.agentSkillsSkillHeader}>
-                    <Icon aria-hidden className={styles.agentSkillsSkillIcon} />
-                    <p className={styles.agentSkillsSkillName}>{skill.name}</p>
+                    <ActiveIcon
+                      aria-hidden
+                      className={styles.agentSkillsSkillIcon}
+                    />
+                    <p className={styles.agentSkillsSkillName}>
+                      {AGENT_SKILLS[activeSkillIndex].name}
+                    </p>
                   </div>
                   <p className={styles.agentSkillsSkillBody}>
-                    {skill.description}
+                    {AGENT_SKILLS[activeSkillIndex].description}
                   </p>
                   <div className={styles.agentSkillsPillRow}>
-                    {skill.pills.map((pill) => (
+                    {AGENT_SKILLS[activeSkillIndex].pills.map((pill) => (
                       <span key={pill} className={styles.agentSkillsPill}>
                         {pill}
                       </span>
                     ))}
                   </div>
-                </article>
-              );
-            })}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className={styles.agentSkillsFooter}>
-            <Link className={styles.agentSkillsCtaLink} to="/docs">
-              Learn more about Agent Skills <span aria-hidden>→</span>
+            <Link
+              className={`button button--primary button--md ${styles.btnLinkPrimary} ${styles.agentSkillsCtaLink}`}
+              to="/docs"
+            >
+              Learn more about Agent Skills 
+              <span className={styles.btnLinkIconPrimary}>→</span>
             </Link>
           </div>
         </div>
@@ -567,6 +810,38 @@ function AgentSkills() {
 /* ─── Deployment ────────────────────────────────────────────────────────── */
 
 function Deployment() {
+
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+
+    const cards = gridRef.current.querySelectorAll(`.${styles.cloudCard}`);
+    const triggers: ScrollTrigger[] = [];
+
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: "power3.out",
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: "top 80%",
+          once: true,
+          onToggle: (self) => triggers.push(self),
+        },
+      }
+    );
+
+    return () => {
+      triggers.forEach((t) => t.kill()); 
+    };
+  }, []);
+
   const clouds = [
     {
       icon: <FaAws className={styles.cloudIconSvg} />,
@@ -631,7 +906,7 @@ function Deployment() {
           </p>
         </div>
 
-        <div className={styles.cloudGrid}>
+        <div className={styles.cloudGrid} ref={gridRef}>
           {clouds.map((c, i) => (
             <div key={i} className={styles.cloudCard}>
               {/* Logo */}
@@ -687,9 +962,13 @@ function Deployment() {
 
 /* ─── Community / CTA ───────────────────────────────────────────────────── */
 
-function Community() {
+interface CommunityProps {
+  sectionRef?: React.Ref<HTMLElement>;
+}
+
+function Community({ sectionRef }: CommunityProps) {
   return (
-    <section className={styles.ctaSection}>
+    <section ref={sectionRef} className={styles.ctaSection}>
       {/* <div className={styles.ctaGlow} /> */}
       <div className="container">
         <div className={styles.ctaContent}>
@@ -1291,9 +1570,9 @@ function Levels() {
 
     if (scrollTriggerRef.current) {
       scrollTriggerRef.current.kill();
+      scrollTriggerRef.current = null;
     }
 
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     gsap.set(sectionRef.current, { height: "auto", clearProps: "height" });
   };
 
@@ -1326,10 +1605,15 @@ function Levels() {
       }
     };
 
+    const levelCards = Array.from(
+      cardsRef.current?.querySelectorAll(`.${styles.levelCard}`) || [],
+    ) as HTMLElement[];
+
     if (!selectedLevel) {
       gsap.registerPlugin(ScrollTrigger);
 
       const isDesktop = window.innerWidth > 996;
+      const middleCard = levelCards[1];
 
       gsap.fromTo(
         [titleRef.current, subtitleRef.current, cardsRef.current],
@@ -1351,25 +1635,88 @@ function Levels() {
         gsap.set(sectionRef.current, { height: "100vh" });
         ScrollTrigger.refresh();
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
+        if (levelCards.length === 3) {
+          gsap.set(levelCards, {
+            opacity: 0,
+            y: 28,
+            scale: 0.94,
+            transformOrigin: "center center",
+          });
+
+          gsap.set(middleCard, {
+            opacity: 1,
+            y: 0,
+            scale: 1.08,
+            zIndex: 3,
+          });
+
+          gsap.set(levelCards[0], {
+            x: 110,
+            zIndex: 2,
+          });
+
+          gsap.set(levelCards[2], {
+            x: -110,
+            zIndex: 2,
+          });
+        }
+
+        if (levelCards.length === 3) {
+          const tl = gsap.timeline({ paused: true });
+
+          tl.to(
+            levelCards[0],
+            {
+              x: 0,
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 0.8,
+              ease: "power2.out",
+            },
+            0,
+          )
+            .to(
+              middleCard,
+              {
+                y: 0,
+                scale: 1,
+                duration: 0.8,
+                ease: "power2.out",
+              },
+              0,
+            )
+            .to(
+              levelCards[2],
+              {
+                x: 0,
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "power2.out",
+              },
+              0,
+            );
+
+          const scrollTrigger = ScrollTrigger.create({
             trigger: sectionRef.current,
             start: "top top",
             end: "+=100%",
             pin: true,
             pinSpacing: true,
-            scrub: false,
-          },
-        });
+            onEnter: () => tl.restart(),
+            onEnterBack: () => tl.restart(),
+          });
 
-        scrollTriggerRef.current =
-          tl.scrollTrigger as ScrollTriggerInstance | null;
+          scrollTriggerRef.current = scrollTrigger as ScrollTriggerInstance | null;
 
-        window.addEventListener("wheel", handleWheel, { passive: false });
-        window.addEventListener("touchmove", handleTouchMove, {
-          passive: false,
-        });
-        window.addEventListener("keydown", handleKeyDown);
+          window.addEventListener("wheel", handleWheel, { passive: false });
+          window.addEventListener("touchmove", handleTouchMove, {
+            passive: false,
+          });
+          window.addEventListener("keydown", handleKeyDown);
+        }
       }
     }
 
@@ -1386,6 +1733,24 @@ function Levels() {
   useEffect(() => {
     if (selectedLevel) {
       gsap.registerPlugin(ScrollTrigger);
+      const levelCards = Array.from(
+        cardsRef.current?.querySelectorAll(`.${styles.levelCard}`) || [],
+      ) as HTMLElement[];
+      const selectedCard = cardsRef.current?.querySelector(
+        `[data-level="${selectedLevel}"]`,
+      ) as HTMLElement | null;
+
+      if (levelCards.length) {
+        gsap.set(levelCards, { clearProps: "transform,opacity" });
+      }
+
+      if (selectedCard) {
+        gsap.set(selectedCard, {
+          opacity: 1,
+          scale: 1.05,
+          zIndex: 4,
+        });
+      }
 
       // Animate contentStep elements - Smooth fade and slide
       const steps =
@@ -1402,7 +1767,7 @@ function Levels() {
             scrollTrigger: {
               trigger: step,
               start: "top 85%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1425,7 +1790,7 @@ function Levels() {
             scrollTrigger: {
               trigger: card,
               start: "top 88%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1449,7 +1814,7 @@ function Levels() {
             scrollTrigger: {
               trigger: layer,
               start: "top 85%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1474,7 +1839,7 @@ function Levels() {
             scrollTrigger: {
               trigger: card,
               start: "top 88%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1497,7 +1862,7 @@ function Levels() {
             scrollTrigger: {
               trigger: card,
               start: "top 82%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1519,7 +1884,7 @@ function Levels() {
             scrollTrigger: {
               trigger: devAnalogy,
               start: "top 75%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1543,7 +1908,7 @@ function Levels() {
             scrollTrigger: {
               trigger: wrapper,
               start: "top 80%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1565,7 +1930,7 @@ function Levels() {
             scrollTrigger: {
               trigger: tab,
               start: "top 88%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1588,7 +1953,7 @@ function Levels() {
             scrollTrigger: {
               trigger: scenarioContent,
               start: "top 85%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1611,7 +1976,7 @@ function Levels() {
             scrollTrigger: {
               trigger: col,
               start: "top 88%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1658,7 +2023,7 @@ function Levels() {
               scrollTrigger: {
                 trigger: akStandOutSection,
                 start: "top 82%",
-                toggleActions: "play none none none",
+                toggleActions: "play none none reverse",
               },
             },
           );
@@ -1676,7 +2041,7 @@ function Levels() {
               scrollTrigger: {
                 trigger: comparePanel,
                 start: "top 85%",
-                toggleActions: "play none none none",
+                toggleActions: "play none none reverse",
               },
             },
           );
@@ -1692,7 +2057,7 @@ function Levels() {
             scrollTrigger: {
               trigger: comparePanel,
               start: "top 80%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           });
 
@@ -1731,7 +2096,7 @@ function Levels() {
                 scrollTrigger: {
                   trigger: card,
                   start: "top 88%",
-                  toggleActions: "play none none none",
+                  toggleActions: "play none none reverse",
                 },
               },
             );
@@ -1750,11 +2115,12 @@ function Levels() {
               scrollTrigger: {
                 trigger: compareFooter,
                 start: "top 90%",
-                toggleActions: "play none none none",
+                toggleActions: "play none none reverse",
               },
             },
           );
         }
+
       }
 
       // Animate AI Engineer build flow section
@@ -1779,7 +2145,7 @@ function Levels() {
               scrollTrigger: {
                 trigger: aiBuildSection,
                 start: "top 82%",
-                toggleActions: "play none none none",
+                toggleActions: "play none none reverse",
               },
             },
           );
@@ -1807,7 +2173,7 @@ function Levels() {
                 scrollTrigger: {
                   trigger: subsection,
                   start: "top 85%",
-                  toggleActions: "play none none none",
+                  toggleActions: "play none none reverse",
                 },
                 clearProps: "transform",
               },
@@ -1832,7 +2198,7 @@ function Levels() {
             scrollTrigger: {
               trigger: devFrameworkSection,
               start: "top 80%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1856,7 +2222,7 @@ function Levels() {
             scrollTrigger: {
               trigger: btn,
               start: "top 85%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1881,7 +2247,7 @@ function Levels() {
             scrollTrigger: {
               trigger: block,
               start: "top 83%",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
             },
           },
         );
@@ -1930,11 +2296,14 @@ function Levels() {
           });
         });
       });
-
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
     }
+
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+    };
   }, [selectedLevel, styles]);
 
   return (
@@ -3676,31 +4045,60 @@ if __name__ == "__main__":
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
-  const backgroundRef = useRef<{ triggerScatterOut: () => void; triggerScatterIn: () => void }>(null);
+  const backgroundRef = useRef<{
+    triggerScatterOut: () => void;
+    triggerScatterIn: () => void;
+    triggerReverseScatterIn: () => void;
+    triggerScatterFloat: () => void;
+    triggerFloatReform: () => void;
+  }>(null);
   const levelsRef = useRef<HTMLDivElement>(null);
-  const observerStateRef = useRef<boolean>(false); // Track previous intersection state, initialize to false (Levels not in view on page load)
+  const communityRef = useRef<HTMLElement>(null);
+  const levelsObserverStateRef = useRef<boolean>(false);
+  const communityObserverStateRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (!backgroundRef.current || !levelsRef.current) return;
 
-    // Create intersection observer to trigger animations based on Levels section visibility
+    // Trigger the scatter-out animation when the Levels section comes into view.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Only trigger when the state actually changes (prevents multiple fires at threshold)
-        if (entry.isIntersecting && !observerStateRef.current) {
-          observerStateRef.current = true;
-          // Trigger scatter out animation when Levels section becomes visible
+        if (entry.isIntersecting && !levelsObserverStateRef.current) {
+          levelsObserverStateRef.current = true;
           backgroundRef.current?.triggerScatterOut();
-        } else if (!entry.isIntersecting && observerStateRef.current) {
-          observerStateRef.current = false;
-          // Trigger scatter in animation when user has completely scrolled past Levels
+        } else if (!entry.isIntersecting && levelsObserverStateRef.current) {
+          levelsObserverStateRef.current = false;
           backgroundRef.current?.triggerScatterIn();
         }
       },
-      { threshold: 0.0 } // Trigger when element completely enters or leaves viewport
+      { threshold: 0.0 },
     );
 
     observer.observe(levelsRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!backgroundRef.current || !communityRef.current) return;
+
+    // Trigger the reverse scatter-in animation when the Community section comes into view.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !communityObserverStateRef.current) {
+          communityObserverStateRef.current = true;
+          backgroundRef.current?.triggerReverseScatterIn();
+        } else if (!entry.isIntersecting && communityObserverStateRef.current) {
+          communityObserverStateRef.current = false;
+          backgroundRef.current?.triggerScatterIn();
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    observer.observe(communityRef.current);
 
     return () => {
       observer.disconnect();
@@ -3712,7 +4110,7 @@ export default function Home() {
       title={`${siteConfig.title} — ${siteConfig.tagline}`}
       description="Agent Kernel is an open-source, framework-agnostic, multi-cloud runtime for production AI agents. Build, test, and deploy with OpenAI, LangGraph, CrewAI, or Google ADK to AWS or Azure — in days, not months."
     >
-      <PlantParticlesBackground />
+      <PlantParticlesBackground ref={backgroundRef} />
       <WhatsNewBanner />
       <Hero />
       <main>
@@ -3723,7 +4121,7 @@ export default function Home() {
         </div>
         <AgentSkills />
         <Deployment />
-        <Community />
+        <Community sectionRef={communityRef} />
       </main>
     </Layout>
   );

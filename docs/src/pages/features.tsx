@@ -1,4 +1,10 @@
-import React, { useId, useState, useEffect, useRef } from "react";
+import React, {
+  useId,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import styles from "./features.module.css";
@@ -110,6 +116,10 @@ function scrollToFeaturesSection(anchor: FeatureAnchorKey) {
   el?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+type PlantParticlesBackgroundHandle = React.ElementRef<
+  typeof PlantParticlesBackground
+>;
+
 /* ─── Why Agent Kernel (hero) ───────────────────────────────────────────── */
 
 function Hero() {
@@ -197,7 +207,11 @@ function Hero() {
 
 /* ─── Page map (diagram) ────────────────────────────────────────────────── */
 
-function FeaturesPageMap() {
+function FeaturesPageMap({
+  plantParticlesBackgroundRef,
+}: {
+  plantParticlesBackgroundRef: React.RefObject<PlantParticlesBackgroundHandle>;
+}) {
   const gradId = useId().replace(/:/g, "");
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -214,17 +228,42 @@ function FeaturesPageMap() {
     }
     const el = sectionRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
+    const shouldAnimateParticles =
+      typeof window !== "undefined" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const triggerScatterOut = () => {
+      if (shouldAnimateParticles) {
+        plantParticlesBackgroundRef.current?.triggerScatterOut();
+      }
+    };
+    const triggerScatterIn = () => {
+      if (shouldAnimateParticles) {
+        plantParticlesBackgroundRef.current?.triggerScatterIn();
+      }
+    };
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 60%",
+      end: "bottom 40%",
+      onEnter: () => {
+        setVisible(true);
+        triggerScatterOut();
       },
-      { threshold: 0.1 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+      onEnterBack: () => {
+        setVisible(true);
+        triggerScatterOut();
+      },
+      onLeave: () => {
+        setVisible(false);
+        triggerScatterIn();
+      },
+      onLeaveBack: () => {
+        setVisible(false);
+        triggerScatterIn();
+      },
+    });
+
+    return () => scrollTrigger.kill();
   }, []);
 
   const reducedMotion =
@@ -312,81 +351,41 @@ function FeaturesPageMap() {
             aria-hidden
           >
             <defs>
-              <filter
-                id={topGlowId}
-                x="-80%"
-                y="-80%"
-                width="260%"
-                height="260%"
-              >
-                <feGaussianBlur stdDeviation="4" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <filter
-                id={`${topGlowId}Halo`}
-                x="-80%"
-                y="-80%"
-                width="260%"
-                height="260%"
-              >
-                <feGaussianBlur stdDeviation="5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              {topLines.map((l) => (
-                <path key={l.id} id={l.id} d={l.d} />
+              {topLines.map((l, i) => (
+                <linearGradient
+                  key={`grad-${l.id}`}
+                  id={`grad-${l.id}`}
+                  gradientUnits="userSpaceOnUse"
+                  x1={COL_X_TOP[i]}
+                  y1="0"
+                  x2="450"
+                  y2="60"
+                >
+                  <stop offset="0%"   stopColor={TEAL} stopOpacity="0" />
+                  <stop offset="50%"  stopColor={TEAL} stopOpacity="1" />
+                  <stop offset="100%" stopColor={TEAL} stopOpacity="0.3" />
+                </linearGradient>
               ))}
             </defs>
-            {/* Halo lines */}
-            {topLines.map((l) => (
-              <path
-                key={`halo-${l.id}`}
-                d={l.d}
-                fill="none"
-                stroke={TEAL_HALO}
-                strokeWidth="8"
-                filter={`url(#${topGlowId}Halo)`}
-              />
-            ))}
-            {/* Main lines */}
-            {topLines.map((l) => (
-              <path
+
+            {topLines.map((l, i) => (
+              <g
                 key={l.id}
-                d={l.d}
-                fill="none"
-                stroke={TEAL_LINE}
-                strokeWidth="1.5"
-                strokeDasharray={l.len}
-                strokeDashoffset={visible ? 0 : l.len}
+                className={visible && !reducedMotion ? styles.lineBreath : undefined}
                 style={{
-                  transition: `stroke-dashoffset 0.55s cubic-bezier(0.22, 1, 0.36, 1) ${l.delay}s`,
-                }}
-              />
+                  opacity: visible ? undefined : 0,
+                  "--breath-dur": `${2.2 + i * 0.4}s`,
+                  "--breath-delay": `${i * 0.3}s`,
+                } as React.CSSProperties}
+              >
+                <path
+                  d={l.d}
+                  fill="none"
+                  stroke={`url(#grad-${l.id})`}
+                  strokeWidth="1.5"
+                />
+              </g>
             ))}
-            {visible &&
-              !reducedMotion &&
-              topParticles.map((p, i) => (
-                <circle
-                  key={i}
-                  r="3.5"
-                  fill={p.color}
-                  filter={`url(#${topGlowId})`}
-                  opacity="0.9"
-                >
-                  <animateMotion
-                    dur={p.dur}
-                    repeatCount="indefinite"
-                    begin={p.delay}
-                  >
-                    <mpath href={`#${p.pathId}`} />
-                  </animateMotion>
-                </circle>
-              ))}
           </svg>
 
           {/* ── Hub ── */}
@@ -408,81 +407,41 @@ function FeaturesPageMap() {
             aria-hidden
           >
             <defs>
-              <filter
-                id={botGlowId}
-                x="-80%"
-                y="-80%"
-                width="260%"
-                height="260%"
-              >
-                <feGaussianBlur stdDeviation="4" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <filter
-                id={`${botGlowId}Halo`}
-                x="-80%"
-                y="-80%"
-                width="260%"
-                height="260%"
-              >
-                <feGaussianBlur stdDeviation="5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              {botLines.map((l) => (
-                <path key={l.id} id={l.id} d={l.d} />
+              {botLines.map((l, i) => (
+                <linearGradient
+                  key={`grad-${l.id}`}
+                  id={`grad-${l.id}`}
+                  gradientUnits="userSpaceOnUse"
+                  x1="450"
+                  y1="0"
+                  x2={COL_X_BOT[i]}
+                  y2="60"
+                >
+                  <stop offset="0%"   stopColor={TEAL} stopOpacity="0.3" />
+                  <stop offset="50%"  stopColor={TEAL} stopOpacity="1" />
+                  <stop offset="100%" stopColor={TEAL} stopOpacity="0" />
+                </linearGradient>
               ))}
             </defs>
-            {/* Halo lines */}
-            {botLines.map((l) => (
-              <path
-                key={`halo-${l.id}`}
-                d={l.d}
-                fill="none"
-                stroke={TEAL_HALO}
-                strokeWidth="8"
-                filter={`url(#${botGlowId}Halo)`}
-              />
-            ))}
-            {/* Main lines */}
-            {botLines.map((l) => (
-              <path
+
+            {botLines.map((l, i) => (
+              <g
                 key={l.id}
-                d={l.d}
-                fill="none"
-                stroke={TEAL_LINE}
-                strokeWidth="1.5"
-                strokeDasharray={l.len}
-                strokeDashoffset={visible ? 0 : l.len}
+                className={visible && !reducedMotion ? styles.lineBreath : undefined}
                 style={{
-                  transition: `stroke-dashoffset 0.55s cubic-bezier(0.22, 1, 0.36, 1) ${l.delay}s`,
-                }}
-              />
+                  opacity: visible ? undefined : 0,
+                  "--breath-dur": `${2.2 + i * 0.4}s`,
+                  "--breath-delay": `${0.5 + i * 0.3}s`,
+                } as React.CSSProperties}
+              >
+                <path
+                  d={l.d}
+                  fill="none"
+                  stroke={`url(#grad-${l.id})`}
+                  strokeWidth="1.5"
+                />
+              </g>
             ))}
-            {visible &&
-              !reducedMotion &&
-              botParticles.map((p, i) => (
-                <circle
-                  key={i}
-                  r="3.5"
-                  fill={p.color}
-                  filter={`url(#${botGlowId})`}
-                  opacity="0.9"
-                >
-                  <animateMotion
-                    dur={p.dur}
-                    repeatCount="indefinite"
-                    begin={p.delay}
-                  >
-                    <mpath href={`#${p.pathId}`} />
-                  </animateMotion>
-                </circle>
-              ))}
           </svg>
 
           {/* ── Layer 3: bottom row nodes ── */}
@@ -512,6 +471,7 @@ function FeaturesPageMap() {
 /* ─── Problem comparison (orbit-style UI) ─────────────────────────────────── */
 
 function ProblemTable() {
+  const sectionRef = useRef<HTMLElement>(null);
   const rows = [
     {
       problem: "Platform engineering",
@@ -591,10 +551,97 @@ function ProblemTable() {
 
   const ActiveIcon = problemChipIcons[active];
 
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) {
+      return;
+    }
+
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const header = section.querySelector(`.${styles.sectionHeader}`);
+    const topicButtons = Array.from(
+      section.querySelectorAll(`.${styles.problemTopicBtn}`),
+    );
+    const comparePanel = section.querySelector(`.${styles.problemComparePanel}`);
+    const impactPanel = section.querySelector(`.${styles.problemImpactPanel}`);
+
+    if (reducedMotion) {
+      gsap.set([header, ...topicButtons, comparePanel, impactPanel], {
+        opacity: 1,
+        y: 0,
+      });
+      return;
+    }
+
+    gsap.set([header, comparePanel, impactPanel], {
+      opacity: 0,
+      y: 24,
+    });
+    gsap.set(topicButtons, {
+      opacity: 0,
+      y: 16,
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 60%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(header, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+    })
+      .to(
+        topicButtons,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.05,
+          ease: "power2.out",
+        },
+        "-=0.2",
+      )
+      .to(
+        comparePanel,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          ease: "power2.out",
+        },
+        "-=0.15",
+      )
+      .to(
+        impactPanel,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          ease: "power2.out",
+        },
+        "-=0.35",
+      );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
     <section
       id={FEATURE_ANCHORS.problem}
       className={`${styles.section} ${styles.problemSection} ${styles.pageAnchor}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -764,6 +811,8 @@ function ProblemTable() {
 /* ─── Core Features ─────────────────────────────────────────────────────── */
 
 function CoreFeatures() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   const features = [
     {
       icon: <MdCode />,
@@ -892,10 +941,91 @@ function CoreFeatures() {
     },
   ];
 
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const header = section.querySelector(`.${styles.sectionHeader}`);
+    const cardEls = Array.from(
+      section.querySelectorAll(`.${styles.featureGridCell}`),
+    ) as HTMLElement[];
+
+    if (!header || !cardEls.length) return;
+
+    if (reducedMotion) {
+      gsap.set([header, ...cardEls], { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
+
+    // Header: fade + slide up
+    gsap.set(header, { opacity: 0, y: 24 });
+    gsap.to(header, {
+      opacity: 1,
+      y: 0,
+      duration: 0.65,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: header,
+        start: "top 82%",
+          toggleActions: "play none none reverse",
+      },
+    });
+
+    // Group cards into rows by actual DOM top position (layout-agnostic)
+    const rows: HTMLElement[][] = [];
+    let currentRowTop = -1;
+    let currentRow: HTMLElement[] = [];
+
+    cardEls.forEach((card) => {
+      const top = Math.round(card.getBoundingClientRect().top);
+      if (Math.abs(top - currentRowTop) > 4) {
+        if (currentRow.length) rows.push(currentRow);
+        currentRow = [card];
+        currentRowTop = top;
+      } else {
+        currentRow.push(card);
+      }
+    });
+    if (currentRow.length) rows.push(currentRow);
+
+    // Animate each row when its first card scrolls into view
+    rows.forEach((rowCards) => {
+      gsap.set(rowCards, {
+        opacity: 0,
+        y: 32,
+        scale: 0.88,
+        transformOrigin: "center bottom",
+      });
+
+      gsap.to(rowCards, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.52,
+        stagger: 0.07,
+        ease: "back.out(1.5)",
+        scrollTrigger: {
+          trigger: rowCards[0],
+          start: "top 88%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
     <section
       id={FEATURE_ANCHORS.core}
       className={`${styles.section} ${styles.coreFeaturesSection} ${styles.pageAnchor}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -944,6 +1074,8 @@ function CoreFeatures() {
 /* ─── Framework Support ─────────────────────────────────────────────────── */
 
 function FrameworkSupport() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   const integrations = [
     {
       key: "openai",
@@ -1103,10 +1235,100 @@ function FrameworkSupport() {
     </>
   );
 
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) {
+      return;
+    }
+
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const header = section.querySelector(`.${styles.sectionHeader}`);
+    const block = section.querySelector(`.${styles.frameworkBlock}`);
+    const cards = Array.from(
+      section.querySelectorAll(`.${styles.frameworkGridCell}`),
+    );
+    const featuredRow = section.querySelector(`.${styles.frameworkFeaturedRow}`);
+
+    if (!header || !block || !cards.length || !featuredRow) {
+      return;
+    }
+
+    if (reducedMotion) {
+      gsap.set([header, block, ...cards, featuredRow], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      });
+      return;
+    }
+
+    gsap.set(header, { opacity: 0, y: 24 });
+    gsap.set(block, { opacity: 0, y: 22 });
+    gsap.set(cards, { opacity: 0, y: 28, scale: 0.95 });
+    gsap.set(featuredRow, { opacity: 0, y: 28, scale: 0.98 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 60%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(header, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+    })
+      .to(
+        block,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          ease: "power2.out",
+        },
+        "-=0.12",
+      )
+      .to(
+        cards,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.07,
+          ease: "power2.out",
+        },
+        "-=0.18",
+      )
+      .to(
+        featuredRow,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.55,
+          ease: "power2.out",
+        },
+        "-=0.15",
+      );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
     <section
       id={FEATURE_ANCHORS.frameworks}
       className={`${styles.section} ${styles.pageAnchor}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -1155,6 +1377,8 @@ function FrameworkSupport() {
 /* ─── Testing Section ───────────────────────────────────────────────────── */
 
 function TestingSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   const approaches = [
     {
       key: "cli",
@@ -1213,10 +1437,115 @@ function TestingSection() {
     },
   ];
 
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) {
+      return;
+    }
+
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const header = section.querySelector(`.${styles.sectionHeader}`);
+    const block = section.querySelector(`.${styles.testingBlock}`);
+    const approachCards = Array.from(
+      section.querySelectorAll(`.${styles.testingApproachCell}`),
+    );
+    const modePanel = section.querySelector(`.${styles.testingModesPanel}`);
+    const modeCards = Array.from(
+      section.querySelectorAll(`.${styles.testingModeCell}`),
+    );
+
+    if (!header || !block || !approachCards.length || !modePanel || !modeCards.length) {
+      return;
+    }
+
+    if (reducedMotion) {
+      gsap.set([header, block, ...approachCards, modePanel, ...modeCards], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      });
+      return;
+    }
+
+    gsap.set(header, { opacity: 0, y: 24 });
+    gsap.set(block, { opacity: 0, y: 22 });
+    gsap.set(approachCards, { opacity: 0, y: 28, scale: 0.95 });
+    gsap.set(modePanel, { opacity: 0, y: 24 });
+    gsap.set(modeCards, { opacity: 0, y: 22, scale: 0.96 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 70%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(header, {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: "power2.out",
+    })
+      .to(
+        block,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.38,
+          ease: "power2.out",
+        },
+        "-=0.1",
+      )
+      .to(
+        approachCards,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.42,
+          stagger: 0.05,
+          ease: "power2.out",
+        },
+        "-=0.14",
+      )
+      .to(
+        modePanel,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.42,
+          ease: "power2.out",
+        },
+        "-=0.06",
+      )
+      .to(
+        modeCards,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.38,
+          stagger: 0.045,
+          ease: "power2.out",
+        },
+        "-=0.12",
+      );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
     <section
       id={FEATURE_ANCHORS.testing}
       className={`${styles.section} ${styles.testingSection} ${styles.pageAnchor}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -1340,21 +1669,25 @@ function MessagingSection() {
       const cards = sceneRef.current?.querySelectorAll(
         `.${styles.msgChannelCard}`,
       );
-      if (!strip || !cards?.length) return;
+      if (!cards?.length) return;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sceneRef.current,
           start: "top 78%",
-          once: true,
+          toggleActions: "play none none reverse",
         },
       });
 
+      if (strip) {
+        tl.fromTo(
+          strip,
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
+        );
+      }
+
       tl.fromTo(
-        strip,
-        { opacity: 0, y: 22 },
-        { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
-      ).fromTo(
         cards,
         { opacity: 0, y: 18 },
         {
@@ -1364,7 +1697,7 @@ function MessagingSection() {
           stagger: 0.055,
           ease: "power2.out",
         },
-        "-=0.28",
+        strip ? "-=0.28" : "0",
       );
     }, sceneRef);
 
@@ -1393,9 +1726,12 @@ function MessagingSection() {
               <li key={p.name} className={styles.msgChannelCell}>
                 <Link
                   to={p.link}
-                  className={styles.msgChannelCard}
+                  className={`${styles.msgChannelCard}${(p as { featured?: boolean }).featured ? ` ${styles.msgChannelCardFeatured}` : ""}`}
                   style={{ "--msg-brand": p.color } as React.CSSProperties}
                 >
+                  {(p as { featured?: boolean }).featured && (
+                    <span className={styles.msgFeaturedBadge}>Popular</span>
+                  )}
                   <span className={styles.msgChannelIcon} aria-hidden>
                     {p.icon}
                   </span>
@@ -1410,17 +1746,23 @@ function MessagingSection() {
         </div>
 
         <div className={styles.msgChannelFooter}>
-          <Link to="/docs/integrations/overview" className={styles.sectionLink}>
-            Full integrations overview →
+          <Link
+            to="/docs/integrations/overview"
+            className={`button button--primary button--md ${styles.btnLinkPrimary}`}
+          >
+            Full integrations overview
+            <span className={styles.btnLinkIconPrimary}>→</span>
           </Link>
         </div>
       </div>
     </section>
   );
 }
+
 /* ─── Protocol Support ──────────────────────────────────────────────────── */
 
 function ProtocolSupport() {
+  const sectionRef = useRef<HTMLElement>(null);
   const protocols = [
     {
       key: "mcp",
@@ -1441,11 +1783,60 @@ function ProtocolSupport() {
       linkLabel: "A2A server docs →",
     },
   ];
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const reducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const header = section.querySelector(`.${styles.sectionHeader}`);
+    const grid = section.querySelector(`.${styles.protocolGrid}`);
+    const cells = Array.from(section.querySelectorAll(`.${styles.protocolCell}`));
+
+    if (!header || !grid || !cells.length) return;
+
+    if (reducedMotion) {
+      gsap.set([header, grid, cells], { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
+
+    gsap.set(header, { opacity: 0, y: 24 });
+    gsap.set(grid, { opacity: 0, y: 20 });
+    gsap.set(cells, { opacity: 0, y: 28, scale: 0.98 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 70%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+
+    tl.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+      .to(
+        grid,
+        { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' },
+        '-=0.1',
+      )
+      .to(
+        cells,
+        { opacity: 1, y: 0, scale: 1, duration: 0.42, stagger: 0.05, ease: 'power2.out' },
+        '-=0.14',
+      );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
 
   return (
     <section
       id={FEATURE_ANCHORS.protocols}
       className={`${styles.section} ${styles.protocolSection} ${styles.pageAnchor}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -1479,9 +1870,14 @@ function ProtocolSupport() {
 
 /* ─── CTA ───────────────────────────────────────────────────────────────── */
 
-function CTASection() {
+function CTASection({
+  sectionRef,
+}: {
+  sectionRef: React.RefObject<HTMLElement>;
+}) {
   return (
     <section
+      ref={sectionRef}
       id={FEATURE_ANCHORS.cta}
       className={`${styles.ctaSection} ${styles.pageAnchor}`}
     >
@@ -1529,22 +1925,56 @@ function CTASection() {
 /* ─── Page Export ───────────────────────────────────────────────────────── */
 
 export default function Features() {
+  const plantParticlesBackgroundRef = useRef<PlantParticlesBackgroundHandle>(
+    null,
+  );
+  const ctaRef = useRef<HTMLElement>(null);
+  const ctaObserverStateRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (!plantParticlesBackgroundRef.current || !ctaRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !ctaObserverStateRef.current) {
+          ctaObserverStateRef.current = true;
+          plantParticlesBackgroundRef.current?.triggerReverseScatterIn();
+        } else if (!entry.isIntersecting && ctaObserverStateRef.current) {
+          ctaObserverStateRef.current = false;
+          plantParticlesBackgroundRef.current?.triggerScatterIn();
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    observer.observe(ctaRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <Layout
       title="Features"
       description="Comprehensive overview of Agent Kernel features — framework-agnostic, multi-cloud AI agent runtime with built-in testing, observability, guardrails, and messaging integrations."
     >
-      <PlantParticlesBackground />
+      <PlantParticlesBackground
+        ref={plantParticlesBackgroundRef}
+        modelUrl="/models/leaf.glb"
+      />
       <Hero />
       <main>
-        <FeaturesPageMap />
+        <FeaturesPageMap
+          plantParticlesBackgroundRef={plantParticlesBackgroundRef}
+        />
         <ProblemTable />
         <CoreFeatures />
         <FrameworkSupport />
         <TestingSection />
         <MessagingSection />
         <ProtocolSupport />
-        <CTASection />
+        <CTASection sectionRef={ctaRef} />
       </main>
     </Layout>
   );

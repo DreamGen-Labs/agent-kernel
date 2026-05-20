@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import styles from './use-cases.module.css';
@@ -24,6 +24,14 @@ import { FaGithub, FaLock } from 'react-icons/fa';
 import PlantParticlesBackground from '../components/PlantParticlesBackground';
 
 gsap.registerPlugin(ScrollTrigger);
+
+type ParticleBackgroundHandle = {
+  triggerScatterOut: () => void;
+  triggerScatterIn: () => void;
+  triggerReverseScatterIn: () => void;
+  triggerScatterFloat: () => void;
+  triggerFloatReform: () => void;
+};
 
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
@@ -400,9 +408,62 @@ const REAL_WORLD_USE_CASES = [
 ];
 
 function RealWorldUseCases() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const reducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const header = section.querySelector(`.${featureStyles.sectionHeader}`);
+    const grid = section.querySelector(`.${featureStyles.featuresGrid}`);
+    const cells = Array.from(
+      section.querySelectorAll(`.${featureStyles.featureGridCell}`),
+    );
+
+    if (!header || !grid || !cells.length) return;
+
+    if (reducedMotion) {
+      gsap.set([header, grid, cells], { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
+
+    gsap.set(header, { opacity: 0, y: 24 });
+    gsap.set(grid, { opacity: 0, y: 20 });
+    gsap.set(cells, { opacity: 0, y: 28, scale: 0.98 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 88%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+
+    tl.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+      .to(
+        grid,
+        { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' },
+        '-=0.1',
+      )
+      .to(
+        cells,
+        { opacity: 1, y: 0, scale: 1, duration: 0.42, stagger: 0.04, ease: 'power2.out' },
+        '-=0.14',
+      );
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
   return (
     <section
       className={`${featureStyles.section} ${featureStyles.coreFeaturesSection} ${styles.realWorldSection}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={featureStyles.sectionHeader}>
@@ -432,136 +493,64 @@ function RealWorldUseCases() {
   );
 }
 
-function Differentiators() {
+function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<ParticleBackgroundHandle | null> }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const observerStateRef = useRef(false);
 
-  const drawLines = useCallback(() => {
-    const container = containerRef.current;
-    const hub = hubRef.current;
-    const svg = svgRef.current;
-    if (!container || !hub || !svg) return;
 
-    const cRect = container.getBoundingClientRect();
-    const hRect = hub.getBoundingClientRect();
-    const hx = hRect.left + hRect.width / 2 - cRect.left;
-    const hy = hRect.top + hRect.height / 2 - cRect.top;
-
-    svg.setAttribute('viewBox', `0 0 ${cRect.width} ${cRect.height}`);
-
-    svg.innerHTML = `
-      <defs>
-        <filter id="lineGlow" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="5" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="dotGlow" x="-300%" y="-300%" width="700%" height="700%">
-          <feGaussianBlur stdDeviation="4" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>`;
-
-    const durations = [2.8, 3.4, 2.5, 3.1, 2.9, 3.6, 2.6, 3.2];
-
-    cardRefs.current.forEach((card, i) => {
-      if (!card) return;
-      const r = card.getBoundingClientRect();
-      if (r.width === 0) return;
-      const cx = r.left + r.width / 2 - cRect.left;
-      const cy = r.top + r.height / 2 - cRect.top;
-
-      // Quadratic bezier with a slight perpendicular curve
-      const midX = (hx + cx) / 2;
-      const midY = (hy + cy) / 2;
-      const dx = cx - hx;
-      const dy = cy - hy;
-      const len = Math.sqrt(dx * dx + dy * dy) || 1;
-      const cpX = midX + (-dy / len) * 35;
-      const cpY = midY + (dx / len) * 35;
-      const pathD = `M ${hx} ${hy} Q ${cpX} ${cpY} ${cx} ${cy}`;
-      const pathId = `op${i}`;
-
-      // Halo line
-      const haloPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      haloPath.setAttribute('d', pathD);
-      haloPath.setAttribute('stroke', 'rgba(0,221,255,0.1)');
-      haloPath.setAttribute('stroke-width', '8');
-      haloPath.setAttribute('fill', 'none');
-      haloPath.setAttribute('filter', 'url(#lineGlow)');
-      svg.appendChild(haloPath);
-
-      // Main line
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('id', pathId);
-      path.setAttribute('d', pathD);
-      path.setAttribute('stroke', 'rgba(0,221,255,0.28)');
-      path.setAttribute('stroke-width', '1.5');
-      path.setAttribute('fill', 'none');
-      svg.appendChild(path);
-
-      // Endpoint dot
-      const endDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      endDot.setAttribute('cx', String(cx));
-      endDot.setAttribute('cy', String(cy));
-      endDot.setAttribute('r', '4');
-      endDot.setAttribute('fill', 'rgba(0,221,255,0.55)');
-      endDot.setAttribute('filter', 'url(#dotGlow)');
-      svg.appendChild(endDot);
-
-      // Traveling dot
-      const traveler = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      traveler.setAttribute('r', '3.5');
-      traveler.setAttribute('fill', '#00DDFF');
-      traveler.setAttribute('filter', 'url(#dotGlow)');
-      const motion = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
-      motion.setAttribute('dur', `${durations[i]}s`);
-      motion.setAttribute('repeatCount', 'indefinite');
-      motion.setAttribute('begin', `${i * 0.38}s`);
-      const mpath = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
-      mpath.setAttribute('href', `#${pathId}`);
-      motion.appendChild(mpath);
-      traveler.appendChild(motion);
-      svg.appendChild(traveler);
-    });
-  }, []);
 
   useEffect(() => {
-    const timer = setTimeout(drawLines, 80);
-    const ro = new ResizeObserver(drawLines);
-    if (containerRef.current) ro.observe(containerRef.current);
-    window.addEventListener('resize', drawLines);
+    if (!backgroundRef.current || !containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !observerStateRef.current) {
+          observerStateRef.current = true;
+          backgroundRef.current?.triggerScatterOut();
+        } else if (!entry.isIntersecting && observerStateRef.current) {
+          observerStateRef.current = false;
+          backgroundRef.current?.triggerScatterIn();
+        }
+      },
+      { threshold: 0.0 },
+    );
+
+    observer.observe(containerRef.current);
+
     return () => {
-      clearTimeout(timer);
-      ro.disconnect();
-      window.removeEventListener('resize', drawLines);
+      observer.disconnect();
     };
-  }, [drawLines]);
+  }, [backgroundRef]);
 
   useEffect(() => {
-    const els = containerRef.current?.querySelectorAll(
-      `.${styles.orbitCard}, .${styles.orbitHub}`
-    );
-    if (!els?.length) return;
-    gsap.fromTo(
-      els,
-      { opacity: 0, scale: 0.88 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        stagger: 0.07,
-        ease: 'back.out(1.2)',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-          once: true,
-        },
-        onComplete: drawLines,
-      }
-    );
-  }, [drawLines]);
+    const hub = containerRef.current?.querySelector(`.${styles.orbitHub}`);
+    const hubImg = containerRef.current?.querySelector(`.${styles.orbitHubIcon}`);
+    const cards = containerRef.current?.querySelectorAll(`.${styles.orbitCard}`);
+    if (!containerRef.current || !hub || !hubImg || !cards?.length) return;
+
+    // set initial state for hub, hub image, and cards
+    gsap.set([hub, hubImg, ...Array.from(cards)], { opacity: 0, scale: 0.88 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 75%',
+        // ensure enter/leave both play and reverse so hub image reverses too
+        toggleActions: 'play reverse play reverse',
+      },
+    });
+
+    // 1) Reveal hub container, 2) pop the logo with a small rotate/overshoot, 3) reveal cards sequentially
+    tl.to(hub, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' })
+      .to(
+        hubImg,
+        { opacity: 1, scale: 1.12, rotation: 8, duration: 0.45, ease: 'back.out(1.6)' },
+        '-=0.05'
+      )
+      .to(hubImg, { scale: 1, rotation: 0, duration: 0.28, ease: 'power2.out' })
+      .to(cards, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.4, ease: 'back.out(1.2)' });
+  }, []);
 
   return (
     <section className={styles.diffSection}>
@@ -574,14 +563,10 @@ function Differentiators() {
         </div>
 
         <div ref={containerRef} className={styles.orbitScene}>
-          {/* SVG connector lines — drawn dynamically */}
-          <svg ref={svgRef} className={styles.orbitSvg} aria-hidden="true" />
-
           {/* 8 surrounding cards */}
           {ORBIT_CARDS.map((card, i) => (
             <div
               key={i}
-              ref={el => { cardRefs.current[i] = el; }}
               className={`${styles.orbitCard} ${styles[`orbitPos${i}`]}`}
               style={{ '--card-color': card.color } as React.CSSProperties}
             >
@@ -593,6 +578,8 @@ function Differentiators() {
 
           {/* Central hub */}
           <div ref={hubRef} className={styles.orbitHub}>
+            <span className={styles.pulseRing} aria-hidden="true" />
+            <span className={styles.pulseRingDelayed} aria-hidden="true" />
             <div className={styles.orbitHubGlowCore} />
             <img
               src="/img/branding/agent-kernel-icon-color.svg"
@@ -610,17 +597,18 @@ function Differentiators() {
 
 export default function UseCases() {
   const [activeSegment, setActiveSegment] = useState<typeof segments[0] | null>(null);
+  const backgroundRef = useRef<ParticleBackgroundHandle | null>(null);
 
   return (
     <Layout
       title="Use Cases"
       description="Who is Agent Kernel built for? Explore use cases for software companies, AI startups, domain experts, and product teams building production AI agents.">
-      <PlantParticlesBackground modelUrl='models/brain.glb' />
+      <PlantParticlesBackground ref={backgroundRef} modelUrl='models/brain.glb' />
       <Hero />
       <main>
         <UseCaseJourneyMap />
         <RealWorldUseCases />
-        <Differentiators />
+        <Differentiators backgroundRef={backgroundRef} />
       </main>
       {activeSegment && (
         <SegmentModal segment={activeSegment} onClose={() => setActiveSegment(null)} />
