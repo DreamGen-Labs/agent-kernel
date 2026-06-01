@@ -3,7 +3,9 @@ import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import styles from './use-cases.module.css';
+import indexStyles from './index.module.css';
 import UseCaseJourneyMap from '../components/UseCaseJourneyMap';
+import HeroAnimation from '../components/HeroAnimation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import {
@@ -36,72 +38,12 @@ type ParticleBackgroundHandle = {
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
 function Hero() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const tl = gsap.timeline();
-
-    gsap.set([titleRef.current, subtitleRef.current, buttonsRef.current], {
-      opacity: 0,
-      y: 30,
-    });
-
-    tl.to(titleRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-    })
-      .to(
-        subtitleRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-        },
-        '-=0.4',
-      )
-      .to(
-        buttonsRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power2.out',
-        },
-        '-=0.2',
-      );
-  }, []);
-
   return (
-    <section className={styles.hero}>
-      <div className="container">
-        <div className={styles.heroContent}>
-          <h1 ref={titleRef} className={styles.heroTitle}>
-            Who Is Agent Kernel Built For?
-          </h1>
-          <p ref={subtitleRef} className={styles.heroSubtitle}>
-            Agent Kernel is an open-source runtime that lets you build, test, and deploy AI agents
-            to production in days instead of months. It works with any major AI framework (OpenAI,
-            LangGraph, CrewAI, Google ADK) and can run agents from multiple frameworks together in
-            a single runtime. It deploys to AWS, Azure, or your own servers with zero platform code.
-          </p>
-          <div ref={buttonsRef} className={styles.heroButtons}>
-            <Link className={`button button--primary button--lg ${styles.btnPrimary}`} to="/docs">
-              <span className={styles.btnIcon}>→</span>
-              Get Started
-            </Link>
-            <Link className={`button button--secondary button--lg ${styles.btnSecondary}`} to="/features">
-              <span className={styles.btnIconSecondary}>→</span>
-              Explore Features
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
+    <HeroAnimation
+      badge="Use Cases"
+      title="Who Is Agent Kernel Built For?"
+      subtitle="Agent Kernel is an open-source runtime that lets you build, test, and deploy AI agents to production in days instead of months. It works with any major AI framework (OpenAI, LangGraph, CrewAI, Google ADK) and can run agents from multiple frameworks together in a single runtime. It deploys to AWS, Azure, or your own servers with zero platform code."
+    />
   );
 }
 
@@ -115,7 +57,7 @@ const segments = [
     title: 'Established Software Companies',
     subtitle: 'Services / Dev Houses',
     profile: 'Development houses and IT services firms with existing clients who are asking for AI-powered solutions. They have developers on staff but lack AI agent platform expertise.',
-    diagramLeft:  { label: 'Client AI Request', desc: 'Existing clients asking for agents' },
+    diagramLeft: { label: 'Client AI Request', desc: 'Existing clients asking for agents' },
     diagramRight: { label: 'Shipped in Weeks', desc: 'Production agents, on time' },
     painPoints: [
       'Need to stand up AI agent capabilities quickly without a 6-month R&D cycle',
@@ -141,7 +83,7 @@ const segments = [
     title: 'Software Companies Enhancing Products',
     subtitle: 'SaaS / Enterprise Software',
     profile: 'Product companies with existing SaaS or enterprise software who want to embed conversational AI, intelligent automation, or agent-driven workflows into their products.',
-    diagramLeft:  { label: 'Existing SaaS', desc: 'Your current product' },
+    diagramLeft: { label: 'Existing SaaS', desc: 'Your current product' },
     diagramRight: { label: 'AI-Enhanced Product', desc: 'Agents embedded, zero lock-in' },
     painPoints: [
       'Need to add AI agent capabilities without massive re-architecture',
@@ -168,7 +110,7 @@ const segments = [
     title: 'AI Startups',
     subtitle: 'Early to Growth Stage',
     profile: 'Early to growth-stage startups building AI-native products. Small engineering teams that need to move fast and can\'t afford to build platform infrastructure.',
-    diagramLeft:  { label: 'MVP Idea', desc: 'Prototype stage, lean team' },
+    diagramLeft: { label: 'MVP Idea', desc: 'Prototype stage, lean team' },
     diagramRight: { label: 'Production in Days', desc: 'Multi-cloud, fully deployed' },
     painPoints: [
       'Engineering bandwidth is the scarcest resource — every hour on infrastructure is an hour not spent on core AI',
@@ -195,7 +137,7 @@ const segments = [
     title: 'Domain Experts',
     subtitle: 'Finance, Healthcare, Legal, Education…',
     profile: 'Subject matter experts or small teams with deep domain knowledge who want to build AI products but lack (or want to minimize) expensive software engineering overhead.',
-    diagramLeft:  { label: 'Domain Knowledge', desc: 'Your expertise and use case' },
+    diagramLeft: { label: 'Domain Knowledge', desc: 'Your expertise and use case' },
     diagramRight: { label: 'AI Product', desc: 'Deployed without a DevOps team' },
     painPoints: [
       'Know what they want their AI agent to do — but building the software platform around it requires expensive engineering',
@@ -327,19 +269,19 @@ function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClo
 const ORBIT_CARDS = [
   {
     icon: <MdSwapHoriz />,
-    color: '#40BBDE',
+    color: '#00DDFF',
     title: 'Framework-Neutral',
     desc: 'The only runtime that lets you bring inswap between  agents written from OpenAI Agents,  CrewAI, LangGraph, and Google ADK, Smolagents, LiveKit with near-zero code change — and run all of them simultaneously in a single runtime.',
   },
   {
     icon: <MdCloud />,
-    color: '#8E5DFF',
+    color: '#00DDFF',
     title: 'Multi-Cloud Native',
     desc: 'Same agent code deploys to AWS and Azure out of the box. No other AI agent runtime offers this out of the box.',
   },
   {
     icon: <MdSpeed />,
-    color: '#F7A544',
+    color: '#00DDFF',
     title: 'Full Lifecycle',
     desc: 'Build → Test → Deploy → Monitor. One tool that takes you from a Python script to a multi-AZ production cluster.',
   },
@@ -351,25 +293,25 @@ const ORBIT_CARDS = [
   },
   {
     icon: <MdSecurity />,
-    color: '#DB4444',
+    color: '#00DDFF',
     title: 'Production-Ready',
     desc: 'Fault tolerance, guardrails, observability, and session management built in from day one — not bolted on later.',
   },
   {
     icon: <MdMessage />,
-    color: '#73D0EB',
+    color: '#00DDFF',
     title: 'Built-in Messaging',
     desc: 'Slack, WhatsApp, Instagram, Telegram, Messenger, Gmail — ship working integrations on day one, not months later.',
   },
   {
     icon: <FaLock />,
-    color: '#B391FF',
+    color: '#00DDFF',
     title: 'Open-Source',
     desc: 'No usage fees, no proprietary lock-in. Community-driven with full codebase access — fork it, extend it, contribute back.',
   },
   {
     icon: <MdNetworkCheck />,
-    color: '#F7BC77',
+    color: '#00DDFF',
     title: 'Protocol Support',
     desc: 'MCP and A2A server modes for future-proof agent architectures and full ecosystem compatibility out of the box.',
   },
@@ -462,30 +404,33 @@ function RealWorldUseCases() {
       tl.kill();
     };
   }, []);
+
   return (
-    <section
-      className={styles.realWorldSection}
-      ref={sectionRef}
-    >
+    <section className={styles.realWorldSection} ref={sectionRef}>
       <div className="container">
         <div className={styles.realWorldSectionHeader}>
+          <div className={styles.Badge}>
+            <span className={styles.badgeStar}>✦</span>
+            Use Cases
+          </div>
           <h2 className={styles.realWorldSectionTitle}>Real world use cases</h2>
         </div>
         <ul className={styles.featuresGrid}>
           {REAL_WORLD_USE_CASES.map((useCase, i) => (
             <li key={useCase.title} className={styles.featureGridCell}>
-              <Link
-                to={useCase.link}
-                className={styles.featureCard}
-              >
+              <Link to={useCase.link} className={styles.featureCard}>
                 <div className={styles.featureCardHeader}>
-                  <span className={styles.featureIndex}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className={styles.featureIndex}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                 </div>
                 <div className={styles.featureCardBody}>
                   <h3 className={styles.featureTitle}>{useCase.title}</h3>
                   <p className={styles.featureDescription}>{useCase.description}</p>
                 </div>
-                <span className={styles.featureLink}>Read blog →</span>
+                <div className={styles.featureCardFooter}>
+                  <span className={styles.featureLink}>Read More</span>
+                </div>
               </Link>
             </li>
           ))}
@@ -532,8 +477,8 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
     const cards = containerRef.current?.querySelectorAll(`.${styles.orbitCard}`);
     if (!containerRef.current || !hub || !hubImg || !cards?.length) return;
 
-    // set initial state for hub, hub image, and cards
-    gsap.set([hub, hubImg, ...Array.from(cards)], { opacity: 0, scale: 0.88 });
+    // set initial state for cards only (leave hub/video static)
+    gsap.set(Array.from(cards), { opacity: 0, scale: 0.88 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -544,21 +489,18 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
       },
     });
 
-    // 1) Reveal hub container, 2) pop the logo with a small rotate/overshoot, 3) reveal cards sequentially
-    tl.to(hub, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' })
-      .to(
-        hubImg,
-        { opacity: 1, scale: 1.12, rotation: 8, duration: 0.45, ease: 'back.out(1.6)' },
-        '-=0.05'
-      )
-      .to(hubImg, { scale: 1, rotation: 0, duration: 0.28, ease: 'power2.out' })
-      .to(cards, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.4, ease: 'back.out(1.2)' });
+    // Reveal cards sequentially; keep hub (video) static — no hub animation
+    tl.to(cards, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.20, ease: 'back.out(1.2)' });
   }, []);
 
   return (
     <section className={styles.diffSection}>
       <div className="container">
         <div className={styles.sectionHeader}>
+          <div className={styles.Badge}>
+            <span className={styles.badgeStar}>✦</span>
+            Trust
+          </div>
           <h2 className={styles.sectionTitle}>Why Teams Choose Agent Kernel</h2>
           <p className={styles.sectionSubtitle}>
             What makes Agent Kernel different from rolling your own or using other platforms.
@@ -581,14 +523,65 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
 
           {/* Central hub */}
           <div ref={hubRef} className={styles.orbitHub}>
-            <span className={styles.pulseRing} aria-hidden="true" />
-            <span className={styles.pulseRingDelayed} aria-hidden="true" />
-            <div className={styles.orbitHubGlowCore} />
-            <img
-              src={baseUrl('/img/branding/agent-kernel-icon-color.svg')}
-              alt="Agent Kernel"
+            <video
+              src="/video/hero.mp4"
+              aria-label="Agent Kernel"
               className={styles.orbitHubIcon}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
             />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+interface CommunityProps {
+  sectionRef?: React.Ref<HTMLElement>;
+}
+
+function Community({ sectionRef }: CommunityProps) {
+  return (
+    <section ref={sectionRef} className={indexStyles.ctaSection}>
+      <div className="container">
+        <div className={indexStyles.ctaContent}>
+          <h2 className={indexStyles.ctaTitle}>
+            Ready to Ship Your
+            <br />
+            First <span className={indexStyles.ctaTitleGradient}>Agent</span>?
+          </h2>
+          <p className={indexStyles.ctaSubtitle}>
+            Free, open-source, Apache 2.0. No licensing costs, no vendor
+            lock-in. Join hundreds of developers building production AI agents
+            with Agent Kernel.
+          </p>
+          <div className={indexStyles.ctaButtons}>
+            <Link
+              className={`button button--primary button--lg ${indexStyles.btnPrimary}`}
+              to="/docs"
+            >
+              <span className={indexStyles.btnIcon}>→</span>
+              Get Started Free
+            </Link>
+            <Link
+              className={`button button--secondary button--lg ${indexStyles.btnSecondary}`}
+              to="https://github.com/yaalalabs/agent-kernel"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className={indexStyles.btnIconSecondary}>
+                <FaGithub />
+              </span>
+              View On GitHub
+            </Link>
+          </div>
+
+          <div className={indexStyles.ctaImageWrapper}>
+            <img src="/img/cta-bg.png" alt="Agent Kernel" className={indexStyles.ctaImage} />
           </div>
         </div>
       </div>
@@ -602,17 +595,33 @@ export default function UseCases() {
   const [activeSegment, setActiveSegment] = useState<typeof segments[0] | null>(null);
   const backgroundRef = useRef<ParticleBackgroundHandle | null>(null);
 
+  useEffect(() => {
+    const footer = document.querySelector('footer');
+    if (footer) {
+      footer.style.position = 'relative';
+      footer.style.zIndex = '10';
+    }
+  }, []);
+
   return (
     <Layout
       title="Use Cases"
       description="Who is Agent Kernel built for? Explore use cases for software companies, AI startups, domain experts, and product teams building production AI agents.">
-      <PlantParticlesBackground ref={backgroundRef} modelUrl='models/brain.glb' />
-      <Hero />
-      <main>
+
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 0, pointerEvents: 'auto' }}>
+        <Hero />
+      </div>
+
+      <div style={{ height: '100vh' }} />
+
+      {/* Content that scroll over the hero section */}
+      <main style={{ position: 'relative', zIndex: 10, backgroundColor: '#010002' }}>
         <UseCaseJourneyMap />
         <RealWorldUseCases />
         <Differentiators backgroundRef={backgroundRef} />
+        <Community />
       </main>
+
       {activeSegment && (
         <SegmentModal segment={activeSegment} onClose={() => setActiveSegment(null)} />
       )}
