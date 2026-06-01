@@ -1014,6 +1014,7 @@ function Levels() {
   const badgeRef = useRef<HTMLDivElement>(null);
   const cardsWrapRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
+  const baseUrl = useBaseUrl;
 
   const levels: Level[] = [
     {
