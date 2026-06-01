@@ -524,7 +524,7 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
           {/* Central hub */}
           <div ref={hubRef} className={styles.orbitHub}>
             <video
-              src="/video/hero.mp4"
+              src={baseUrl("/video/hero.mp4")}
               aria-label="Agent Kernel"
               className={styles.orbitHubIcon}
               autoPlay
@@ -545,6 +545,7 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
+  const baseUrl = useBaseUrl;
   return (
     <section ref={sectionRef} className={indexStyles.ctaSection}>
       <div className="container">
@@ -581,7 +582,7 @@ function Community({ sectionRef }: CommunityProps) {
           </div>
 
           <div className={indexStyles.ctaImageWrapper}>
-            <img src="/img/cta-bg.png" alt="Agent Kernel" className={indexStyles.ctaImage} />
+            <img src={baseUrl("/img/cta-bg.png")} alt="Agent Kernel" className={indexStyles.ctaImage} />
           </div>
         </div>
       </div>

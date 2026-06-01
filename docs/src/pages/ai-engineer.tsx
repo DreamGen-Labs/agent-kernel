@@ -3,6 +3,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { StepTimeline } from "../components/StepTimeline";
 import styles from "./index.module.css";
 import {
@@ -37,6 +38,7 @@ import heroStyles from "../components/HeroAnimation/styles.module.css";
 import { FaGithub } from "react-icons/fa";
 
 export default function AIEngineerPage() {
+  const baseUrl = useBaseUrl;
   const contentRef = useRef<HTMLDivElement>(null);
 
   const AI_ENGINEER_ARCH_LAYERS = [
@@ -1163,7 +1165,7 @@ export default function AIEngineerPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src="/img/cta-bg.png"
+                src={baseUrl("/img/cta-bg.png")}
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

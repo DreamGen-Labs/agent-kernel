@@ -101,6 +101,7 @@ function WhatsNewBanner() {
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
 function Hero() {
+  const baseUrl = useBaseUrl;
   const leftRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -215,7 +216,7 @@ function Hero() {
         <div ref={videoRef} className={styles.right}>
           <video
             className={styles.heroVideo}
-            src="/video/hero.mp4"
+            src={baseUrl("/video/hero.mp4")}
             autoPlay
             loop
             muted
@@ -245,7 +246,7 @@ function FrameworksStrip() {
   const frameworks = [
     {
       name: "Open AI Agents SDK",
-      logo: "/img/integrations/chatgpt.png",
+      logo: baseUrl("/img/integrations/chatgpt.png"),
       link: "/docs/frameworks/openai",
     },
     {
@@ -947,6 +948,7 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
+  const baseUrl = useBaseUrl;
   return (
     <section ref={sectionRef} className={styles.ctaSection}>
       <div className="container">
@@ -985,7 +987,7 @@ function Community({ sectionRef }: CommunityProps) {
 
           <div className={styles.ctaImageWrapper}>
             <img
-              src="/img/cta-bg.png"
+              src={baseUrl("/img/cta-bg.png")}
               alt="Agent Kernel"
               className={styles.ctaImage}
             />
@@ -1259,7 +1261,7 @@ function Levels() {
             transformOrigin: "center center",
           }}
         >
-          <source src="/video/path-bg.mp4" type="video/mp4" />
+          <source src={baseUrl("/video/path-bg.mp4")} type="video/mp4" />
         </video>
 
         <div className={styles.levelsFrameContainer}>
