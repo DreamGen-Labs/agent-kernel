@@ -1008,6 +1008,12 @@ interface Level {
   bullets: string[];
 }
 
+const LEVEL_PAGES: Record<string, string> = {
+  "01": "business-leader",
+  "02": "developer",
+  "03": "ai-engineer",
+};
+
 function Levels() {
   const sectionRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -1015,8 +1021,8 @@ function Levels() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const cardsWrapRef = useRef<HTMLDivElement>(null);
-  const history = useHistory();
   const baseUrl = useBaseUrl;
+  const history = useHistory();
 
   const levels: Level[] = [
     {
@@ -1058,14 +1064,9 @@ function Levels() {
   ];
 
   const handleLevelSelect = (levelId: string) => {
-    const levelPages: { [key: string]: string } = {
-      "01": "/business-leader",
-      "02": "/developer",
-      "03": "/ai-engineer",
-    };
-    const path = levelPages[levelId];
+    const path = LEVEL_PAGES[levelId];
     if (path) {
-      history.push(baseUrl(path));
+      history.push(path);
     }
   };
 
@@ -1326,6 +1327,7 @@ function Levels() {
                       ))}
                     </ul>
                     <button
+                      type="button"
                       className={styles.levelWindowReadMore}
                       onClick={() => handleLevelSelect(level.id)}
                     >
