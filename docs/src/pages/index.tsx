@@ -1063,8 +1063,9 @@ function Levels() {
       "02": "/developer",
       "03": "/ai-engineer",
     };
-    if (levelPages[levelId]) {
-      history.push(levelPages[levelId]);
+    const path = levelPages[levelId];
+    if (path) {
+      history.push(baseUrl(path));
     }
   };
 
