@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import type {Props} from '@theme/Footer/Layout';
 import {FaDiscord, FaGithub, FaXTwitter, FaEnvelope} from 'react-icons/fa6';
 import {SiTerraform} from 'react-icons/si';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 type SocialLink = {
   href: string;
@@ -54,6 +55,7 @@ export default function FooterLayout({
   logo,
   copyright,
 }: Props): ReactNode {
+  const baseUrl = useBaseUrl;
   return (
     <footer
       className={clsx('footer', {
@@ -65,7 +67,7 @@ export default function FooterLayout({
           <div className="footer__brand">
             <a href="/" className="footer__brand-logo-link" aria-label="Agent Kernel home">
               <img
-                src="/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg"
+                src={baseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg")}
                 alt="Agent Kernel"
                 className="footer__brand-logo"
                 width={140}
@@ -99,7 +101,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src="/img/lf_membership.svg"
+                    src={baseUrl("/img/lf_membership.svg")}
                     alt="Linux Foundation Member"
                     className="footer__badge"
                   />
@@ -110,7 +112,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src="/img/aaif_membership.svg"
+                    src={baseUrl("/img/aaif_membership.svg")}
                     alt="Agentic AI Foundation Member"
                     className="footer__badge"
                   />

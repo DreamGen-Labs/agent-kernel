@@ -3,6 +3,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import {
   MdRocketLaunch,
   MdMessage,
@@ -18,6 +19,7 @@ import heroStyles from "../components/HeroAnimation/styles.module.css";
 import { FaGithub } from "react-icons/fa";
 
 export default function BusinessLeaderPage() {
+  const baseUrl = useBaseUrl;
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -542,7 +544,7 @@ export default function BusinessLeaderPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src="/img/cta-bg.png"
+                src={baseUrl("/img/cta-bg.png")}
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

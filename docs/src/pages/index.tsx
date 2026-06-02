@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import styles from "./index.module.css";
 import gsap from "gsap";
@@ -16,7 +17,7 @@ import {
   MdIntegrationInstructions,
   MdCloudUpload,
   MdCheck,
-  MdClose, 
+  MdClose,
 } from "react-icons/md";
 import {
   FaGithub,
@@ -100,6 +101,7 @@ function WhatsNewBanner() {
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
 function Hero() {
+  const baseUrl = useBaseUrl;
   const leftRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -107,10 +109,10 @@ function Hero() {
   const bulletsRef = useRef(null);
   const videoRef = useRef(null);
   const scrollLabelRef = useRef(null);
- 
+
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
- 
+
     gsap.set(
       [
         titleRef.current,
@@ -122,7 +124,7 @@ function Hero() {
       ],
       { opacity: 0, y: 28 }
     );
- 
+
     tl.to(titleRef.current, { opacity: 1, y: 0, duration: 0.85 })
       .to(subtitleRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.5")
       .to(buttonsRef.current, { opacity: 1, y: 0, duration: 0.55 }, "-=0.35")
@@ -151,7 +153,7 @@ function Hero() {
       if (pulse) pulse.kill();
     };
   }, []);
- 
+
   return (
     <section className={styles.hero}>
       <div className={styles.inner}>
@@ -165,13 +167,13 @@ function Hero() {
             Enterprise AI{" "}
             <span className={styles.gradientWord}>Agents</span>
           </h1>
- 
+
           <p ref={subtitleRef} className={styles.subtitle}>
             Orchestrate agent workflows, automate compliance, and
             <br className={styles.brDesktop} />
             deploy anywhere with zero vendor lock-in.
           </p>
- 
+
           <div ref={buttonsRef} className={styles.heroButtons}>
             <Link
               className={`button button--primary button--lg ${styles.btnPrimary}`}
@@ -193,7 +195,7 @@ function Hero() {
               Agent Skills
             </button>
           </div>
- 
+
           <ul ref={bulletsRef} className={styles.bullets}>
             <li>
               <MdCheck className={styles.check} />
@@ -209,12 +211,12 @@ function Hero() {
             </li>
           </ul>
         </div>
- 
+
         {/* ── RIGHT – particle video ───────────── */}
         <div ref={videoRef} className={styles.right}>
           <video
             className={styles.heroVideo}
-            src="/video/hero.mp4"
+            src={baseUrl("/video/hero.mp4")}
             autoPlay
             loop
             muted
@@ -235,6 +237,7 @@ function Hero() {
 /* ─── Frameworks Strip ──────────────────────────────────────────────────── */
 
 function FrameworksStrip() {
+  const baseUrl = useBaseUrl;
   const frameworksRef = useRef(null);
   const labelRef = useRef(null);
   const badgeRef = useRef(null);
@@ -243,32 +246,32 @@ function FrameworksStrip() {
   const frameworks = [
     {
       name: "Open AI Agents SDK",
-      logo: "/img/integrations/chatgpt.png",
+      logo: baseUrl("/img/integrations/chatgpt.png"),
       link: "/docs/frameworks/openai",
     },
     {
       name: "LangGraph",
-      logo: "/img/integrations/langgraph.png",
+      logo: baseUrl("/img/integrations/langgraph.png"),
       link: "/docs/frameworks/langgraph",
     },
     {
       name: "CrewAI",
-      logo: "/img/integrations/crewai.png",
+      logo: baseUrl("/img/integrations/crewai.png"),
       link: "/docs/frameworks/crewai",
     },
     {
       name: "Google ADK",
-      logo: "/img/integrations/googleADK.png",
+      logo: baseUrl("/img/integrations/googleADK.png"),
       link: "/docs/frameworks/google-adk",
     },
     {
       name: "Smolagents",
-      logo: "/img/integrations/smolagents.png",
+      logo: baseUrl("/img/integrations/smolagents.png"),
       link: "https://huggingface.co/docs/smolagents/index",
     },
     {
       name: "LiveKit",
-      logo: "/img/integrations/livekit.png",
+      logo: baseUrl("/img/integrations/livekit.png"),
       link: "https://docs.livekit.io/",
     },
   ];
@@ -340,6 +343,7 @@ function FrameworksStrip() {
 /* ─── Affiliations Strip ────────────────────────────────────────────────── */
 
 function AffiliationsStrip() {
+  const baseUrl = useBaseUrl;
   const sectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -404,7 +408,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src="/img/lf_membership.svg"
+              src={baseUrl("/img/lf_membership.svg")}
               alt="Linux Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -417,7 +421,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src="/img/aaif_membership.svg"
+              src={baseUrl("/img/aaif_membership.svg")}
               alt="Agentic AI Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -654,9 +658,8 @@ function AgentSkills() {
                 key={skill.name}
                 role="tab"
                 aria-selected={activeSkillIndex === idx}
-                className={`${styles.agentSkillsTopicButton} ${
-                  activeSkillIndex === idx ? styles.agentSkillsTopicActive : ""
-                }`}
+                className={`${styles.agentSkillsTopicButton} ${activeSkillIndex === idx ? styles.agentSkillsTopicActive : ""
+                  }`}
                 onClick={() => setActiveSkillIndex(idx)}
               >
                 {skill.name}
@@ -674,10 +677,10 @@ function AgentSkills() {
                   <span className={styles.agentSkillsDotGreen} />
                 </div>
                 <div className={styles.agentSkillsIdeActions}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" /><line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" /></svg>
                 </div>
               </div>
 
@@ -945,6 +948,7 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
+  const baseUrl = useBaseUrl;
   return (
     <section ref={sectionRef} className={styles.ctaSection}>
       <div className="container">
@@ -983,7 +987,7 @@ function Community({ sectionRef }: CommunityProps) {
 
           <div className={styles.ctaImageWrapper}>
             <img
-              src="/img/cta-bg.png"
+              src={baseUrl("/img/cta-bg.png")}
               alt="Agent Kernel"
               className={styles.ctaImage}
             />
@@ -1004,6 +1008,12 @@ interface Level {
   bullets: string[];
 }
 
+const LEVEL_PAGES: Record<string, string> = {
+  "01": "business-leader",
+  "02": "developer",
+  "03": "ai-engineer",
+};
+
 function Levels() {
   const sectionRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -1011,13 +1021,14 @@ function Levels() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const cardsWrapRef = useRef<HTMLDivElement>(null);
+  const baseUrl = useBaseUrl;
   const history = useHistory();
 
   const levels: Level[] = [
     {
       id: "01",
       title: "Business Leader",
-      image: "/img/business_leader.png",
+      image: baseUrl("/img/business_leader.png"),
       description:
         "Scaffold production-ready agents in minutes using the frameworks and languages you already know. Ship faster without learning an entirely new development stack.",
       bullets: [
@@ -1029,7 +1040,7 @@ function Levels() {
     {
       id: "02",
       title: "Developer",
-      image: "/img/developer.png",
+      image: baseUrl("/img/developer.png"),
       description:
         "Scaffold production-ready agents in minutes using the frameworks and languages you already know. Ship faster without learning an entirely new development stack.",
       bullets: [
@@ -1041,7 +1052,7 @@ function Levels() {
     {
       id: "03",
       title: "AI Engineer",
-      image: "/img/ai.png",
+      image: baseUrl("/img/ai.png"),
       description:
         "Scaffold production-ready agents in minutes using the frameworks and languages you already know. Ship faster without learning an entirely new development stack.",
       bullets: [
@@ -1053,13 +1064,9 @@ function Levels() {
   ];
 
   const handleLevelSelect = (levelId: string) => {
-    const levelPages: { [key: string]: string } = {
-      "01": "/business-leader",
-      "02": "/developer",
-      "03": "/ai-engineer",
-    };
-    if (levelPages[levelId]) {
-      history.push(levelPages[levelId]);
+    const path = LEVEL_PAGES[levelId];
+    if (path) {
+      history.push(path);
     }
   };
 
@@ -1256,7 +1263,7 @@ function Levels() {
             transformOrigin: "center center",
           }}
         >
-          <source src="/video/path-bg.mp4" type="video/mp4" />
+          <source src={baseUrl("/video/path-bg.mp4")} type="video/mp4" />
         </video>
 
         <div className={styles.levelsFrameContainer}>
@@ -1320,6 +1327,7 @@ function Levels() {
                       ))}
                     </ul>
                     <button
+                      type="button"
                       className={styles.levelWindowReadMore}
                       onClick={() => handleLevelSelect(level.id)}
                     >

@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 const FRAMEWORKS = [
@@ -157,6 +158,7 @@ const FlowHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function AgentKernelRuntimeFlowDiagram() {
+  const baseUrl = useBaseUrl;
   const panelRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [animate, setAnimate] = useState(false);

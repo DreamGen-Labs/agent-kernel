@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import 'highlight.js/styles/github-dark.css';
 import styles from './styles.module.css';
 
@@ -22,6 +23,9 @@ const QUICK_PROMPTS = [
 ];
 
 const FloatingChatbot: React.FC = () => {
+  const monoIconUrl = useBaseUrl('/img/branding/agent-kernel-icon-mono-white.svg');
+  const headerLogoUrl = useBaseUrl('/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg');
+  const welcomeLogoUrl = useBaseUrl('/img/branding/agent-kernel-icon-color.svg');
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -184,7 +188,7 @@ const FloatingChatbot: React.FC = () => {
                   <span className={styles.orbVignette} />
                 </div>
                 <img
-                  src="/img/branding/agent-kernel-icon-mono-white.svg"
+                  src={monoIconUrl}
                   alt=""
                   className={styles.buttonLogo}
                 />
@@ -201,7 +205,7 @@ const FloatingChatbot: React.FC = () => {
           <div className={styles.chatHeader}>
             <div className={styles.headerLeft}>
               <img
-                src="/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg"
+                src={headerLogoUrl}
                 alt="Agent Kernel"
                 className={styles.headerLogo}
               />
@@ -262,7 +266,7 @@ const FloatingChatbot: React.FC = () => {
                 </div>
                 <div className={styles.welcomeIcon}>
                   <img
-                    src="/img/branding/agent-kernel-icon-color.svg"
+                    src={welcomeLogoUrl}
                     alt="Agent Kernel"
                     className={styles.welcomeLogo}
                   />

@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import styles from "./features.module.css";
 import indexStyles from "./index.module.css";
@@ -124,7 +125,8 @@ type PlantParticlesBackgroundHandle = React.ElementRef<
 
 /* ─── Why Agent Kernel (hero) ───────────────────────────────────────────── */
 
-function WhyAgentKernel() {
+function Hero() {
+  const baseUrl = useBaseUrl;
   const labelRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -217,6 +219,7 @@ function FeaturesPageMap({
 }: {
   plantParticlesBackgroundRef: React.RefObject<PlantParticlesBackgroundHandle>;
 }) {
+  const baseUrl = useBaseUrl;
   const gradId = useId().replace(/:/g, "");
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -389,7 +392,7 @@ function FeaturesPageMap({
             className={`${styles.pageMapHub} ${visible ? styles.pageMapHubIn : ""}`}
           >
             <img
-              src="/img/branding/agent-kernel-icon-color.svg"
+              src={baseUrl("/img/branding/agent-kernel-icon-color.svg")}
               alt="Agent Kernel"
               className={styles.pageMapHubIcon}
             />
@@ -1088,6 +1091,7 @@ function CoreFeatures() {
 
 function FrameworkSupport() {
   const sectionRef = useRef<HTMLElement>(null);
+  const baseUrl = useBaseUrl;
 
   const integrations = [
     {
@@ -1098,7 +1102,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/openai",
       logo: (
         <img
-          src="/img/integrations/chatgpt.png"
+          src={baseUrl("/img/integrations/chatgpt.png")}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={145}
@@ -1114,7 +1118,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/langgraph",
       logo: (
         <img
-          src="/img/integrations/langgraph.png"
+          src={baseUrl("/img/integrations/langgraph.png")}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={150}
@@ -1130,7 +1134,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/google-adk",
       logo: (
         <img
-          src="/img/integrations/googleADK.png"
+          src={baseUrl("/img/integrations/googleADK.png")}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={150}
@@ -1146,7 +1150,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/crewai",
       logo: (
         <img
-          src="/img/integrations/crewai.png"
+          src={baseUrl("/img/integrations/crewai.png")}
           alt=""
           className={styles.frameworkLogoImg}
           width={168}
@@ -1163,7 +1167,7 @@ function FrameworkSupport() {
       external: true,
       logo: (
         <img
-          src="/img/integrations/smolagents.png"
+          src={baseUrl("/img/integrations/smolagents.png")}
           alt=""
           className={styles.frameworkLogoImg}
           width={150}
@@ -1180,7 +1184,7 @@ function FrameworkSupport() {
       external: true,
       logo: (
         <img
-          src="/img/integrations/livekit.png"
+          src={baseUrl("/img/integrations/livekit.png")}
           alt=""
           className={styles.frameworkLogoImg}
           width={38}
@@ -1198,7 +1202,7 @@ function FrameworkSupport() {
     badge: "Agent Kernel",
     logo: (
       <img
-        src="/img/branding/agent-kernel-icon-color.svg"
+        src={baseUrl("/img/branding/agent-kernel-icon-color.svg")}
         alt=""
         className={styles.frameworkLogoImg}
         width={100}
