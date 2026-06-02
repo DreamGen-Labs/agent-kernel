@@ -2019,7 +2019,7 @@ export default function Features() {
       <div style={{ height: '100vh' }} />
 
       <main style={{ position: 'relative', zIndex: 10, backgroundColor: '#010002' }}>
-        <WhyAgentKernel />
+        <Hero />
         <FeaturesPageMap
           plantParticlesBackgroundRef={plantParticlesBackgroundRef}
         />
