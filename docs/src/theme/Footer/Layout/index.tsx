@@ -1,8 +1,7 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import type {Props} from '@theme/Footer/Layout';
-import {FaDiscord, FaGithub, FaXTwitter, FaEnvelope} from 'react-icons/fa6';
-import {SiTerraform} from 'react-icons/si';
+import {FaDiscord, FaXTwitter, FaEnvelope} from 'react-icons/fa6';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 type SocialLink = {
@@ -52,7 +51,6 @@ const SOCIAL_LINKS: SocialLink[] = [
 export default function FooterLayout({
   style,
   links,
-  logo,
   copyright,
 }: Props): ReactNode {
   const baseUrl = useBaseUrl;
