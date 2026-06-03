@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
@@ -40,6 +40,13 @@ import { FaGithub } from "react-icons/fa";
 export default function AIEngineerPage() {
   const baseUrl = useBaseUrl;
   const contentRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<"building" | "running" | "kernel">("building");
+  const [displayedTab, setDisplayedTab] = useState<"building" | "running" | "kernel">("building");
+  const arrowRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const isAnimating = useRef(false);
+  
 
   const AI_ENGINEER_ARCH_LAYERS = [
     {
@@ -370,6 +377,69 @@ export default function AIEngineerPage() {
     },
   ];
 
+  const TABS = [
+    {
+      id: "building" as const,
+      title: "Building AI Agents",
+      body: "Designing a compliant multi-agent architecture carries multiple components.",
+      Icon: MdSmartToy,
+      Diagram: BuildingAgentsFlowDiagram,
+    },
+    {
+      id: "running" as const,
+      title: "Running AI Agents",
+      body: "Running a production-grade AI agent requires considering several design aspects and information flows.",
+      Icon: MdBolt,
+      Diagram: RunningAgentsFlowDiagram,
+    },
+    {
+      id: "kernel" as const,
+      title: "How Agent Kernel Sit In",
+      body: "Agent Kernel handles everything except the actual agent logic (number of agents, their capabilities and their prompts) while providing a deterministic test framework as well.",
+      Icon: MdAutoAwesome,
+      Diagram: AgentKernelSitsInFlowDiagram,
+    },
+  ] as const;
+
+  const moveArrowTo = useCallback((tabIndex: number, animate = true) => {
+    const tab = tabRefs.current[tabIndex];
+    const arrow = arrowRef.current;
+    const sectionEl = document.querySelector('[data-step="ai-06"]') as HTMLElement | null;
+    if (!tab || !arrow || !sectionEl) return;
+    const tabRect = tab.getBoundingClientRect();
+    const containerRect = sectionEl.getBoundingClientRect();
+    const targetX = tabRect.left - containerRect.left + tabRect.width / 2 - arrow.offsetWidth / 2;
+    if (animate) {
+      gsap.to(arrow, { x: targetX, duration: 0.45, ease: "power3.out" });
+    } else {
+      gsap.set(arrow, { x: targetX });
+    }
+  }, []);
+
+  const handleTabChange = useCallback((tabId: "building" | "running" | "kernel", tabIndex: number) => {
+    if (tabId === activeTab || isAnimating.current) return;
+    isAnimating.current = true;
+    setActiveTab(tabId);
+    moveArrowTo(tabIndex, true);
+    const panel = panelRef.current;
+    if (!panel) { setDisplayedTab(tabId); isAnimating.current = false; return; }
+    gsap.to(panel, {
+      opacity: 0, y: 12, duration: 0.2, ease: "power2.in",
+      onComplete: () => {
+        setDisplayedTab(tabId);
+        gsap.fromTo(panel, { opacity: 0, y: -12 }, {
+          opacity: 1, y: 0, duration: 0.35, ease: "power3.out",
+          onComplete: () => { isAnimating.current = false; },
+        });
+      },
+    });
+  }, [activeTab, moveArrowTo]);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => moveArrowTo(0, false));
+    return () => cancelAnimationFrame(raf);
+  }, [moveArrowTo]);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     if (!contentRef.current) return;
@@ -503,11 +573,8 @@ export default function AIEngineerPage() {
         });
 
       // ─── Step 06: Build subsections ───────────────────────────────────────
-      root
-        .querySelectorAll(`[data-step="ai-06"] .${styles.aiBuildSubsection}`)
-        .forEach((subsection, i) => {
-          fadeUp(subsection, { y: 28, duration: 0.9, delay: i * 0.1, start: "top 88%" });
-        });
+      const step06 = root.querySelector('[data-step="ai-06"]');
+      if (step06) fadeUp(step06, { y: 36, duration: 1 });
 
       // ─── Step 07: Architecture section ────────────────────────────────────
       const step07 = root.querySelector('[data-step="ai-07"]');
@@ -566,11 +633,11 @@ export default function AIEngineerPage() {
       title="Agent Kernel for AI Engineers"
       description="Learn how Agent Kernel provides production-ready infrastructure for AI engineers building sophisticated AI agent systems."
     >
-      <HeroAnimation
+      {/* <HeroAnimation
         badge="AI Engineers"
         title="Run Advanced Agent Systems on a Unified Runtime"
         subtitle="Bring your existing agentic code and operate it with production discipline. Agent Kernel unifies execution, memory, hooks, observability, integrations, and multi-cloud deployment so AI engineering teams can ship compliant, scalable systems faster."
-      />
+      /> */}
       <section ref={contentRef} className={styles.aiEngineerSection}>
         <StepTimeline levelId="03" contentRef={contentRef} />
         <div className="container">
@@ -581,9 +648,10 @@ export default function AIEngineerPage() {
           >
             <p className={styles.aiStepLabel}>Step 01 | Analogy</p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>Unify Your Existing Agents On A Compliant</span>
+              {/* <span>Unify Your Existing Agents On A Compliant</span>
                 {' '}
-                <span className={styles.aiTitleGray}>Enterprise Runtime</span>
+                <span>Enterprise Runtime</span> */}
+              Bring your already existing agentic AI code onto a unified Operating System and Deployment Infrastructure for your AI Agents while making it enterprise ready and compliant.
             </h2>
             <div className={styles.aiDescription}>
               <p className={styles.devIntro}>
@@ -653,9 +721,7 @@ export default function AIEngineerPage() {
           >
             <p className={styles.aiStepLabel}>Step 02 | Stand Out</p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>What Makes Agent Kernel</span>
-                {' '}
-                <span className={styles.aiTitleGray}>Stand Out</span>
+              <span>What Makes Agent Kernel Stand Out</span>
             </h2>
 
             <div className={styles.akComparePanel}>
@@ -798,10 +864,14 @@ export default function AIEngineerPage() {
               Step 03 | Features
             </p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>Focus on Agent Logic</span>
+              <span>All Enterprise Features Available</span>
                 {' '}<br/>
-              <span className={styles.aiTitleGray}>We Handle the Rest</span>
+              <span>Free And Open-Source</span>
             </h2>
+
+            <p className={styles.aiDescription}>
+              Focus on Agent Logic. We Handle the Rest.
+            </p>    
 
             <div className={styles.devFeatureGroups}>
               {DEV_FEATURE_GROUPS.map((group) => (
@@ -855,9 +925,7 @@ export default function AIEngineerPage() {
               Step 04 | Frameworks
             </p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>Use The Framework</span>
-                {' '}
-              <span className={styles.aiTitleGray}> You Prefer</span>
+              <span>Use The Framework You Prefer</span>
             </h2>
 
             <FrameworkSelector showTitle={false} showDescription={true} accentColor="#26A64D" />
@@ -870,41 +938,58 @@ export default function AIEngineerPage() {
           >
             <p className={styles.aiStepLabel}>Step 05 | Build Agents</p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>How Agent Kernel Helps You Build</span>
-                {' '}
-              <span className={styles.aiTitleGray}>Production-Ready Compliant AI Agents</span>
+              <span>How Agent Kernel Helps You Build Production-Ready Compliant AI Agents</span>
             </h2>
 
-            <article className={styles.aiBuildSubsection}>
-              <h3 className={styles.aiBuildSubTitle}>Building AI Agents</h3>
-              <p className={styles.aiBuildSubBody}>
-                Designing a compliant multi-agent architecture carries
-                multiple components.
-              </p>
-              <BuildingAgentsFlowDiagram />
-            </article>
+            {/* Tab Cards Row */}
+            <div className={styles.aiBuildTabsRow}>
+              {TABS.map((tab, i) => {
+                const TabIcon = tab.Icon;
+                return (
+                  <button
+                    key={tab.id}
+                    ref={(el) => { tabRefs.current[i] = el; }}
+                    className={`${styles.aiBuildTabCard} ${activeTab === tab.id ? styles.aiBuildTabCardActive : ""}`}
+                    onClick={() => handleTabChange(tab.id, i)}
+                    type="button"
+                  >
+                    <span className={styles.aiBuildTabIcon} aria-hidden="true">
+                      <TabIcon style={{ width: 18, height: 18 }} />
+                    </span>
+                    <h3 className={styles.aiBuildTabTitle}>{tab.title}</h3>
+                    <p className={styles.aiBuildTabBody}>{tab.body}</p>
+                  </button>
+                );
+              })}
+            </div>
 
-            <article className={styles.aiBuildSubsection}>
-              <h3 className={styles.aiBuildSubTitle}>Running AI Agents</h3>
-              <p className={styles.aiBuildSubBody}>
-                Running a production-grade AI agent requires considering
-                several design aspects and information flows.
-              </p>
-              <RunningAgentsFlowDiagram />
-            </article>
+            {/* Arrow indicator */}
+            <div className={styles.aiBuildArrowTrack}>
+              <div ref={arrowRef} className={styles.aiBuildArrow} aria-hidden="true">
+                <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                  <path d="M11 0L22 14H0L11 0Z" fill="#22c55e" />
+                </svg>
+              </div>
+            </div>
 
-            <article className={styles.aiBuildSubsection}>
-              <h3 className={styles.aiBuildSubTitle}>
-                How Agent Kernel Sit In
-              </h3>
-              <p className={styles.aiBuildSubBody}>
-                Agent Kernel handles everything except the actual agent
-                logic (number of agents, their capabilities and their
-                prompts) while providing a deterministic test framework as
-                well.
-              </p>
-              <AgentKernelSitsInFlowDiagram />
-            </article>
+            {/* Expanded Panel */}
+            {(() => {
+              const activeTabData = TABS.find((t) => t.id === displayedTab)!;
+              const { Diagram: ActiveDiagram, Icon: PanelIcon } = activeTabData;
+              return (
+                <div ref={panelRef} className={styles.aiBuildPanel}>
+                  <div className={styles.aiBuildPanelHeader}>
+                    <span className={styles.aiBuildTabIcon} aria-hidden="true">
+                      <PanelIcon style={{ width: 18, height: 18 }} />
+                    </span>
+                    <h3 className={styles.aiBuildPanelTitle}>{activeTabData.title}</h3>
+                  </div>
+                  <div className={styles.aiBuildPanelDiagramWrap}>
+                    <ActiveDiagram />
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Step 07 — How Agent Kernel Fits In */}
@@ -914,9 +999,7 @@ export default function AIEngineerPage() {
           >
             <p className={styles.aiStepLabel}>Step 06 | Complete Picture</p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>How Agent Kernel</span>
-                {' '}
-              <span className={styles.aiTitleGray}>Fits In</span>
+              <span>How Agent Kernel Fits In</span>
             </h2>
 
             <p className={styles.aiDescription}>
@@ -939,9 +1022,9 @@ export default function AIEngineerPage() {
           >
             <p className={styles.aiStepLabel}>Step 07 | Operating system depth</p>
             <h2 className={styles.aiTitle}>
-              <span className={styles.aiTitleWhite}>Why Agent Kernel is a Powerful</span>
+              <span>Why Agent Kernel is a Powerful</span>
                 {' '}<br/>
-              <span className={styles.aiTitleGray}>Operating System</span>
+              <span>Operating System</span>
             </h2>
 
             <div className={styles.devFeatureGroups}>
@@ -1072,8 +1155,7 @@ export default function AIEngineerPage() {
         </div>
       </section>
 
-      <section className={styles.exploreSection} aria-labelledby="explore-paths">
-        {/* Top border + gradient glow */}
+      {/* <section className={styles.exploreSection} aria-labelledby="explore-paths">
         <div className={styles.topGlow} />
 
         <div className="container exploreInner">
@@ -1126,9 +1208,10 @@ export default function AIEngineerPage() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className={styles.ctaSection}>
+        <div className={styles.topGlow} />
         <div className="container">
           <div className={styles.ctaContent}>
             <h2 className={styles.ctaTitle}>

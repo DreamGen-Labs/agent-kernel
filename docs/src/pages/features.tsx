@@ -196,7 +196,7 @@ function Hero() {
           <p ref={labelRef} className={styles.sectionLabel}>
             Why Agent Kernel
           </p>
-          <h2 ref={titleRef} className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>
+          <h2 ref={titleRef} className={styles.sectionTitle}>
             Everything You Need to Build, Run and Scale AI Agents
           </h2>
           <p ref={subtitleRef} className={styles.sectionSubtitle}>
@@ -566,7 +566,7 @@ function ProblemTable() {
     const topicButtons = Array.from(
       section.querySelectorAll(`.${styles.problemTopicBtn}`),
     );
-    const comparePanel = section.querySelector(`.${styles.problemComparePanel}`);
+    const comparePanel = section.querySelector(`.${styles.problemComparePanelOuter}`);
     const impactPanel = section.querySelector(`.${styles.problemImpactPanel}`);
 
     if (reducedMotion) {
@@ -647,115 +647,117 @@ function ProblemTable() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionLabel}>01 | The Problem</p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>The Problem Agent Kernel Solves</h2>
+          <h2 className={styles.sectionTitle}>The Problem Agent Kernel Solves</h2>
           <p className={styles.sectionSubtitle}>
             Building production AI agents today involves solving many hard
             problems that have nothing to do with the actual agent intelligence.
           </p>
         </div>
         <div className={styles.problemBlock}>
-          <ul
-            className={styles.problemTopicGrid}
-            role="tablist"
-            aria-label="Areas to compare"
-          >
-            {rows.map((row, i) => {
-              const ChipIcon = problemChipIcons[i];
-              return (
-                <li key={row.problem} className={styles.problemTopicCell}>
-                  <button
-                    type="button"
-                    role="tab"
-                    id={`feature-problem-tab-${i}`}
-                    aria-selected={active === i}
-                    aria-controls="feature-problem-panel"
-                    className={`${styles.problemTopicBtn} ${active === i ? styles.problemTopicBtnActive : ""}`}
-                    onClick={() => setActive(i)}
-                  >
-                    <span
-                      className={styles.problemTopicIconWrap}
-                      aria-hidden="true"
+          <div className={styles.problemComparePanelOuter}>
+            <ul
+              className={styles.problemTopicGrid}
+              role="tablist"
+              aria-label="Areas to compare"
+            >
+              {rows.map((row, i) => {
+                const ChipIcon = problemChipIcons[i];
+                return (
+                  <li key={row.problem} className={styles.problemTopicCell}>
+                    <button
+                      type="button"
+                      role="tab"
+                      id={`feature-problem-tab-${i}`}
+                      aria-selected={active === i}
+                      aria-controls="feature-problem-panel"
+                      className={`${styles.problemTopicBtn} ${active === i ? styles.problemTopicBtnActive : ""}`}
+                      onClick={() => setActive(i)}
                     >
-                      <ChipIcon className={styles.problemTopicIcon} />
-                    </span>
-                    <span className={styles.problemTopicLabel}>
-                      {row.problem}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          <div
-            id="feature-problem-panel"
-            role="tabpanel"
-            aria-labelledby={`feature-problem-tab-${active}`}
-            className={styles.problemComparePanel}
-          >
-            <div key={active} className={styles.problemComparePanelInner}>
-              <div className={styles.problemComparePanelHeader}>
-                <span
-                  className={styles.problemComparePanelIconWrap}
-                  aria-hidden="true"
-                >
-                  <ActiveIcon className={styles.problemComparePanelIcon} />
-                </span>
-                <div>
-                  <h3 className={styles.problemComparePanelTitle}>
-                    {activeRow.problem}
-                  </h3>
-                  <p className={styles.problemComparePanelMeta}>
-                    Without vs with Agent Kernel
-                  </p>
+                      <span
+                        className={styles.problemTopicIconWrap}
+                        aria-hidden="true"
+                      >
+                        <ChipIcon className={styles.problemTopicIcon} />
+                      </span>
+                      <span className={styles.problemTopicLabel}>
+                        {row.problem}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            <div
+              id="feature-problem-panel"
+              role="tabpanel"
+              aria-labelledby={`feature-problem-tab-${active}`}
+              className={styles.problemComparePanel}
+            >
+              <div key={active} className={styles.problemComparePanelInner}>
+                <div className={styles.problemComparePanelHeader}>
+                  <span
+                    className={styles.problemComparePanelIconWrap}
+                    aria-hidden="true"
+                  >
+                    <ActiveIcon className={styles.problemComparePanelIcon} />
+                  </span>
+                  <div>
+                    <h3 className={styles.problemComparePanelTitle}>
+                      {activeRow.problem}
+                    </h3>
+                    <p className={styles.problemComparePanelMeta}>
+                      Without vs with Agent Kernel
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.problemCompareGrid}>
-                <article
-                  className={`${styles.problemCompareSide} ${styles.problemCompareSideNeg}`}
-                >
-                  <p className={styles.problemCompareSideLabel}>
-                    Without Agent Kernel
-                  </p>
-                  <p className={styles.problemCompareSideSub}>
-                    What you take on today
-                  </p>
-                  <div
-                    className={`${styles.problemCompareBody} ${styles.problemCompareBodyNeg}`}
+                <div className={styles.problemCompareGrid}>
+                  <article
+                    className={`${styles.problemCompareSide} ${styles.problemCompareSideNeg}`}
                   >
-                    <span
-                      className={styles.problemCompareBodyIcon}
-                      aria-hidden="true"
-                    >
-                      <ActiveIcon />
-                    </span>
-                    <p className={styles.problemCompareBodyText}>
-                      {activeRow.without}
+                    <p className={styles.problemCompareSideLabel}>
+                      Without Agent Kernel
                     </p>
-                  </div>
-                </article>
-                <article
-                  className={`${styles.problemCompareSide} ${styles.problemCompareSidePos}`}
-                >
-                  <p className={styles.problemCompareSideLabel}>
-                    With Agent Kernel
-                  </p>
-                  <p className={styles.problemCompareSideSub}>
-                    What the platform covers
-                  </p>
-                  <div
-                    className={`${styles.problemCompareBody} ${styles.problemCompareBodyPos}`}
+                    <p className={styles.problemCompareSideSub}>
+                      What you take on today
+                    </p>
+                    <div
+                      className={`${styles.problemCompareBody} ${styles.problemCompareBodyNeg}`}
+                    >
+                      <span
+                        className={styles.problemCompareBodyIcon}
+                        aria-hidden="true"
+                      >
+                        <ActiveIcon />
+                      </span>
+                      <p className={styles.problemCompareBodyText}>
+                        {activeRow.without}
+                      </p>
+                    </div>
+                  </article>
+                  <article
+                    className={`${styles.problemCompareSide} ${styles.problemCompareSidePos}`}
                   >
-                    <span
-                      className={styles.problemCompareBodyIcon}
-                      aria-hidden="true"
-                    >
-                      <ActiveIcon />
-                    </span>
-                    <p className={styles.problemCompareBodyText}>
-                      {activeRow.with}
+                    <p className={styles.problemCompareSideLabel}>
+                      With Agent Kernel
                     </p>
-                  </div>
-                </article>
+                    <p className={styles.problemCompareSideSub}>
+                      What the platform covers
+                    </p>
+                    <div
+                      className={`${styles.problemCompareBody} ${styles.problemCompareBodyPos}`}
+                    >
+                      <span
+                        className={styles.problemCompareBodyIcon}
+                        aria-hidden="true"
+                      >
+                        <ActiveIcon />
+                      </span>
+                      <p className={styles.problemCompareBodyText}>
+                        {activeRow.with}
+                      </p>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
           </div>
@@ -1049,7 +1051,7 @@ function CoreFeatures() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionLabel}>02 | Core Capabilities</p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>Core Capabilities</h2>
+          <h2 className={styles.sectionTitle}>Core Capabilities</h2>
           <p className={styles.sectionSubtitle}>
             Everything you need to build, run, and scale production AI agents
             without building platform code.
@@ -1350,7 +1352,7 @@ function FrameworkSupport() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionLabel}>03 | Framework Support</p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>One Runtime, Any Framework</h2>
+          <h2 className={styles.sectionTitle}>One Runtime, Any Framework</h2>
           <p className={styles.sectionSubtitle}>
             Use the best framework for each job, and run them all together in a
             single deployment.
@@ -1567,7 +1569,7 @@ function TestingSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionLabel}>04 | Testing</p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>Testing Framework</h2>
+          <h2 className={styles.sectionTitle}>Testing Framework</h2>
           <p className={styles.sectionSubtitle}>
             Test your agents like any other code. CLI testing for development,
             automated suites for CI/CD, and three comparison modes for every use
@@ -1731,7 +1733,7 @@ function MessagingSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionLabel}>05 | Messaging</p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>Messaging Integrations</h2>
+          <h2 className={styles.sectionTitle}>Messaging Integrations</h2>
           <p className={styles.sectionSubtitle}>
             Your agents meet users on the channels they already use. Every
             integration routes through the same Agent Kernel runtime. Pick a
@@ -1883,7 +1885,7 @@ function ProtocolSupport() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionLabel}>06 | Protocol</p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionTitleWhite}`}>Protocol Support</h2>
+          <h2 className={styles.sectionTitle}>Protocol Support</h2>
           <p className={styles.sectionSubtitle}>
             Standard protocols for tool connectivity and multi-agent
             coordination. Wired into the runtime.

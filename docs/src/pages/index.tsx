@@ -83,11 +83,11 @@ function WhatsNewBanner() {
         </span>
         <span ref={textRef} className={styles.whatsNewText}>
           <strong>Knowledge Base Support</strong> — ChromaDB, Neo4j &amp;
-          Starburst Galaxy built-in, plus a <strong>custom adapter API</strong>{" "}
+          Starburst Galaxy built-in, plus a custom adapter API{" "}
           to plug in any backend.
         </span>
         <Link
-          to="/docs/next/architecture/memory-management"
+          to="/docs/next/architecture/knowledge-bases"
           className={styles.whatsNewLink}
           ref={linkRef}
         >
@@ -109,6 +109,16 @@ function Hero() {
   const bulletsRef = useRef(null);
   const videoRef = useRef(null);
   const scrollLabelRef = useRef(null);
+
+  const subtitleLines = [
+    "Agent Kernel is the open source platform for building and deploying enterprise AI agents seamlessly at scale.",
+    "Agent Kernel reduces months of engineering work to minutes.",
+    "Works with any major Agentic technology, runs on any cloud, interfaces with all mainstream communication channels seamlessly out of the box, no framework/platform lock-in, production ready from day one.",
+  ];
+
+  // Reading speed: ~200 words/minute → ~3ms per char is a safe hold duration floor
+  // Line 1: ~16 words → ~4.8s hold | Line 2: ~9 words → ~3s hold | Line 3: ~29 words → ~8.5s hold
+  const holdDurations = [4.8, 3.0, 8.5];
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -148,9 +158,64 @@ function Hero() {
       });
     }
 
+    // ── Cycling subtitle animation ───────────────────────────────
+    const subtitleEl = subtitleRef.current as HTMLElement | null;
+    let cycleTimeout: ReturnType<typeof setTimeout>;
+    let currentIndex = 0;
+    let cycleKilled = false;
+
+    const fadeDuration = 0.45; // seconds for fade in / fade out
+
+    const showLine = (index: number) => {
+      if (cycleKilled || !subtitleEl) return;
+
+      const text = subtitleLines[index];
+      const hold = holdDurations[index];
+
+      // Set new text while invisible
+      gsap.set(subtitleEl, { opacity: 0, y: 10 });
+      subtitleEl.textContent = text;
+
+      // Fade in + slide up
+      gsap.to(subtitleEl, {
+        opacity: 1,
+        y: 0,
+        duration: fadeDuration,
+        ease: "power2.out",
+        onComplete: () => {
+          if (cycleKilled) return;
+          // Hold for reading, then fade out and advance
+          cycleTimeout = setTimeout(() => {
+            if (cycleKilled) return;
+            gsap.to(subtitleEl, {
+              opacity: 0,
+              y: -8,
+              duration: fadeDuration,
+              ease: "power2.in",
+              onComplete: () => {
+                if (cycleKilled) return;
+                currentIndex = (index + 1) % subtitleLines.length;
+                showLine(currentIndex);
+              },
+            });
+          }, hold * 1000);
+        },
+      });
+    };
+
+    // Kick off the cycle once the entry animation has brought the subtitle into view.
+    // The entry tl finishes roughly 2.2s in; we wait a touch longer for comfort.
+    const startDelay = setTimeout(() => {
+      if (!cycleKilled) showLine(0);
+    }, 2400);
+
     return () => {
       tl.kill();
       if (pulse) pulse.kill();
+      cycleKilled = true;
+      clearTimeout(cycleTimeout);
+      clearTimeout(startDelay);
+      gsap.killTweensOf(subtitleEl);
     };
   }, []);
 
@@ -160,18 +225,17 @@ function Hero() {
         {/* ── LEFT ───────────────────────────────── */}
         <div ref={leftRef} className={styles.left}>
           <h1 ref={titleRef} className={styles.title}>
-            The Secure, Compliant
+            The Operating System
             <br />
-            Runtime for
+            for Scalable & Compliant
             <br />
             Enterprise AI{" "}
             <span className={styles.gradientWord}>Agents</span>
           </h1>
 
           <p ref={subtitleRef} className={styles.subtitle}>
-            Orchestrate agent workflows, automate compliance, and
-            <br className={styles.brDesktop} />
-            deploy anywhere with zero vendor lock-in.
+            Agent Kernel is the open source platform for building and deploying
+            enterprise AI agents seamlessly at scale.
           </p>
 
           <div ref={buttonsRef} className={styles.heroButtons}>
@@ -195,21 +259,6 @@ function Hero() {
               Agent Skills
             </button>
           </div>
-
-          <ul ref={bulletsRef} className={styles.bullets}>
-            <li>
-              <MdCheck className={styles.check} />
-              Install in minutes
-            </li>
-            <li>
-              <MdCheck className={styles.check} />
-              Zero vendor lock-in
-            </li>
-            <li>
-              <MdCheck className={styles.check} />
-              Enterprise-grade observability
-            </li>
-          </ul>
         </div>
 
         {/* ── RIGHT – particle video ───────────── */}
@@ -648,7 +697,7 @@ function AgentSkills() {
               Agent Skills
             </div>
             <h2 className={styles.sectionTitle}>
-              Your coding assistant, supercharged.
+              Your Coding Assistant, Supercharged.
             </h2>
           </div>
 
@@ -1005,7 +1054,6 @@ interface Level {
   title: string;
   image: string;
   description: string;
-  bullets: string[];
 }
 
 const LEVEL_PAGES: Record<string, string> = {
@@ -1016,13 +1064,12 @@ const LEVEL_PAGES: Record<string, string> = {
 
 function Levels() {
   const sectionRef = useRef<HTMLElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const cardsWrapRef = useRef<HTMLDivElement>(null);
   const baseUrl = useBaseUrl;
-  const history = useHistory();
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const levels: Level[] = [
     {
@@ -1030,204 +1077,84 @@ function Levels() {
       title: "Business Leader",
       image: baseUrl("/img/business_leader.png"),
       description:
-        "Scaffold production-ready agents in minutes using the frameworks and languages you already know. Ship faster without learning an entirely new development stack.",
-      bullets: [
-        "Zero-config CLI with guided project setup",
-        "Seamless integration with your existing CI pipelines",
-        "Built-in retry and fallback routing logic",
-      ],
+        "You run or work in a business/enterprise and want to incorporate AI agents that actually work into your business workflows without needing to understand the tech.",
     },
     {
       id: "02",
       title: "Developer",
       image: baseUrl("/img/developer.png"),
       description:
-        "Scaffold production-ready agents in minutes using the frameworks and languages you already know. Ship faster without learning an entirely new development stack.",
-      bullets: [
-        "Zero-config CLI with guided project setup",
-        "Seamless integration with your existing CI pipelines",
-        "Built-in retry and fallback routing logic",
-      ],
+        "You build software but haven't built AI agents yet. You want to ship something robust and real without learning a new stack from scratch.",
     },
     {
       id: "03",
       title: "AI Engineer",
       image: baseUrl("/img/ai.png"),
       description:
-        "Scaffold production-ready agents in minutes using the frameworks and languages you already know. Ship faster without learning an entirely new development stack.",
-      bullets: [
-        "Zero-config CLI with guided project setup",
-        "Seamless integration with your existing CI pipelines",
-        "Built-in retry and fallback routing logic",
-      ],
+        "You already work with LLMs and agentic frameworks. You need a production-grade AI agent execution framework that doesn't get in your way.",
     },
   ];
 
-  const handleLevelSelect = (levelId: string) => {
-    const path = LEVEL_PAGES[levelId];
-    if (path) {
-      history.push(path);
-    }
+  const levelPages: { [key: string]: string } = {
+    "01": "/business-leader",
+    "02": "/developer",
+    "03": "/ai-engineer",
   };
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 992px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
-    const cardEls = cardsWrapRef.current?.querySelectorAll<HTMLElement>(
-      `.${styles.levelWindowCard}`
-    );
+    const cards = cardsWrapRef.current?.children;
 
-    if (!section || !cardEls || cardEls.length === 0) return;
+    if (!section || !cards || cards.length === 0) return;
 
-    const isSmall = window.matchMedia("(max-width: 1024px)").matches;
-    const cardArray = Array.from(cardEls);
-    const total = cardArray.length;
-
-    // ── Mobile / tablet: simple fade-in per card ─────────────────────────────
-    if (isSmall) {
-      gsap.set(cardArray, { autoAlpha: 0, y: 30 });
-
-      const triggers = cardArray.map((card) =>
-        gsap.to(card, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        })
-      );
-
-      gsap.fromTo(
-        [badgeRef.current, titleRef.current, subtitleRef.current],
-        { autoAlpha: 0, y: 20 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      return () => {
-        triggers.forEach((t) => {
-          t.scrollTrigger?.kill();
-          t.kill();
-        });
-      };
-    }
-
-    // ── Desktop: card stack animation ────────────────────────────────────────
-
-    // Apply absolute positioning only on desktop
-    const cardArrayEl = cardsWrapRef.current;
-    if (cardArrayEl) {
-      cardArrayEl.style.position = "relative";
-    }
-    cardArray.forEach((card) => {
-      card.style.position = "absolute";
-      card.style.top = "0";
-      card.style.left = "0";
-      card.style.width = "100%";
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+        toggleActions: "play none none none",
+        once: true,
+      },
     });
 
-    const STACK_OFFSET_PX = 8;
-    const STACK_SCALE_OFFSET = 0.015;
-    const TRANSITION_SCROLL = window.innerHeight * 1.4;
-    const INITIAL_PAUSE = window.innerHeight * 0.5;
-    const totalScroll = INITIAL_PAUSE + (total - 1) * TRANSITION_SCROLL;
-
-    gsap.set(cardArray[0], { autoAlpha: 1, y: 0, scale: 1, zIndex: total });
-    cardArray.slice(1).forEach((card, i) => {
-      gsap.set(card, {
-        autoAlpha: 0,
-        y: window.innerHeight * 1.1,
-        scale: 1,
-        zIndex: total - (i + 1),
-      });
-    });
-
-    const headerAnim = gsap.fromTo(
+    tl.fromTo(
       [badgeRef.current, titleRef.current, subtitleRef.current],
       { opacity: 0, y: 20 },
       {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.6,
         stagger: 0.1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
       }
     );
 
-    const pin = ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: `+=${totalScroll}`,
-      pin: stickyRef.current,
-      pinSpacing: true,
-      anticipatePin: 1,
-      onUpdate: (self) => {
-        const pauseFraction = INITIAL_PAUSE / totalScroll;
-        if (self.progress < pauseFraction) return;
-
-        const t = (self.progress - pauseFraction) / (1 - pauseFraction);
-        const floatIdx = t * (total - 1);
-        const activeIdx = Math.min(Math.floor(floatIdx), total - 2);
-        const localT = floatIdx - activeIdx;
-
-        const incomingIdx = activeIdx + 1;
-        if (incomingIdx < total) {
-          gsap.set(cardArray[incomingIdx], {
-            autoAlpha: Math.min(1, localT * 2),
-            y: window.innerHeight * 1.1 * (1 - localT),
-            scale: 1,
-            zIndex: total + 1,
-          });
-        }
-
-        for (let i = 0; i <= activeIdx; i++) {
-          const depthBefore = activeIdx - i;
-          const depthAfter = depthBefore + 1;
-          const depth = depthBefore + localT * (depthAfter - depthBefore);
-
-          gsap.set(cardArray[i], {
-            y: depth * STACK_OFFSET_PX,
-            scale: 1 - depth * STACK_SCALE_OFFSET,
-            autoAlpha: 1,
-            zIndex: total - Math.round(depth),
-          });
-        }
+    tl.fromTo(
+      Array.from(cards),
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.12,
+        ease: "power3.out",
       },
-    });
+      "-=0.4"
+    );
 
     return () => {
-      pin.kill();
-      headerAnim.scrollTrigger?.kill();
-      headerAnim.kill();
-      // Clean up inline styles applied for desktop
-      cardArray.forEach((card) => {
-        card.style.position = "";
-        card.style.top = "";
-        card.style.left = "";
-        card.style.width = "";
-      });
-      if (cardArrayEl) {
-        cardArrayEl.style.position = "";
+      tl.kill();
+      if (tl.scrollTrigger) {
+        tl.scrollTrigger.kill();
       }
     };
   }, [levels]);
@@ -1238,11 +1165,7 @@ function Levels() {
       className={styles.levelsSection}
       style={{ position: "relative", isolation: "isolate", overflow: "hidden" }}
     >
-      <div
-        ref={stickyRef}
-        className={styles.levelsStickyInner}
-        style={{ position: "relative", zIndex: 1, overflow: "hidden" }}
-      >
+      {isDesktop && (
         <video
           autoPlay
           muted
@@ -1259,90 +1182,55 @@ function Levels() {
             zIndex: 0,
             opacity: 0.6,
             pointerEvents: "none",
-            transform: "scale(1.2)",
             transformOrigin: "center center",
           }}
         >
           <source src={baseUrl("/video/path-bg.mp4")} type="video/mp4" />
         </video>
+      )}
 
-        <div className={styles.levelsFrameContainer}>
-          <div className={styles.levelsHeader}>
-            <div ref={badgeRef} className={styles.levelsPathBadge}>
-              <span className={styles.levelsPathBadgePlus}>+</span> Built for Everyone
-            </div>
-            <h2 ref={titleRef} className={styles.levelsTitle}>
-              Choose Your Path to Production
-            </h2>
-            <p ref={subtitleRef} className={styles.levelsSubtitle}>
-              Select the role that fits you
-            </p>
+      <div className={styles.levelsFrameContainer}>
+        <div className={styles.levelsHeader}>
+          <div ref={badgeRef} className={styles.Badge}>
+            <span className={styles.badgeStar}>✦</span>
+            Just like any other operating system
           </div>
+          <h2 ref={titleRef} className={styles.levelsTitle}>
+            <span>Agent Kernel is designed</span>
+            {""}<br />
+            <span>to adapt to your level of expertise</span>
+          </h2>
+          <p ref={subtitleRef} className={styles.levelsSubtitle}>
+            Which path describes you the best
+          </p>
+        </div>
 
-          {/* No inline position styles here — desktop positioning is applied via JS only */}
-          <div ref={cardsWrapRef} className={styles.levelsWindowStack}>
-            {levels.map((level) => (
-              <div key={level.id} className={styles.levelWindowCard}>
-                <div className={styles.levelWindowChrome}>
-                  <div className={styles.levelWindowDots}>
-                    <span className={`${styles.levelWindowDot} ${styles.dotRed}`} />
-                    <span className={`${styles.levelWindowDot} ${styles.dotYellow}`} />
-                    <span className={`${styles.levelWindowDot} ${styles.dotGreen}`} />
-                  </div>
-                  <div className={styles.levelWindowActions}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <path d="M9 3v18" />
-                    </svg>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8" />
-                      <path d="m21 21-4.35-4.35" />
-                    </svg>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="15 3 21 3 21 9" />
-                      <polyline points="9 21 3 21 3 15" />
-                      <line x1="21" y1="3" x2="14" y2="10" />
-                      <line x1="3" y1="21" x2="10" y2="14" />
-                    </svg>
-                  </div>
-                </div>
-
-                <div className={styles.levelWindowBody}>
-                  <div className={styles.levelWindowImageArea}>
-                    <img
-                      src={level.image}
-                      alt={level.title}
-                      className={styles.levelWindowImage}
-                    />
-                  </div>
-                  <div className={styles.levelWindowContent}>
-                    <h3 className={styles.levelWindowTitle}>{level.title}</h3>
-                    <p className={styles.levelWindowDescription}>{level.description}</p>
-                    <ul className={styles.levelWindowBullets}>
-                      {level.bullets.map((bullet, i) => (
-                        <li key={i} className={styles.levelWindowBulletItem}>
-                          <span className={styles.levelWindowBulletCheck}>✓</span>
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      type="button"
-                      className={styles.levelWindowReadMore}
-                      onClick={() => handleLevelSelect(level.id)}
-                    >
-                      Read More
-                    </button>
-                  </div>
-                </div>
+        <div ref={cardsWrapRef} className={styles.levelsGrid}>
+          {levels.map((level) => (
+            <Link
+              key={level.id}
+              to={levelPages[level.id]}
+              className={styles.levelCard}
+            >
+              <div className={styles.levelCardImageArea}>
+                <img
+                  src={level.image}
+                  alt={level.title}
+                  className={styles.levelCardImage}
+                />
               </div>
-            ))}
-          </div>
+              <div className={styles.levelCardContent}>
+                <h3 className={styles.levelCardTitle}>{level.title}</h3>
+                <p className={styles.levelCardDescription}>{level.description}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
   );
 }
+
 /* ─── Page Export ───────────────────────────────────────────────────────── */
 
 export default function Home() {
@@ -1417,7 +1305,7 @@ export default function Home() {
       <Hero />
       <main>
         <FrameworksStrip />
-        <div ref={levelsRef}>
+        <div ref={levelsRef} id="levels">
           <Levels />
         </div>
         <AgentSkills />
