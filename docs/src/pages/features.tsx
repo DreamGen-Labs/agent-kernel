@@ -1959,6 +1959,7 @@ function CTASection({
 }: {
   sectionRef: React.RefObject<HTMLElement>;
 }) {
+  const baseUrl = useBaseUrl;
   return (
     <section
       ref={sectionRef}
@@ -2002,7 +2003,7 @@ function CTASection({
           </div>
 
           <div className={indexStyles.ctaImageWrapper}>
-            <img src="/img/cta-bg.png" alt="Agent Kernel" className={indexStyles.ctaImage} />
+            <img src={baseUrl("/img/cta-bg.png")} alt="Agent Kernel" className={indexStyles.ctaImage} />
           </div>
         </div>
       </div>

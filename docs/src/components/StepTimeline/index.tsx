@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './styles.module.css';
 import { useHistory } from '@docusaurus/router';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 interface StepDef {
   num: string;
@@ -42,6 +43,7 @@ interface StepTimelineProps {
 
 export function StepTimeline({ levelId, contentRef }: StepTimelineProps) {
   const history = useHistory();
+  const selectPathUrl = useBaseUrl('/#levels');
   const [activeStep, setActiveStep] = useState(0);
   const [visible, setVisible] = useState(false);
   const [connectorProgress, setConnectorProgress] = useState<number[]>([]);
@@ -174,7 +176,7 @@ export function StepTimeline({ levelId, contentRef }: StepTimelineProps) {
       <button
         className={styles.backBtn}
         onClick={() => {
-          history.push('/#levels');
+          history.push(selectPathUrl);
         }}
         aria-label="Back to path selection"
         title="Back to path selection"

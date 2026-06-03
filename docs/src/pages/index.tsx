@@ -296,16 +296,17 @@ function Hero() {
 
 function ScrollToLevelsOnHash() {
   const location = useLocation();
+  const homePath = useBaseUrl('/');
 
   useEffect(() => {
-    if (location.pathname !== '/' || location.hash !== '#levels') return;
+    if (location.pathname !== homePath || location.hash !== '#levels') return;
 
     const timer = window.setTimeout(() => {
       document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 0);
 
     return () => window.clearTimeout(timer);
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, homePath]);
 
   return null;
 }

@@ -3222,7 +3222,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
   transform-style: preserve-3d;
 }
 
@@ -3240,14 +3240,14 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.6s ease, box-shadow 0.6s ease;
 }
 
 .flipCardFront {
   background: rgba(14, 16, 23, 0.35);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   padding: 1.5rem;
 }
 
@@ -3257,7 +3257,7 @@
 
 .levelCardImageArea {
   width: 100%;
-  height: 200px;
+  height: 234px;
   background: #000000;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -3266,7 +3266,7 @@
   justify-content: center;
   overflow: hidden;
   position: relative;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.6s ease;
 }
 
 .flipCardWrapper:hover .levelCardImageArea {
@@ -3277,7 +3277,7 @@
   width: 170px;
   height: auto;
   object-fit: contain;
-  transition: transform 0.4s ease;
+  transition: transform 0.6s ease;
 }
 
 .flipCardWrapper:hover .levelCardImage {
