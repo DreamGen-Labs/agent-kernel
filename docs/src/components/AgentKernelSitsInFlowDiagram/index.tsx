@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,15 +15,6 @@ type FlowNode = {
   color?: string;
   showIcon?: boolean;
 };
-
-const AK_ICON = (
-  <img
-    src="/img/branding/agent-kernel-icon-color.svg"
-    alt=""
-    aria-hidden="true"
-    className={styles.akNodeIcon}
-  />
-);
 
 const FLOW_NODES: FlowNode[] = [
   { id: 'logic',     label: 'Actual Agent Logic',                kind: 'logic',     color: '#94a3b8' },
@@ -65,6 +57,7 @@ function pointsToPath(points: Point[]): string {
 
 function FlowNodeCard({ node }: { node: FlowNode }) {
   const kindClass = styles[`node_${node.kind}`];
+  const akNodeIconSrc = useBaseUrl('/img/branding/agent-kernel-icon-color.svg');
 
   return (
     <div
@@ -75,7 +68,12 @@ function FlowNodeCard({ node }: { node: FlowNode }) {
     >
       {node.showIcon && (
         <span className={styles.akNodeIconWrap} aria-hidden="true">
-          {AK_ICON}
+          <img
+            src={akNodeIconSrc}
+            alt=""
+            aria-hidden="true"
+            className={styles.akNodeIcon}
+          />
         </span>
       )}
       <span className={styles.flowNodeLabel}>{node.label}</span>
