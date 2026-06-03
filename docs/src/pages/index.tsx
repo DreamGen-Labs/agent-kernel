@@ -1070,6 +1070,7 @@ function Levels() {
   const cardsWrapRef = useRef<HTMLDivElement>(null);
   const baseUrl = useBaseUrl;
   const [isDesktop, setIsDesktop] = useState(false);
+  const desktopVideoSrc = baseUrl("/video/path-bg.mp4");
 
   const levels: Level[] = [
     {
@@ -1185,7 +1186,7 @@ function Levels() {
             transformOrigin: "center center",
           }}
         >
-          <source src={baseUrl("/video/path-bg.mp4")} type="video/mp4" />
+          <source src={desktopVideoSrc} type="video/mp4" />
         </video>
       )}
 
