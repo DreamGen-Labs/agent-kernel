@@ -682,12 +682,128 @@
   border-color: color-mix(in srgb, var(--card-accent) 50%, transparent);
 }
 
-@media (max-width: 768px) {
-  .exploreGrid {
-    grid-template-columns: 1fr;
-  }
+/* ─── Go Deeper Section ──────────────────────────────────────────────────── */
 
-  .exploreInner {
+.goDeeperSection {
+  padding: 6rem 0;
+  position: relative;
+  text-align: center;
+}
+
+.goDeeperInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.goDeeperBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  background: rgba(56, 189, 248, 0.06);
+  color: #38bdf8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 999px;
+  margin-bottom: 1.25rem;
+}
+
+.goDeeperTitle {
+  font-size: clamp(2rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.goDeeperSubtitle {
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  color: #94a3b8;
+  max-width: 640px;
+  margin: 0 auto 3.5rem auto;
+  line-height: 1.6;
+}
+
+.goDeeperGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  text-align: left;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.goDeeperCard {
+  --card-accent: #00c896;
+  /* default accent fallback */
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 3rem;
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(circle at bottom left, color-mix(in srgb, var(--card-accent) 26%, transparent) 0%, transparent 70%),
+    radial-gradient(circle at bottom right, color-mix(in srgb, var(--card-accent) 16%, transparent) 0%, transparent 60%),
+    radial-gradient(circle at top right, color-mix(in srgb, var(--card-accent) 6%, transparent) 0%, transparent 45%),
+    rgba(10, 8, 20, 0.6);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 20%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-decoration: none !important;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.goDeeperCard:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--card-accent) 50%, transparent);
+  box-shadow: 0 12px 35px color-mix(in srgb, var(--card-accent) 16%, transparent);
+  text-decoration: none !important;
+}
+
+.goDeeperCardTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+}
+
+.goDeeperCardBody {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 0 2.5rem 0;
+  flex-grow: 1;
+}
+
+.goDeeperCardCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #ffffff !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.goDeeperCard:hover .goDeeperCardCta {
+  background: #ffffff;
+  color: #000000 !important;
+  border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .goDeeperGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     padding: 0 1rem;
   }
 }
@@ -707,10 +823,88 @@
 
 .heroButtons {
   display: flex;
-  gap: 0.75rem;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.heroBtnPrimary {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none !important;
+  box-shadow:
+    0 0 15px rgba(255, 255, 255, 0.15),
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.heroBtnPrimary:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.heroBtnLink {
+  display: inline-flex;
+  align-items: center;
+  color: #cbd5e1 !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  padding: 0.85rem 1.25rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.heroBtnLink:hover {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transform: translateY(-1px);
+}
+
+.heroBullets {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
   flex-wrap: wrap;
+  list-style: none;
+  margin: 1.5rem 0 0 0;
+  padding: 0;
+}
+
+.heroBullets li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.heroCheck {
+  color: #F200FF;
+  font-size: 1.1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  display: block;
 }
 
 /* ── layout wrapper */
@@ -744,7 +938,7 @@
 
 .title {
   font-size: clamp(2.4rem, 4.2vw, 3.5rem);
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.03em;
   color: #ffffff;
@@ -897,7 +1091,8 @@
     display: none;
   }
 
-  .bullets {
+  .bullets,
+  .heroBullets {
     justify-content: center;
   }
 
@@ -964,7 +1159,8 @@
     display: none;
   }
 
-  .bullets {
+  .bullets,
+  .heroBullets {
     justify-content: center;
     gap: 1rem;
   }
@@ -2946,41 +3142,59 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  max-width: 950px;
+  max-width: 1140px;
   margin: 0 auto;
 }
 
-.levelCard {
-  background: rgba(14, 16, 23, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.flipCardWrapper {
+  perspective: 1000px;
+  height: 330px;
+  width: 100%;
+}
+
+.flipCardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flipCardWrapper:hover .flipCardInner {
+  transform: rotateY(180deg);
+}
+
+.flipCardFront,
+.flipCardBack {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   border-radius: 16px;
-  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flipCardFront {
+  background: rgba(14, 16, 23, 0.35);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  text-decoration: none !important;
-  color: inherit !important;
+  padding: 1.5rem;
 }
 
-.levelCard:hover {
-  transform: translateY(-4px);
-  background: radial-gradient(ellipse 150% 100% at 50% 120%,
-      rgba(30, 100, 255, 0.28) 0%,
-      rgba(0, 140, 255, 0.18) 30%,
-      rgba(0, 100, 220, 0.10) 55%,
-      transparent 75%);
+.flipCardWrapper:hover .flipCardFront {
   border-color: rgba(0, 221, 255, 0.35);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 221, 255, 0.08);
 }
 
 .levelCardImageArea {
   width: 100%;
-  height: 160px;
+  height: 200px;
   background: #000000;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2989,18 +3203,18 @@
   transition: border-color 0.3s ease;
 }
 
-.levelCard:hover .levelCardImageArea {
+.flipCardWrapper:hover .levelCardImageArea {
   border-color: rgba(0, 221, 255, 0.2);
 }
 
 .levelCardImage {
-  width: 150px;
+  width: 170px;
   height: auto;
   object-fit: contain;
   transition: transform 0.4s ease;
 }
 
-.levelCard:hover .levelCardImage {
+.flipCardWrapper:hover .levelCardImage {
   transform: scale(1.05);
 }
 
@@ -3013,18 +3227,64 @@
 }
 
 .levelCardTitle {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
   letter-spacing: -0.01em;
 }
 
-.levelCardDescription {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.6);
+.flipCardBack {
+  background: radial-gradient(ellipse at bottom, rgba(0, 221, 255, 0.12) 0%, rgba(14, 16, 23, 0.8) 100%), #06050a;
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.2rem 1.8rem;
+}
+
+.flipCardWrapper:hover .flipCardBack {
+  border-color: rgba(0, 221, 255, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 221, 255, 0.08);
+}
+
+.flipCardTitleBack {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.flipCardDescription {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.55;
-  margin: 0;
+  margin: 0 0 2rem 0;
+}
+
+.flipCardLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 2rem;
+  background: #ffffff;
+  border-radius: 999px;
+  color: #000000 !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.flipCardLinkBtn:hover {
+  background: #f3f4f6;
+  transform: scale(1.02);
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.85);
 }
 
 /* ─── Tablet ── */
@@ -3067,24 +3327,70 @@
     grid-template-columns: 1fr !important;
     max-width: 100%;
     margin: 0 auto;
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
-  .levelsGrid > *:last-child:nth-child(odd) {
+  .levelsGrid>*:last-child:nth-child(odd) {
     grid-column: auto;
     max-width: 100%;
     margin: 0;
     width: 100%;
   }
 
-  .levelCard {
+  .flipCardWrapper {
+    height: auto !important;
+    perspective: none !important;
+    background: rgba(14, 16, 23, 0.35);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    padding: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .flipCardInner {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    transform-style: flat !important;
+    transition: none !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 1rem;
-    padding: 1.25rem;
-    width: 100%;
-    box-sizing: border-box;
+    gap: 1.25rem !important;
+  }
+
+  .flipCardWrapper:hover .flipCardInner {
+    transform: none !important;
+  }
+
+  .flipCardFront,
+  .flipCardBack {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .flipCardFront {
+    gap: 1.25rem !important;
+  }
+
+  .flipCardBack {
+    gap: 1rem !important;
   }
 
   .levelCardImageArea {
@@ -3111,11 +3417,21 @@
     width: 100%;
   }
 
-  .levelCardDescription {
-    font-size: 0.88rem;
-    line-height: 1.55;
+  .flipCardTitleBack {
+    display: none !important;
+  }
+
+  .flipCardDescription {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
     text-align: center !important;
-    width: 100%;
+    width: 100% !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+  }
+
+  .flipCardLinkBtn {
+    margin-top: 0.5rem;
   }
 }
 
@@ -3152,28 +3468,72 @@
   }
 
   .levelsGrid {
-    grid-template-columns: 1fr; /* single column, cards stacked */
+    grid-template-columns: 1fr;
     gap: 1rem;
     max-width: 100%;
   }
 
-  /* reset tablet centering rule */
-  .levelsGrid > *:last-child:nth-child(odd) {
+  .levelsGrid>*:last-child:nth-child(odd) {
     grid-column: auto;
     max-width: 100%;
     margin: 0;
     width: 100%;
   }
 
-  .levelCard {
-    display: flex !important;
-    flex-direction: column !important; /* image on top, text below */
-    align-items: stretch !important;
-    gap: 0.875rem;
-    padding: 1rem;
+  .flipCardWrapper {
+    height: auto !important;
+    perspective: none !important;
+    background: rgba(14, 16, 23, 0.35);
     border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    padding: 1.25rem;
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .flipCardInner {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    transform-style: flat !important;
+    transition: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  .flipCardWrapper:hover .flipCardInner {
+    transform: none !important;
+  }
+
+  .flipCardFront,
+  .flipCardBack {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .flipCardFront {
+    gap: 1rem !important;
+  }
+
+  .flipCardBack {
+    gap: 1rem !important;
   }
 
   .levelCardImageArea {
@@ -3196,15 +3556,27 @@
   }
 
   .levelCardTitle {
-    font-size: 1rem;
+    font-size: 1.1rem;
     text-align: center !important;
     width: 100%;
-    margin-top: 1.5rem;
+    margin: 0;
   }
 
-  .levelCardDescription {
-    font-size: 0.82rem;
-    line-height: 1.5;
+  .flipCardTitleBack {
+    display: none !important;
+  }
+
+  .flipCardDescription {
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+  }
+
+  .flipCardLinkBtn {
+    margin-top: 0.5rem;
   }
 }
 
@@ -4319,7 +4691,8 @@
   }
 
   .aiBuildArrowTrack {
-    display: none; /* Arrow only makes sense in 3-column layout */
+    display: none;
+    /* Arrow only makes sense in 3-column layout */
   }
 }
 
@@ -4342,7 +4715,7 @@
   }
 }
 
-.devArchitectureSection + .devFeatureSection {
+.devArchitectureSection+.devFeatureSection {
   margin-top: 5rem;
 }
 
@@ -5390,7 +5763,7 @@
 }
 
 .blPageSection {
-  background: radial-gradient(ellipse 55% 50% at 50% 50%, #1a0020 0%, #010002 65%);
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, #23002b 0%, #010002 70%);
   background-size: 250% 250%;
   animation: gradientShift 16s ease-in-out infinite;
 }
@@ -5419,7 +5792,7 @@
 }
 
 .devPageSection {
-  background: radial-gradient(ellipse 55% 50% at 50% 50%, #1a0f02 0%, #010002 65%);
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, #291503 0%, #010002 70%);
   background-size: 250% 250%;
   animation: gradientShiftDev 16s ease-in-out infinite;
 }
@@ -5448,7 +5821,21 @@
 }
 
 .aiEngineerSection {
-  background: radial-gradient(ellipse 55% 50% at 50% 50%, #0d2018 0%, #010002 65%);
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, #0f261b 0%, #010002 70%);
   background-size: 250% 250%;
   animation: gradientShiftAI 16s ease-in-out infinite;
+}
+
+/* ─── Features Page Gradient ─────────────────────────────────────────────── */
+.featuresPageSection {
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, #0d3d4d81 0%, #010002 70%);
+  background-size: 250% 250%;
+  animation: gradientShiftDev 16s ease-in-out infinite;
+}
+
+/* ─── Use Cases Page Gradient ────────────────────────────────────────────── */
+.useCasesPageSection {
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, #160a2c 0%, #010002 70%);
+  background-size: 250% 250%;
+  animation: gradientShiftDev 16s ease-in-out infinite;
 }

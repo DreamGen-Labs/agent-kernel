@@ -239,6 +239,17 @@ function Hero() {
           </p>
 
           <div ref={buttonsRef} className={styles.heroButtons}>
+            <button
+              type="button"
+              className={`button button--secondary button--sm ${styles.heroBtnPrimary}`}
+              onClick={() =>
+                document
+                  .getElementById("agent-skills")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              Download Agent Skills
+            </button>
             <Link
               className={`button button--primary button--lg ${styles.btnPrimary}`}
               to="/docs"
@@ -246,19 +257,19 @@ function Hero() {
               <span className={styles.btnIcon}>→</span>
               Get Started
             </Link>
-            <button
-              type="button"
-              className={`button button--secondary button--lg ${styles.btnSecondary}`}
-              onClick={() =>
-                document
-                  .getElementById("agent-skills")
-                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
-              }
-            >
-              <span className={styles.btnIconSecondary}>→</span>
-              Agent Skills
-            </button>
           </div>
+
+          <ul ref={bulletsRef} className={styles.heroBullets}>
+            <li>
+              <span className={styles.heroCheck}>✓</span> Install in minutes
+            </li>
+            <li>
+              <span className={styles.heroCheck}>✓</span> Zero vendor lock-in
+            </li>
+            <li>
+              <span className={styles.heroCheck}>✓</span> Enterprise-grade observability
+            </li>
+          </ul>
         </div>
 
         {/* ── RIGHT – particle video ───────────── */}
@@ -1224,23 +1235,32 @@ function Levels() {
 
         <div ref={cardsWrapRef} className={styles.levelsGrid}>
           {levels.map((level) => (
-            <Link
-              key={level.id}
-              to={levelPages[level.id]}
-              className={styles.levelCard}
-            >
-              <div className={styles.levelCardImageArea}>
-                <img
-                  src={level.image}
-                  alt={level.title}
-                  className={styles.levelCardImage}
-                />
+            <div key={level.id} className={styles.flipCardWrapper}>
+              <div className={styles.flipCardInner}>
+                {/* Front Face */}
+                <div className={styles.flipCardFront}>
+                  <div className={styles.levelCardImageArea}>
+                    <img
+                      src={level.image}
+                      alt={level.title}
+                      className={styles.levelCardImage}
+                    />
+                  </div>
+                  <div className={styles.levelCardContent}>
+                    <h3 className={styles.levelCardTitle}>{level.title}</h3>
+                  </div>
+                </div>
+
+                {/* Back Face */}
+                <div className={styles.flipCardBack}>
+                  <h3 className={styles.flipCardTitleBack}>{level.title}</h3>
+                  <p className={styles.flipCardDescription}>{level.description}</p>
+                  <Link className={styles.flipCardLinkBtn} to={levelPages[level.id]}>
+                    Read More
+                  </Link>
+                </div>
               </div>
-              <div className={styles.levelCardContent}>
-                <h3 className={styles.levelCardTitle}>{level.title}</h3>
-                <p className={styles.levelCardDescription}>{level.description}</p>
-              </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
