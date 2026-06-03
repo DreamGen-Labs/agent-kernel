@@ -25,7 +25,7 @@ import {
   FaMicrosoft,
 } from "react-icons/fa";
 import { SiTerraform, SiGmail, SiGooglecloud } from "react-icons/si";
-import { useHistory } from "@docusaurus/router";
+import { useHistory, useLocation } from "@docusaurus/router";
 
 /* ─── What's New Banner ─────────────────────────────────────────────────── */
 
@@ -281,6 +281,22 @@ function Hero() {
       </div>
     </section>
   );
+}
+
+function ScrollToLevelsOnHash() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== '/' || location.hash !== '#levels') return;
+
+    const timer = window.setTimeout(() => {
+      document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [location.pathname, location.hash]);
+
+  return null;
 }
 
 /* ─── Frameworks Strip ──────────────────────────────────────────────────── */
@@ -1302,6 +1318,7 @@ export default function Home() {
       description="Agent Kernel is an open-source, framework-agnostic, multi-cloud runtime for production AI agents. Build, test, and deploy with OpenAI, LangGraph, CrewAI, or Google ADK to AWS or Azure — in days, not months."
     >
       {/* <PlantParticlesBackground ref={backgroundRef} /> */}
+      <ScrollToLevelsOnHash />
       <WhatsNewBanner />
       <Hero />
       <main>

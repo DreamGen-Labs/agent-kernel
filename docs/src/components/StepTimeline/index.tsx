@@ -174,10 +174,7 @@ export function StepTimeline({ levelId, contentRef }: StepTimelineProps) {
       <button
         className={styles.backBtn}
         onClick={() => {
-          history.push('/');
-          setTimeout(() => {
-            document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' });
-          }, 100);
+          history.push('/#levels');
         }}
         aria-label="Back to path selection"
         title="Back to path selection"
