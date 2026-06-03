@@ -125,7 +125,7 @@ type PlantParticlesBackgroundHandle = React.ElementRef<
 
 /* ─── Why Agent Kernel (hero) ───────────────────────────────────────────── */
 
-function Hero() {
+function WhyAgentKernel() {
   const baseUrl = useBaseUrl;
   const labelRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -187,7 +187,7 @@ function Hero() {
   }, []);
 
   return (
-    <section className={styles.whyHero}>      
+    <section className={styles.whyHero}>
       <div className="container">
         <div className={styles.whyHeroBlock}>
           <p ref={labelRef} className={styles.sectionLabel}>
@@ -1926,8 +1926,8 @@ function CTASection({
     >
       {/* Top border + gradient glow */}
       <div className={styles.topGlow} />
-       
-      <div className="container"> 
+
+      <div className="container">
         <div className={indexStyles.ctaContent}>
           <h2 className={indexStyles.ctaTitle}>
             Ready to Ship Your
