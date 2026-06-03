@@ -559,7 +559,9 @@ function ProblemTable() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const header = section.querySelector(`.${styles.sectionHeader}`);
+    const allHeaders = section.querySelectorAll(`.${styles.sectionHeader}`);
+    const header1 = allHeaders[0];
+    const header2 = allHeaders[1];
     const topicButtons = Array.from(
       section.querySelectorAll(`.${styles.problemTopicBtn}`),
     );
@@ -567,14 +569,14 @@ function ProblemTable() {
     const impactPanel = section.querySelector(`.${styles.problemImpactPanel}`);
 
     if (reducedMotion) {
-      gsap.set([header, ...topicButtons, comparePanel, impactPanel], {
+      gsap.set([header1, header2, ...topicButtons, comparePanel, impactPanel], {
         opacity: 1,
         y: 0,
       });
       return;
     }
 
-    gsap.set([header, comparePanel, impactPanel], {
+    gsap.set([header1, comparePanel], {
       opacity: 0,
       y: 24,
     });
@@ -582,16 +584,20 @@ function ProblemTable() {
       opacity: 0,
       y: 16,
     });
+    gsap.set([header2, impactPanel], {
+      opacity: 0,
+      y: 24,
+    });
 
-    const tl = gsap.timeline({
+    const tl1 = gsap.timeline({
       scrollTrigger: {
-        trigger: section,
-        start: "top 88%",
+        trigger: header1,
+        start: "top 95%",
         toggleActions: "play none none reverse",
       },
     });
 
-    tl.to(header, {
+    tl1.to(header1, {
       opacity: 1,
       y: 0,
       duration: 0.6,
@@ -617,7 +623,22 @@ function ProblemTable() {
           ease: "power2.out",
         },
         "-=0.15",
-      )
+      );
+
+    const tl2 = gsap.timeline({
+      scrollTrigger: {
+        trigger: header2,
+        start: "top 95%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl2.to(header2, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+    })
       .to(
         impactPanel,
         {
@@ -630,9 +651,18 @@ function ProblemTable() {
       );
 
     return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
+      tl1.scrollTrigger?.kill();
+      tl1.kill();
+      tl2.scrollTrigger?.kill();
+      tl2.kill();
     };
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 250);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -758,25 +788,15 @@ function ProblemTable() {
               </div>
             </div>
           </div>
+          <div className={styles.sectionHeader} style={{ marginTop: "5rem" }}>
+            <h2 className={styles.sectionTitle}>Timeline & Development Impact</h2>
+            <p className={styles.sectionSubtitle}>The effect on your timeline when Agent Kernel owns the platform work.</p>
+          </div>
           <aside
             className={styles.problemImpactPanel}
+            style={{ marginTop: "-2rem" }}
             aria-label={`${impactRow.problem}: ${impactRow.without} versus ${impactRow.with}`}
           >
-            <div className={styles.problemImpactHeader}>
-              <span className={styles.problemImpactIconWrap} aria-hidden="true">
-                <MdTimer className={styles.problemImpactIcon} />
-              </span>
-              <div className={styles.problemImpactHeading}>
-                <p className={styles.problemImpactEyebrow}>Bottom line</p>
-                <h3 className={styles.problemImpactTitle}>
-                  {impactRow.problem}
-                </h3>
-                <p className={styles.problemImpactSub}>
-                  The effect on your timeline when Agent Kernel owns the
-                  platform work.
-                </p>
-              </div>
-            </div>
             <div className={styles.problemImpactGrid}>
               <article
                 className={`${styles.problemCompareSide} ${styles.problemCompareSideNeg}`}
@@ -1288,8 +1308,8 @@ function FrameworkSupport() {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: section,
-        start: "top 88%",
+        trigger: header,
+        start: "top 95%",
         toggleActions: "play none none reverse",
       },
     });
@@ -1494,8 +1514,8 @@ function TestingSection() {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: section,
-        start: "top 70%",
+        trigger: header,
+        start: "top 95%",
         toggleActions: "play none none reverse",
       },
     });
@@ -1677,10 +1697,16 @@ const MESSAGING_PLATFORMS = [
 /* ─── Messaging Section ─────────────────────────────────────────────────── */
 
 function MessagingSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const reducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const ctx = gsap.context(() => {
+      const header = sectionRef.current?.querySelector(`.${styles.sectionHeader}`);
       const strip = sceneRef.current?.querySelector(
         `.${styles.msgRuntimeStrip}`,
       );
@@ -1689,25 +1715,39 @@ function MessagingSection() {
       );
       if (!cards?.length) return;
 
+      if (reducedMotion) {
+        if (header) gsap.set(header, { opacity: 1, y: 0 });
+        if (strip) gsap.set(strip, { opacity: 1, y: 0 });
+        gsap.set(cards, { opacity: 1, y: 0 });
+        return;
+      }
+
+      if (header) gsap.set(header, { opacity: 0, y: 24 });
+      if (strip) gsap.set(strip, { opacity: 0, y: 22 });
+      gsap.set(cards, { opacity: 0, y: 18 });
+
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sceneRef.current,
-          start: "top 88%",
+          trigger: header || sceneRef.current,
+          start: "top 95%",
           toggleActions: "play none none reverse",
         },
       });
 
+      if (header) {
+        tl.to(header, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
+      }
+
       if (strip) {
-        tl.fromTo(
+        tl.to(
           strip,
-          { opacity: 0, y: 22 },
           { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
+          header ? "-=0.25" : "0",
         );
       }
 
-      tl.fromTo(
+      tl.to(
         cards,
-        { opacity: 0, y: 18 },
         {
           opacity: 1,
           y: 0,
@@ -1715,9 +1755,9 @@ function MessagingSection() {
           stagger: 0.055,
           ease: "power2.out",
         },
-        strip ? "-=0.28" : "0",
+        strip ? "-=0.28" : (header ? "-=0.2" : "0"),
       );
-    }, sceneRef);
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
@@ -1726,6 +1766,7 @@ function MessagingSection() {
     <section
       id={FEATURE_ANCHORS.messaging}
       className={`${styles.section} ${styles.pageAnchor} ${styles.messagingSection}`}
+      ref={sectionRef}
     >
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -1849,8 +1890,8 @@ function ProtocolSupport() {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: section,
-        start: 'top 88%',
+        trigger: header,
+        start: 'top 95%',
         toggleActions: 'play none none reverse',
       },
     });

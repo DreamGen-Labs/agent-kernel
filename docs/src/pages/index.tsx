@@ -1105,7 +1105,7 @@ function Levels() {
       title: "Business Leader",
       image: baseUrl("/img/business_leader.png"),
       description:
-        "You run or work in a business/enterprise and want to incorporate AI agents that actually work into your business workflows without needing to understand the tech.",
+        "You run or work in a business/enterprise and want to incorporate AI agents that actually work into your business workflows without needing to understand.",
     },
     {
       id: "02",
