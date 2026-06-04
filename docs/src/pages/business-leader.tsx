@@ -4,10 +4,12 @@ import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import { useHistory } from "@docusaurus/router";
 import {
   MdRocketLaunch,
   MdMessage,
   MdCloud,
+  MdCheck,
 } from "react-icons/md";
 import styles from "./index.module.css";
 import AgentExecutionFlowDiagram from "../components/AgentExecutionFlowDiagram";
@@ -15,11 +17,11 @@ import AgentKernelArchDiagram from "../components/AgentKernelArchDiagram";
 import BusinessLeaderScenarios from "../components/BusinessLeaderScenarios";
 import { StepTimeline } from "../components/StepTimeline";
 import HeroAnimation from "../components/HeroAnimation";
-import heroStyles from "../components/HeroAnimation/styles.module.css";
 import { FaGithub } from "react-icons/fa";
 
 export default function BusinessLeaderPage() {
   const baseUrl = useBaseUrl;
+  const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -264,7 +266,7 @@ export default function BusinessLeaderPage() {
               <div className={styles.contentStep}>
                 <p className={styles.stepLabel}>Step 01 / Identify the gap</p>
                 <h1 className={styles.contentTitle}>
-                  Where is the gap in your business?
+                  Where Is The Gap In Your Business?
                 </h1>
                 <p className={styles.contentDescription}>
                   Most businesses have processes that still depend too much on
@@ -275,35 +277,53 @@ export default function BusinessLeaderPage() {
 
               <div className={styles.contentGrid}>
                 <div className={styles.contentCard}>
-                  <h3 className={styles.contentCardLabel}>SaaS / Product</h3>
+                  <h3 className={styles.contentCardLabel}>SaaS | Product</h3>
                   <p className={styles.contentCardTitle}>
                     Do you have an existing product?
                   </p>
                   <ul className={styles.bulletList}>
-                    <li>Users still do too much manually inside your app</li>
                     <li>
-                      Support tickets pile up for questions your product could
-                      answer
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>Users still do too much manually inside your app</span>
                     </li>
                     <li>
-                      Repetitive workflows require human involvement every time
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>
+                        Support tickets pile up for questions your product could
+                        answer
+                      </span>
+                    </li>
+                    <li>
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>
+                        Repetitive workflows require human involvement every time
+                      </span>
                     </li>
                   </ul>
                 </div>
                 <div className={styles.contentCard}>
                   <h3 className={styles.contentCardLabel}>
-                    Enterprise / Large Org
+                    Enterprise | Large Org
                   </h3>
                   <p className={styles.contentCardTitle}>
                     Do you run complex operations?
                   </p>
                   <ul className={styles.bulletList}>
                     <li>
-                      Thousands of customer queries handled by an overstretched
-                      team
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>
+                        Thousands of customer queries handled by an overstretched
+                        team
+                      </span>
                     </li>
-                    <li>Knowledge locked across systems and documents</li>
-                    <li>Cross-team hand-offs are slow and error-prone</li>
+                    <li>
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>Knowledge locked across systems and documents</span>
+                    </li>
+                    <li>
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>Cross-team hand-offs are slow and error-prone</span>
+                    </li>
                   </ul>
                 </div>
                 <div className={styles.contentCard}>
@@ -311,21 +331,35 @@ export default function BusinessLeaderPage() {
                     Building Something New
                   </h3>
                   <p className={styles.contentCardTitle}>
-                    Do you have a product idea?
+                    <span>Do you have a</span>
+                    {' '}<br />
+                    <span>product idea?</span>
                   </p>
                   <ul className={styles.bulletList}>
                     <li>
-                      You see an opportunity for an AI-powered service in your
-                      industry
-                    </li>
-                    <li>You're not sure which AI technology to commit to</li>
-                    <li>
-                      Building from scratch feels like months before anything
-                      reaches users
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>
+                        You see an opportunity for an AI-powered service in your
+                        industry
+                      </span>
                     </li>
                     <li>
-                      You want to build a prototype / proof-of-concept quickly
-                      without having to invest too much on it
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>You're not sure which AI technology to commit to</span>
+                    </li>
+                    <li>
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>
+                        Building from scratch feels like months before anything
+                        reaches users
+                      </span>
+                    </li>
+                    <li>
+                      <MdCheck className={styles.bulletCheck} />
+                      <span>
+                        You want to build a prototype / proof-of-concept quickly
+                        without having to invest too much on it
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -336,9 +370,9 @@ export default function BusinessLeaderPage() {
             <div style={{ marginTop: "2rem" }} data-step="bl-02">
               <p className={styles.stepLabel}>Step 02 / Meet the solution</p>
               <h2 className={styles.contentTitle}>
-                <span>An AI agent doesn't just answer,</span>
-                  {' '}<br/>
-                <span>it gets things done.</span>
+                <span>An AI Agent Doesn't Just Answer,</span>
+                {' '}<br />
+                <span>It Gets Things Done.</span>
               </h2>
 
               <AgentExecutionFlowDiagram />
@@ -348,9 +382,9 @@ export default function BusinessLeaderPage() {
             <div style={{ marginTop: "2rem" }} data-step="bl-03">
               <p className={styles.stepLabel}>Step 03 / Agent Kernel</p>
               <h2 className={styles.contentTitle}>
-                <span>Agent Kernel is the engine that powers it at scale to run</span>
-                  {' '}
-                <span>compliant AI agents</span>
+                <span>Agent Kernel Is The Engine That Powers It At Scale To Run</span>
+                {' '}
+                <span>Compliant AI Agents</span>
               </h2>
 
               {/* OS analogy highlight card */}
@@ -375,7 +409,7 @@ export default function BusinessLeaderPage() {
               {/* 3 value props */}
               <div className={styles.blValueGrid}>
                 <div className={styles.blValueCard}>
-                  <div className={styles.blValueIcon}>
+                  <div className={styles.blValueIcon} aria-hidden="true">
                     <MdRocketLaunch />
                   </div>
                   <h4 className={styles.blValueTitle}>Days, not months</h4>
@@ -385,7 +419,7 @@ export default function BusinessLeaderPage() {
                   </p>
                 </div>
                 <div className={styles.blValueCard}>
-                  <div className={styles.blValueIcon}>
+                  <div className={styles.blValueIcon} aria-hidden="true">
                     <MdMessage />
                   </div>
                   <h4 className={styles.blValueTitle}>Works where you are</h4>
@@ -396,7 +430,7 @@ export default function BusinessLeaderPage() {
                   </p>
                 </div>
                 <div className={styles.blValueCard}>
-                  <div className={styles.blValueIcon}>
+                  <div className={styles.blValueIcon} aria-hidden="true">
                     <MdCloud />
                   </div>
                   <h4 className={styles.blValueTitle}>Runs on any cloud</h4>
@@ -413,7 +447,7 @@ export default function BusinessLeaderPage() {
             <div style={{ marginTop: "2rem" }} data-step="bl-04">
               <p className={styles.stepLabel}>Step 04 / See it in action</p>
               <h2 className={styles.contentTitle}>
-                <span>See your Agent Kernel in action</span>
+                <span>See Your Agent Kernel In Action</span>
               </h2>
               <p className={styles.contentDescription}>
                 Curious what your agent can actually do? Here are some real
@@ -427,7 +461,7 @@ export default function BusinessLeaderPage() {
             <div style={{ marginTop: "3rem" }} data-step="bl-05">
               <p className={styles.stepLabel}>Step 05 / How it works</p>
               <h2 className={styles.contentTitle}>
-                <span>Agent Kernel is the engine that powers it all</span>
+                <span>Agent Kernel Is The Engine That Powers It All</span>
               </h2>
               <p className={styles.contentDescription}>
                 You write your AI agent's logic. Agent Kernel handles everything
@@ -438,65 +472,85 @@ export default function BusinessLeaderPage() {
               </p>
 
               <div className={styles.devArchitectureWrapper}>
-                <AgentKernelArchDiagram accentColor="#8E5DFF" />
+                <AgentKernelArchDiagram accentColor="#D946EF" />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section className={styles.goDeeperSection}>
-        <div className={styles.topGlow} />
+            <section className={styles.goDeeperSection}>
+              <div className={styles.topGlow} />
 
-        <div className="container">
-          <div className={styles.goDeeperInner}>
-            <div className={styles.Badge}>
-              <span className={styles.badgeStar}>✦</span>
-              Continue Exploring
-            </div>
-            <h2 className={styles.goDeeperTitle}>
-              Go deeper with Agent Kernel
-            </h2>
-            <p className={styles.goDeeperSubtitle}>
-              Explore the platform capabilities and real-world workflows behind secure,
-              production-ready AI agents.
-            </p>
+              <div className="container">
+                <div className={styles.goDeeperInner}>
+                  <div className={styles.Badge}>
+                    <span className={styles.badgeStar}>✦</span>
+                    Continue Exploring
+                  </div>
+                  <h2 className={styles.goDeeperTitle}>
+                    Go deeper with Agent Kernel
+                  </h2>
+                  <p className={styles.goDeeperSubtitle}>
+                    Explore the platform capabilities and real-world workflows behind secure,
+                    production-ready AI agents.
+                  </p>
 
-            <div className={styles.goDeeperGrid}>
-              <Link
-                className={styles.goDeeperCard}
-                to="/features"
-                style={{ '--card-accent': '#6F45CC' } as React.CSSProperties}
-              >
-                <h3 className={styles.goDeeperCardTitle}>Features</h3>
-                <p className={styles.goDeeperCardBody}>
-                  Explore the core runtime, memory, guardrails, testing,
-                  integrations, and deployment capabilities that make Agent
-                  Kernel production-ready.
-                </p>
-                <span className={styles.goDeeperCardCta}>Read More</span>
-              </Link>
+                  <div className={styles.goDeeperGrid}>
+                    <a
+                      className={styles.goDeeperCard}
+                      href="/features"
+                      style={{
+                        '--card-accent': '#6F45CC',
+                        '--card-glow-color': '#230E23'
+                      } as React.CSSProperties}
+                    >
+                      <h3 className={styles.goDeeperCardTitle}>Features</h3>
+                      <p className={styles.goDeeperCardBody}>
+                        Explore the core runtime, memory, guardrails, testing,
+                        integrations, and deployment capabilities that make Agent
+                        Kernel production-ready.
+                      </p>
+                      <span className={styles.goDeeperCardCta}>Read More</span>
+                    </a>
 
-              <Link
-                className={styles.goDeeperCard}
-                to="/use-cases"
-                style={{ '--card-accent': '#6F45CC' } as React.CSSProperties}
-              >
-                <h3 className={styles.goDeeperCardTitle}>Use Cases</h3>
-                <p className={styles.goDeeperCardBody}>
-                  See how teams use Agent Kernel to build assistants,
-                  automate workflows, monitor systems, and ship reliable AI
-                  agents faster.
-                </p>
-                <span className={styles.goDeeperCardCta}>Read More</span>
-              </Link>
-            </div>
+                    <a
+                      className={styles.goDeeperCard}
+                      href="/use-cases"
+                      style={{
+                        '--card-accent': '#6F45CC',
+                        '--card-glow-color': '#230E23'
+                      } as React.CSSProperties}
+                    >
+                      <h3 className={styles.goDeeperCardTitle}>Use Cases</h3>
+                      <p className={styles.goDeeperCardBody}>
+                        See how teams use Agent Kernel to build assistants,
+                        automate workflows, monitor systems, and ship reliable AI
+                        agents faster.
+                      </p>
+                      <span className={styles.goDeeperCardCta}>Read More</span>
+                    </a>
+                  </div>
+
+                  <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center' }}>
+                    <button
+                      type="button"
+                      className={`button button--primary button--md ${styles.terraformLink}`}
+                      onClick={() => {
+                        history.push('/');
+                        setTimeout(() => {
+                          document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }}
+                    >
+                      Back to Path Selection
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </section>
 
       <section className={styles.ctaSection}>
-        <div className={styles.topGlow} />
         <div className="container">
           <div className={styles.ctaContent}>
             <h2 className={styles.ctaTitle}>
@@ -512,21 +566,17 @@ export default function BusinessLeaderPage() {
             </p>
             <div className={styles.ctaButtons}>
               <Link
-                className={`button button--primary button--lg ${styles.btnPrimary}`}
+                className={`button button--primary button--lg ${styles.heroBtnSecondary}`}
                 to="/docs"
               >
-                <span className={styles.btnIcon}>→</span>
                 Get Started Free
               </Link>
               <Link
-                className={`button button--secondary button--lg ${styles.btnSecondary}`}
+                className={styles.heroBtnLink}
                 to="https://github.com/yaalalabs/agent-kernel"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className={styles.btnIconSecondary}>
-                  <FaGithub />
-                </span>
                 View On GitHub
               </Link>
             </div>

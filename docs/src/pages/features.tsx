@@ -302,10 +302,10 @@ function FeaturesPageMap({
       role="region"
       aria-labelledby="features-page-map-heading"
     >
-      {/* Top border + gradient glow */}
-      <div className={styles.topGlow} />
-
       <div className="container">
+        {/* Top border + gradient glow */}
+        <div className={styles.topGlow} />
+
         <div className={styles.sectionHeader}>
           <div className={styles.Badge}>
             <span className={styles.badgeStar}>✦</span>
@@ -387,11 +387,15 @@ function FeaturesPageMap({
           {/* ── Hub ── */}
           <div
             className={`${styles.pageMapHub} ${visible ? styles.pageMapHubIn : ""}`}
+            style={{ backgroundColor: "#010002" }}
           >
-            <img
-              src={baseUrl("/img/branding/agent-kernel-icon-color.svg")}
-              alt="Agent Kernel"
+            <video
+              src="/video/hero.mp4"
               className={styles.pageMapHubIcon}
+              autoPlay
+              loop
+              muted
+              playsInline
             />
           </div>
 
@@ -525,12 +529,6 @@ function ProblemTable() {
     },
   ];
 
-  const impactRow = {
-    problem: "Time to production",
-    without: "Months",
-    with: "Days to weeks",
-  };
-
   const [active, setActive] = useState(0);
   const activeRow = rows[active];
 
@@ -566,17 +564,20 @@ function ProblemTable() {
       section.querySelectorAll(`.${styles.problemTopicBtn}`),
     );
     const comparePanel = section.querySelector(`.${styles.problemComparePanelOuter}`);
-    const impactPanel = section.querySelector(`.${styles.problemImpactPanel}`);
 
     if (reducedMotion) {
-      gsap.set([header1, header2, ...topicButtons, comparePanel, impactPanel], {
+      gsap.set([header1, header2, ...topicButtons, comparePanel], {
         opacity: 1,
         y: 0,
       });
       return;
     }
 
-    gsap.set([header1, comparePanel], {
+    gsap.set(header1, {
+      opacity: 0,
+      y: 24,
+    });
+    gsap.set(comparePanel, {
       opacity: 0,
       y: 24,
     });
@@ -584,15 +585,11 @@ function ProblemTable() {
       opacity: 0,
       y: 16,
     });
-    gsap.set([header2, impactPanel], {
-      opacity: 0,
-      y: 24,
-    });
 
     const tl1 = gsap.timeline({
       scrollTrigger: {
         trigger: header1,
-        start: "top 95%",
+        start: "top 75%",
         toggleActions: "play none none reverse",
       },
     });
@@ -604,57 +601,30 @@ function ProblemTable() {
       ease: "power2.out",
     })
       .to(
-        topicButtons,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.05,
-          ease: "power2.out",
-        },
-        "-=0.2",
-      )
-      .to(
         comparePanel,
         {
           opacity: 1,
           y: 0,
-          duration: 0.65,
-          ease: "power2.out",
-        },
-        "-=0.15",
-      );
-
-    const tl2 = gsap.timeline({
-      scrollTrigger: {
-        trigger: header2,
-        start: "top 95%",
-        toggleActions: "play none none reverse",
-      },
-    });
-
-    tl2.to(header2, {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      ease: "power2.out",
-    })
-      .to(
-        impactPanel,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.65,
+          duration: 0.6,
           ease: "power2.out",
         },
         "-=0.35",
+      )
+      .to(
+        topicButtons,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.03,
+          ease: "power2.out",
+        },
+        "-=0.4",
       );
 
     return () => {
       tl1.scrollTrigger?.kill();
       tl1.kill();
-      tl2.scrollTrigger?.kill();
-      tl2.kill();
     };
   }, []);
 
@@ -788,58 +758,6 @@ function ProblemTable() {
               </div>
             </div>
           </div>
-          <div className={styles.sectionHeader} style={{ marginTop: "5rem" }}>
-            <h2 className={styles.sectionTitle}>Timeline & Development Impact</h2>
-            <p className={styles.sectionSubtitle}>The effect on your timeline when Agent Kernel owns the platform work.</p>
-          </div>
-          <aside
-            className={styles.problemImpactPanel}
-            style={{ marginTop: "-2rem" }}
-            aria-label={`${impactRow.problem}: ${impactRow.without} versus ${impactRow.with}`}
-          >
-            <div className={styles.problemImpactGrid}>
-              <article
-                className={`${styles.problemCompareSide} ${styles.problemCompareSideNeg}`}
-              >
-                <p className={styles.problemCompareSideLabel}>
-                  Without Agent Kernel
-                </p>
-                <p className={styles.problemCompareSideSub}>
-                  What you take on today
-                </p>
-                <div
-                  className={`${styles.problemImpactStat} ${styles.problemImpactStatNeg}`}
-                >
-                  <span className={styles.problemImpactStatLabel}>
-                    Without Agent Kernel
-                  </span>
-                  <p className={styles.problemImpactStatValue}>
-                    {impactRow.without}
-                  </p>
-                </div>
-              </article>
-              <article
-                className={`${styles.problemCompareSide} ${styles.problemCompareSidePos}`}
-              >
-                <p className={styles.problemCompareSideLabel}>
-                  With Agent Kernel
-                </p>
-                <p className={styles.problemCompareSideSub}>
-                  What the platform covers
-                </p>
-                <div
-                  className={`${styles.problemImpactStat} ${styles.problemImpactStatPos}`}
-                >
-                  <span className={styles.problemImpactStatLabel}>
-                    With Agent Kernel
-                  </span>
-                  <p className={styles.problemImpactStatValue}>
-                    {impactRow.with}
-                  </p>
-                </div>
-              </article>
-            </div>
-          </aside>
         </div>
       </div>
     </section>
@@ -1001,14 +919,14 @@ function CoreFeatures() {
 
     // Header: fade + slide up
     gsap.set(header, { opacity: 0, y: 24 });
-    gsap.to(header, {
+    const headerTween = gsap.to(header, {
       opacity: 1,
       y: 0,
       duration: 0.65,
       ease: "power2.out",
       scrollTrigger: {
         trigger: header,
-        start: "top 82%",
+        start: "top 70%",
         toggleActions: "play none none reverse",
       },
     });
@@ -1030,6 +948,8 @@ function CoreFeatures() {
     });
     if (currentRow.length) rows.push(currentRow);
 
+    const rowTweens: gsap.core.Tween[] = [];
+
     // Animate each row when its first card scrolls into view
     rows.forEach((rowCards) => {
       gsap.set(rowCards, {
@@ -1039,7 +959,7 @@ function CoreFeatures() {
         transformOrigin: "center bottom",
       });
 
-      gsap.to(rowCards, {
+      const tween = gsap.to(rowCards, {
         opacity: 1,
         y: 0,
         scale: 1,
@@ -1048,14 +968,20 @@ function CoreFeatures() {
         ease: "back.out(1.5)",
         scrollTrigger: {
           trigger: rowCards[0],
-          start: "top 88%",
+          start: "top 75%",
           toggleActions: "play none none reverse",
         },
       });
+      rowTweens.push(tween);
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      headerTween.scrollTrigger?.kill();
+      headerTween.kill();
+      rowTweens.forEach((t) => {
+        t.scrollTrigger?.kill();
+        t.kill();
+      });
     };
   }, []);
 
@@ -1248,7 +1174,9 @@ function FrameworkSupport() {
       <div className={styles.frameworkFeaturedContent}>
         <div className={styles.frameworkFeaturedMain}>
           <div className={styles.frameworkFeaturedMark}>
-            {multiFramework.logo}
+            <div className={styles.frameworkFeaturedIconCircle}>
+              {multiFramework.logo}
+            </div>
           </div>
           <div className={styles.frameworkFeaturedText}>
             <p className={styles.frameworkFeaturedBadge}>
@@ -1302,14 +1230,13 @@ function FrameworkSupport() {
     }
 
     gsap.set(header, { opacity: 0, y: 24 });
-    gsap.set(block, { opacity: 0, y: 22 });
     gsap.set(cards, { opacity: 0, y: 28, scale: 0.95 });
     gsap.set(featuredRow, { opacity: 0, y: 28, scale: 0.98 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: header,
-        start: "top 95%",
+        start: "top 75%",
         toggleActions: "play none none reverse",
       },
     });
@@ -1321,26 +1248,16 @@ function FrameworkSupport() {
       ease: "power2.out",
     })
       .to(
-        block,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          ease: "power2.out",
-        },
-        "-=0.12",
-      )
-      .to(
         cards,
         {
           opacity: 1,
           y: 0,
           scale: 1,
           duration: 0.5,
-          stagger: 0.07,
+          stagger: 0.05,
           ease: "power2.out",
         },
-        "-=0.18",
+        "-=0.35",
       )
       .to(
         featuredRow,
@@ -1348,10 +1265,10 @@ function FrameworkSupport() {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.55,
+          duration: 0.5,
           ease: "power2.out",
         },
-        "-=0.15",
+        "-=0.25",
       );
 
     return () => {
@@ -1507,15 +1424,13 @@ function TestingSection() {
     }
 
     gsap.set(header, { opacity: 0, y: 24 });
-    gsap.set(block, { opacity: 0, y: 22 });
     gsap.set(approachCards, { opacity: 0, y: 28, scale: 0.95 });
-    gsap.set(modePanel, { opacity: 0, y: 24 });
     gsap.set(modeCards, { opacity: 0, y: 22, scale: 0.96 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: header,
-        start: "top 95%",
+        start: "top 75%",
         toggleActions: "play none none reverse",
       },
     });
@@ -1527,36 +1442,16 @@ function TestingSection() {
       ease: "power2.out",
     })
       .to(
-        block,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.38,
-          ease: "power2.out",
-        },
-        "-=0.1",
-      )
-      .to(
         approachCards,
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.42,
-          stagger: 0.05,
+          duration: 0.45,
+          stagger: 0.06,
           ease: "power2.out",
         },
-        "-=0.14",
-      )
-      .to(
-        modePanel,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.42,
-          ease: "power2.out",
-        },
-        "-=0.06",
+        "-=0.3",
       )
       .to(
         modeCards,
@@ -1564,11 +1459,11 @@ function TestingSection() {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.38,
-          stagger: 0.045,
+          duration: 0.4,
+          stagger: 0.05,
           ease: "power2.out",
         },
-        "-=0.12",
+        "-=0.25",
       );
 
     return () => {
@@ -1652,43 +1547,43 @@ function TestingSection() {
 const MESSAGING_PLATFORMS = [
   {
     name: "Slack",
-    icon: <FaSlack />,
+    icon: <img src="/img/integrations/slack-logo.png" alt="" width={28} height={28} />,
     color: "#EC407A",
     link: "/docs/integrations/slack",
   },
   {
     name: "Microsoft Teams",
-    icon: <TbBrandTeams />,
+    icon: <img src="/img/integrations/teams-logo.png" alt="" width={28} height={24} />,
     color: "#A8B2FF",
     link: "/docs/next/integrations/teams",
   },
   {
     name: "WhatsApp",
-    icon: <FaWhatsapp />,
+    icon: <img src="/img/integrations/whatsapp-logo.png" alt="" width={28} height={28} />,
     color: "#3DFF9A",
     link: "/docs/integrations/whatsapp",
   },
   {
     name: "Messenger",
-    icon: <FaFacebookMessenger />,
+    icon: <img src="/img/integrations/messenger-logo.png" alt="" width={28} height={28} />,
     color: "#1AACFF",
     link: "/docs/integrations/messenger",
   },
   {
     name: "Telegram",
-    icon: <FaTelegram />,
+    icon: <img src="/img/integrations/telegram-logo.png" alt="" width={28} height={28} />,
     color: "#40BFFF",
     link: "/docs/integrations/telegram",
   },
   {
     name: "Instagram",
-    icon: <FaInstagram />,
+    icon: <img src="/img/integrations/instagram-logo.png" alt="" width={26} height={26} />,
     color: "#FF6BA3",
     link: "/docs/integrations/instagram",
   },
   {
     name: "Gmail",
-    icon: <SiGmail />,
+    icon: <img src="/img/integrations/gmail-logo.png" alt="" width={26} height={20} />,
     color: "#FF7B6E",
     link: "/docs/integrations/gmail",
   },
@@ -1707,9 +1602,6 @@ function MessagingSection() {
 
     const ctx = gsap.context(() => {
       const header = sectionRef.current?.querySelector(`.${styles.sectionHeader}`);
-      const strip = sceneRef.current?.querySelector(
-        `.${styles.msgRuntimeStrip}`,
-      );
       const cards = sceneRef.current?.querySelectorAll(
         `.${styles.msgChannelCard}`,
       );
@@ -1717,19 +1609,17 @@ function MessagingSection() {
 
       if (reducedMotion) {
         if (header) gsap.set(header, { opacity: 1, y: 0 });
-        if (strip) gsap.set(strip, { opacity: 1, y: 0 });
         gsap.set(cards, { opacity: 1, y: 0 });
         return;
       }
 
       if (header) gsap.set(header, { opacity: 0, y: 24 });
-      if (strip) gsap.set(strip, { opacity: 0, y: 22 });
       gsap.set(cards, { opacity: 0, y: 18 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: header || sceneRef.current,
-          start: "top 95%",
+          start: "top 75%",
           toggleActions: "play none none reverse",
         },
       });
@@ -1738,24 +1628,16 @@ function MessagingSection() {
         tl.to(header, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
       }
 
-      if (strip) {
-        tl.to(
-          strip,
-          { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
-          header ? "-=0.25" : "0",
-        );
-      }
-
       tl.to(
         cards,
         {
           opacity: 1,
           y: 0,
-          duration: 0.42,
-          stagger: 0.055,
+          duration: 0.45,
+          stagger: 0.04,
           ease: "power2.out",
         },
-        strip ? "-=0.28" : (header ? "-=0.2" : "0"),
+        header ? "-=0.35" : "0",
       );
     }, sectionRef);
 
@@ -1830,10 +1712,9 @@ function MessagingSection() {
         <div className={styles.msgChannelFooter}>
           <Link
             to="/docs/integrations/overview"
-            className={`button button--primary button--md ${styles.btnLinkPrimary}`}
+            className={`button button--primary button--md ${indexStyles.terraformLink}`}
           >
             Full integrations overview
-            <span className={styles.btnLinkIconPrimary}>→</span>
           </Link>
         </div>
       </div>
@@ -1849,7 +1730,7 @@ function ProtocolSupport() {
     {
       key: "mcp",
       icon: <MdExtension />,
-      title: "MCP — Model Context Protocol",
+      title: "MCP - Model Context Protocol",
       description:
         "Model Context Protocol (MCP) is a standardized interface that lets AI models connect to external tools, data sources, and services in a structured, consistent way. It acts as a bridge between an AI's reasoning and real-world actions, enabling agents to retrieve information and execute tasks reliably. Agent Kernel natively supports running an MCP server, including exposing your agents as MCP tools.",
       link: "/docs/api/mcp-server",
@@ -1858,7 +1739,7 @@ function ProtocolSupport() {
     {
       key: "a2a",
       icon: <MdHub />,
-      title: "A2A — Agent-to-Agent",
+      title: "A2A - Agent-to-Agent",
       description:
         "Agent-to-Agent (A2A) is a communication pattern where multiple AI agents interact directly with each other to share context, delegate tasks, and coordinate decisions. It enables complex workflows by allowing specialized agents to collaborate instead of relying on a single monolithic system. Agent Kernel natively supports exposing any agent over the A2A protocol by switching configuration.",
       link: "/docs/api/a2a-server",
@@ -1885,27 +1766,21 @@ function ProtocolSupport() {
     }
 
     gsap.set(header, { opacity: 0, y: 24 });
-    gsap.set(grid, { opacity: 0, y: 20 });
     gsap.set(cells, { opacity: 0, y: 28, scale: 0.98 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: header,
-        start: 'top 95%',
+        start: 'top 75%',
         toggleActions: 'play none none reverse',
       },
     });
 
     tl.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
       .to(
-        grid,
-        { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' },
-        '-=0.1',
-      )
-      .to(
         cells,
-        { opacity: 1, y: 0, scale: 1, duration: 0.42, stagger: 0.05, ease: 'power2.out' },
-        '-=0.14',
+        { opacity: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.05, ease: 'power2.out' },
+        '-=0.3',
       );
 
     return () => {
@@ -1966,9 +1841,6 @@ function CTASection({
       id={FEATURE_ANCHORS.cta}
       className={`${indexStyles.ctaSection} ${styles.pageAnchor}`}
     >
-      {/* Top border + gradient glow */}
-      <div className={styles.topGlow} />
-
       <div className="container">
         <div className={indexStyles.ctaContent}>
           <h2 className={indexStyles.ctaTitle}>
@@ -1983,21 +1855,17 @@ function CTASection({
           </p>
           <div className={indexStyles.ctaButtons}>
             <Link
-              className={`button button--primary button--lg ${indexStyles.btnPrimary}`}
+              className={`button button--primary button--lg ${indexStyles.heroBtnSecondary}`}
               to="/docs"
             >
-              <span className={indexStyles.btnIcon}>→</span>
               Get Started Free
             </Link>
             <Link
-              className={`button button--secondary button--lg ${indexStyles.btnSecondary}`}
+              className={indexStyles.heroBtnLink}
               to="https://github.com/yaalalabs/agent-kernel"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className={indexStyles.btnIconSecondary}>
-                <FaGithub />
-              </span>
               View On GitHub
             </Link>
           </div>

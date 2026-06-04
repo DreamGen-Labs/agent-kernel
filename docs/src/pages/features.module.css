@@ -58,7 +58,7 @@
 
 .sectionTitle {
   font-size: clamp(1.875rem, 4vw, 2.5rem);
-  font-weight: 900;
+  font-weight: 600;
   background: linear-gradient(to bottom, #ffffff 0%, #898989 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -147,6 +147,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  margin-top: 2rem;
   padding: 0.35rem 1rem;
   border: 1px solid rgba(99, 179, 237, 0.55);
   border-radius: 999px;
@@ -522,7 +523,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(1, 0, 2, 0.72);
   border: 1px solid rgba(0, 221, 255, 0.58);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -538,12 +538,24 @@
   position: absolute;
   inset: -24px;
   border-radius: 50%;
-  background: radial-gradient(circle at center,
-      rgba(0, 221, 255, 0.2) 0%,
-      rgba(0, 221, 255, 0.05) 50%,
-      transparent 70%);
   animation: pmCorePulse 3s ease-in-out infinite;
   pointer-events: none;
+}
+
+.pageMapHub::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    transparent 30%,
+    rgba(0, 221, 255, 0.08) 55%,
+    rgba(0, 221, 255, 0.22) 75%,
+    rgba(0, 10, 12, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 @keyframes pmCorePulse {
@@ -563,10 +575,9 @@
 .pageMapHubIcon {
   position: relative;
   z-index: 1;
-  width: 80px;
-  height: 80px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(0, 221, 255, 0.6));
 }
 
 .pageMapHubLabel {
@@ -1696,7 +1707,7 @@
   box-sizing: border-box;
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(1, 0, 2, 0.3);
+  background: #010B0F;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   text-decoration: none;
@@ -1728,8 +1739,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: auto;
+  height: auto;
   padding: 0;
 }
 
@@ -1764,7 +1775,8 @@
 
 .frameworkFeaturedCta {
   flex-shrink: 0;
-  align-self: center;
+  align-self: center; 
+  margin-left: auto;
 }
 
 .frameworkFeaturedRow:hover {
@@ -1907,6 +1919,25 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 229, 255, 0.1);
   transform: translateY(-2px);
   text-decoration: none;
+}
+
+.frameworkFeaturedIconCircle {
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 50%;
+  background: rgba(0, 221, 255, 0.12);
+  border: 1px solid rgba(0, 221, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Override the logo image size when inside the circle */
+.frameworkFeaturedIconCircle .frameworkLogoImg {
+  width: 1.85rem;
+  height: 1.85rem;
+  max-height: 1.85rem;
 }
 
 /* ─── Testing ─────────────────────────────────────────────────────────────── */
@@ -2574,6 +2605,12 @@
 
   .frameworksGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem;
+  }
+
+  .frameworkCard {
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.25rem;
   }
 
   .observabilityLayout {
@@ -2593,7 +2630,14 @@
   }
 
   .msgChannelGrid {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .msgChannelCell {
+    flex: none;
+    width: 100%;
   }
 }
 
@@ -2643,18 +2687,32 @@
 
   .frameworksGrid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .frameworkCard {
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .frameworkLogo {
+    min-height: 3rem;
+  }
+
+  .frameworkFeaturedRow {
+    border-radius: 1.25rem;
   }
 
   .frameworkFeaturedContent {
     flex-direction: column;
     align-items: stretch;
-    padding: 1.15rem 1.35rem 1.25rem;
-    gap: 1rem;
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
   }
 
   .frameworkFeaturedCta {
     align-self: flex-start;
-    white-space: normal;
+    width: auto;
   }
 
   .msgRuntimeFlow {
@@ -2683,7 +2741,37 @@
   }
 
   .msgChannelGrid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .msgChannelCell {
+    flex: none;
+    width: 100%;
+  }
+
+  .msgChannelCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 140px;
+    padding: 1.25rem 0.75rem;
+  }
+
+  .msgChannelTop {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .msgFeaturedBadge {
+    top: 0.4rem;
+    right: 0.4rem;
+    font-size: 0.55rem;
+    padding: 0.1rem 0.35rem;
   }
 
   .section {
@@ -2797,5 +2885,98 @@
   .problemComparePanelTitle {
     font-size: 1.05rem;
     line-height: 1.3;
+  }
+
+  .frameworkCard {
+    padding: 1.25rem 1rem;
+    border-radius: 1rem;
+  }
+
+  .frameworkLogo {
+    min-height: 2.75rem;
+  }
+
+  .frameworkLogoImg {
+    max-height: 2.5rem;
+  }
+
+  .frameworkFeaturedRow {
+    border-radius: 1rem;
+  }
+
+  .frameworkFeaturedContent {
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .frameworkFeaturedMain {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .frameworkFeaturedIconCircle {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .frameworkFeaturedIconCircle .frameworkLogoImg {
+    width: 1.5rem;
+    height: 1.5rem;
+    max-height: 1.5rem;
+  }
+
+  .frameworkFeaturedCta {
+    align-self: stretch;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .msgChannelGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .msgChannelCell {
+    flex: none;
+    width: 100%;
+  }
+
+  .msgChannelCard {
+    height: 125px;
+    padding: 1rem 0.5rem;
+    gap: 0.4rem;
+    border-radius: 0.85rem;
+  }
+
+  .msgChannelTop {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .msgChannelIcon {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.35rem;
+  }
+
+  .msgChannelName {
+    font-size: 0.9rem;
+  }
+
+  .msgChannelCta {
+    font-size: 0.75rem;
+  }
+
+  .msgFeaturedBadge {
+    top: 0.3rem;
+    right: 0.3rem;
+    font-size: 0.5rem;
+    padding: 0.05rem 0.3rem;
   }
 }

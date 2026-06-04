@@ -251,11 +251,10 @@ function Hero() {
               Download Agent Skills
             </button>
             <Link
-              className={`button button--primary button--lg ${styles.btnPrimary}`}
+              className={`button button--primary button--lg ${styles.heroBtnSecondary}`}
               to="/docs"
             >
-              <span className={styles.btnIcon}>→</span>
-              Get Started
+              Get Started Free
             </Link>
           </div>
 
@@ -840,11 +839,10 @@ function AgentSkills() {
               Agent Skills works with the tools you already use, like Copilot, Claude, Cursor, or Windsurf, to help you build and ship AI agents faster. No more guesswork, no more broken code suggestions.
             </p>
             <Link
-              className={`button button--primary button--md ${styles.btnLinkPrimary} ${styles.agentSkillsCtaLink}`}
+              className={`button button--primary button--md ${styles.terraformLink}`}
               to="/docs"
             >
-              Learn more about Agent Skills
-              <span className={styles.btnLinkIconPrimary}>→</span>
+              Learn more
             </Link>
           </div>
         </div>
@@ -1043,21 +1041,17 @@ function Community({ sectionRef }: CommunityProps) {
           </p>
           <div className={styles.ctaButtons}>
             <Link
-              className={`button button--primary button--lg ${styles.btnPrimary}`}
+              className={`button button--primary button--lg ${styles.heroBtnSecondary}`}
               to="/docs"
             >
-              <span className={styles.btnIcon}>→</span>
               Get Started Free
             </Link>
             <Link
-              className={`button button--secondary button--lg ${styles.btnSecondary}`}
+              className={styles.heroBtnLink}
               to="https://github.com/yaalalabs/agent-kernel"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className={styles.btnIconSecondary}>
-                <FaGithub />
-              </span>
               View On GitHub
             </Link>
           </div>
@@ -1226,7 +1220,7 @@ function Levels() {
           </div>
           <h2 ref={titleRef} className={styles.levelsTitle}>
             <span>Agent Kernel is designed</span>
-            {""}<br />
+            {" "}
             <span>to adapt to your level of expertise</span>
           </h2>
           <p ref={subtitleRef} className={styles.levelsSubtitle}>

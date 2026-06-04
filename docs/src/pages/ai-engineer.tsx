@@ -5,6 +5,7 @@ import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { StepTimeline } from "../components/StepTimeline";
+import { useHistory } from "@docusaurus/router";
 import styles from "./index.module.css";
 import {
   MdCloud,
@@ -39,6 +40,7 @@ import { FaGithub } from "react-icons/fa";
 
 export default function AIEngineerPage() {
   const baseUrl = useBaseUrl;
+  const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<"building" | "running" | "kernel">("building");
   const [displayedTab, setDisplayedTab] = useState<"building" | "running" | "kernel">("building");
@@ -46,7 +48,7 @@ export default function AIEngineerPage() {
   const panelRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isAnimating = useRef(false);
-  
+
 
   const AI_ENGINEER_ARCH_LAYERS = [
     {
@@ -190,7 +192,7 @@ export default function AIEngineerPage() {
         "Stop unsafe or invalid requests early and return a controlled response.",
         "Useful for input guardrails, rate limits, cached shortcuts, and circuit breakers.",
       ],
-      highlight: true,
+      highlight: false,
     },
   ] as const;
 
@@ -216,50 +218,50 @@ export default function AIEngineerPage() {
     frameworks: AkCompareCell;
     agentKernel: AkCompareCell;
   }[] = [
-    {
-      feature: "Switch cloud platform later?",
-      cloud: { status: "negative", text: "Rewrite" },
-      frameworks: { status: "positive", text: "You build it" },
-      agentKernel: { status: "positive", text: "One config change" },
-    },
-    {
-      feature: "Multi-framework agent execution?",
-      cloud: { status: "negative", text: "Not possible" },
-      frameworks: { status: "negative", text: "Not possible" },
-      agentKernel: { status: "positive", text: "Run in one runtime" },
-    },
-    {
-      feature: "Out of Box integrations?",
-      featureHint: "(i.e. Slack / Teams / REST / A2A / MCP)",
-      cloud: { status: "partial", text: "Partial" },
-      frameworks: { status: "negative", text: "DIY" },
-      agentKernel: { status: "positive", text: "Built-in" },
-    },
-    {
-      feature: "Sessions, memory, observability?",
-      cloud: { status: "positive", text: "Proprietary" },
-      frameworks: { status: "negative", text: "DIY" },
-      agentKernel: { status: "positive", text: "Built-in and Pluggable" },
-    },
-    {
-      feature: "Open-source / no licensing?",
-      cloud: { status: "negative" },
-      frameworks: { status: "positive" },
-      agentKernel: { status: "positive", text: "Apache 2.0" },
-    },
-    {
-      feature: "Knowledge bases?",
-      cloud: { status: "positive", text: "Proprietary" },
-      frameworks: { status: "negative", text: "DIY" },
-      agentKernel: { status: "positive", text: "Built-in and Pluggable" },
-    },
-    {
-      feature: "Lift-and-shift an existing agent?",
-      cloud: { status: "negative", text: "Rewrite" },
-      frameworks: { status: "negative", text: "Rewrite" },
-      agentKernel: { status: "positive", text: "Wrap & ship" },
-    },
-  ];
+      {
+        feature: "Switch cloud platform later?",
+        cloud: { status: "negative", text: "Rewrite" },
+        frameworks: { status: "positive", text: "You build it" },
+        agentKernel: { status: "positive", text: "One config change" },
+      },
+      {
+        feature: "Multi-framework agent execution?",
+        cloud: { status: "negative", text: "Not possible" },
+        frameworks: { status: "negative", text: "Not possible" },
+        agentKernel: { status: "positive", text: "Run in one runtime" },
+      },
+      {
+        feature: "Out of Box integrations?",
+        featureHint: "(i.e. Slack / Teams / REST / A2A / MCP)",
+        cloud: { status: "partial", text: "Partial" },
+        frameworks: { status: "negative", text: "DIY" },
+        agentKernel: { status: "positive", text: "Built-in" },
+      },
+      {
+        feature: "Sessions, memory, observability?",
+        cloud: { status: "positive", text: "Proprietary" },
+        frameworks: { status: "negative", text: "DIY" },
+        agentKernel: { status: "positive", text: "Built-in and Pluggable" },
+      },
+      {
+        feature: "Open-source / no licensing?",
+        cloud: { status: "negative" },
+        frameworks: { status: "positive" },
+        agentKernel: { status: "positive", text: "Apache 2.0" },
+      },
+      {
+        feature: "Knowledge bases?",
+        cloud: { status: "positive", text: "Proprietary" },
+        frameworks: { status: "negative", text: "DIY" },
+        agentKernel: { status: "positive", text: "Built-in and Pluggable" },
+      },
+      {
+        feature: "Lift-and-shift an existing agent?",
+        cloud: { status: "negative", text: "Rewrite" },
+        frameworks: { status: "negative", text: "Rewrite" },
+        agentKernel: { status: "positive", text: "Wrap & ship" },
+      },
+    ];
 
   function AkCompareCellContent({ cell }: { cell: AkCompareCell }) {
     if (cell.status === "partial") {
@@ -646,26 +648,13 @@ export default function AIEngineerPage() {
             className={`${styles.developerAnalogy} ${styles.aiEngineerBlock}`}
             data-step="ai-01"
           >
-            <p className={styles.aiStepLabel}>Step 01 | Analogy</p>
+            <p className={styles.aiStepLabel}>Step 01 / Analogy</p>
             <h2 className={styles.aiTitle}>
-              {/* <span>Unify Your Existing Agents On A Compliant</span>
-                {' '}
-                <span>Enterprise Runtime</span> */}
-              Bring your already existing agentic AI code onto a unified Operating System and Deployment Infrastructure for your AI Agents while making it enterprise ready and compliant.
+              Guardrails, Traceability, Memory and Other Enterprise Features for Your Agent Code.
             </h2>
             <div className={styles.aiDescription}>
               <p className={styles.devIntro}>
-                Agent Kernel is a unified, capable runtime for AI agents.
-                Its pluggable architecture lets you attach capabilities to
-                your agents effortlessly. A comprehensive list of pre-built
-                connectors smooths the agent-building process—enabling a
-                capability is a matter of setting configuration. All out of
-                the box.
-              </p>
-              <p className={styles.devIntro}>
-                Agent Kernel takes care of how agents run, scale from single
-                execution to thousands of agent invocations in parallel, and
-                interact with the real world.
+                Agent Kernel is a unified, capable runtime for the AI agents. Its pluggable architecture allows you to attach capabilities to your effortlessly.
               </p>
             </div>
           </div>
@@ -719,7 +708,7 @@ export default function AIEngineerPage() {
             className={`${styles.akStandOutSection} ${styles.developerBlock}`}
             data-step="ai-03"
           >
-            <p className={styles.aiStepLabel}>Step 02 | Stand Out</p>
+            <p className={styles.aiStepLabel}>Step 02 / Stand Out</p>
             <h2 className={styles.aiTitle}>
               <span>What Makes Agent Kernel Stand Out</span>
             </h2>
@@ -861,17 +850,17 @@ export default function AIEngineerPage() {
           {/* Step 04 — Available Features */}
           <div className={styles.devFeatureSection} data-step="ai-04">
             <p className={styles.aiStepLabel}>
-              Step 03 | Features
+              Step 03 / Features
             </p>
             <h2 className={styles.aiTitle}>
-              <span>All Enterprise Features Available</span>
-                {' '}<br/>
-              <span>Free And Open-Source</span>
+              <span>Focus on Agent Logic.</span>
+              {' '}<br />
+              <span>We Handle the Rest.</span>
             </h2>
 
             <p className={styles.aiDescription}>
-              Focus on Agent Logic. We Handle the Rest.
-            </p>    
+              All Enterprise Features Available Free And Open-Source
+            </p>
 
             <div className={styles.devFeatureGroups}>
               {DEV_FEATURE_GROUPS.map((group) => (
@@ -880,11 +869,10 @@ export default function AIEngineerPage() {
                     {group.title}
                   </h3>
                   <div
-                    className={`${styles.devFeaturesGrid} ${
-                      group.cols === 4
-                        ? styles.devFeaturesGrid4
-                        : styles.devFeaturesGrid3
-                    }`}
+                    className={`${styles.devFeaturesGrid} ${group.cols === 4
+                      ? styles.devFeaturesGrid4
+                      : styles.devFeaturesGrid3
+                      }`}
                   >
                     {group.features.map((feature) => {
                       const IconComponent = feature.icon;
@@ -922,7 +910,7 @@ export default function AIEngineerPage() {
             data-step="ai-05"
           >
             <p className={styles.aiStepLabel}>
-              Step 04 | Frameworks
+              Step 04 / Frameworks
             </p>
             <h2 className={styles.aiTitle}>
               <span>Use The Framework You Prefer</span>
@@ -936,7 +924,7 @@ export default function AIEngineerPage() {
             className={`${styles.aiEngineerBuildSection} ${styles.developerBlock}`}
             data-step="ai-06"
           >
-            <p className={styles.aiStepLabel}>Step 05 | Build Agents</p>
+            <p className={styles.aiStepLabel}>Step 05 / Build Agents</p>
             <h2 className={styles.aiTitle}>
               <span>How Agent Kernel Helps You Build Production-Ready Compliant AI Agents</span>
             </h2>
@@ -946,19 +934,26 @@ export default function AIEngineerPage() {
               {TABS.map((tab, i) => {
                 const TabIcon = tab.Icon;
                 return (
-                  <button
-                    key={tab.id}
-                    ref={(el) => { tabRefs.current[i] = el; }}
-                    className={`${styles.aiBuildTabCard} ${activeTab === tab.id ? styles.aiBuildTabCardActive : ""}`}
-                    onClick={() => handleTabChange(tab.id, i)}
-                    type="button"
-                  >
-                    <span className={styles.aiBuildTabIcon} aria-hidden="true">
-                      <TabIcon style={{ width: 18, height: 18 }} />
-                    </span>
-                    <h3 className={styles.aiBuildTabTitle}>{tab.title}</h3>
-                    <p className={styles.aiBuildTabBody}>{tab.body}</p>
-                  </button>
+                  <React.Fragment key={tab.id}>
+                    {i > 0 && (
+                      <div className={styles.aiBuildTabConnector} aria-hidden="true">
+                        <div className={styles.aiBuildTabConnectorLine} />
+                        <div className={styles.aiBuildTabConnectorDot} />
+                      </div>
+                    )}
+                    <button
+                      ref={(el) => { tabRefs.current[i] = el; }}
+                      className={`${styles.aiBuildTabCard} ${activeTab === tab.id ? styles.aiBuildTabCardActive : ""}`}
+                      onClick={() => handleTabChange(tab.id, i)}
+                      type="button"
+                    >
+                      <span className={styles.aiBuildTabIcon} aria-hidden="true">
+                        <TabIcon style={{ width: 18, height: 18 }} />
+                      </span>
+                      <h3 className={styles.aiBuildTabTitle}>{tab.title}</h3>
+                      <p className={styles.aiBuildTabBody}>{tab.body}</p>
+                    </button>
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -990,6 +985,19 @@ export default function AIEngineerPage() {
                 </div>
               );
             })()}
+
+            {/* Dots Indicator */}
+            <div className={styles.aiBuildDotsIndicator}>
+              {TABS.map((tab, idx) => (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id, idx)}
+                  className={`${styles.aiBuildDot} ${activeTab === tab.id ? styles.aiBuildDotActive : ""}`}
+                  aria-label={`Go to diagram ${tab.title}`}
+                  type="button"
+                />
+              ))}
+            </div>
           </div>
 
           {/* Step 07 — How Agent Kernel Fits In */}
@@ -997,7 +1005,7 @@ export default function AIEngineerPage() {
             className={`${styles.devArchitectureSection} ${styles.developerBlock}`}
             data-step="ai-07"
           >
-            <p className={styles.aiStepLabel}>Step 06 | Complete Picture</p>
+            <p className={styles.aiStepLabel}>Step 06 / Complete Picture</p>
             <h2 className={styles.aiTitle}>
               <span>How Agent Kernel Fits In</span>
             </h2>
@@ -1011,7 +1019,7 @@ export default function AIEngineerPage() {
             </p>
 
             <div className={styles.devArchitectureWrapper}>
-              <AgentKernelArchDiagram accentColor="#26A64D" />
+              <AgentKernelArchDiagram accentColor="#03C540" />
             </div>
           </div>
 
@@ -1020,10 +1028,10 @@ export default function AIEngineerPage() {
             className={`${styles.devFeatureSection} ${styles.developerBlock}`}
             data-step="ai-08"
           >
-            <p className={styles.aiStepLabel}>Step 07 | Operating system depth</p>
+            <p className={styles.aiStepLabel}>Step 07 / Operating system depth</p>
             <h2 className={styles.aiTitle}>
               <span>Why Agent Kernel is a Powerful</span>
-                {' '}<br/>
+              {' '}<br />
               <span>Operating System</span>
             </h2>
 
@@ -1099,21 +1107,11 @@ export default function AIEngineerPage() {
                       return (
                         <React.Fragment key={step.title}>
                           <div
-                            className={`${styles.aiEngineerFeatureCard} ${
-                              step.highlight
-                                ? styles.devFeatureCardHighlight
-                                : ""
-                            }`}
+                            className={`${styles.aiEngineerFeatureCard} ${step.highlight
+                              ? styles.devFeatureCardHighlight
+                              : ""
+                              }`}
                           >
-                            <div className={styles.devFeatureCardBadgeSlot}>
-                              {"badge" in step && step.badge ? (
-                                <span
-                                  className={styles.devFeatureHighlightBadge}
-                                >
-                                  {step.badge}
-                                </span>
-                              ) : null}
-                            </div>
                             <div className={styles.devFeatureCardHeader}>
                               <div className={styles.devFeatureIconWrap}>
                                 <IconComponent
@@ -1152,61 +1150,81 @@ export default function AIEngineerPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section className={styles.goDeeperSection}>
-        <div className={styles.topGlow} />
+          <section className={styles.goDeeperSection}>
+            <div className={styles.topGlow} />
 
-        <div className="container">
-          <div className={styles.goDeeperInner}>
-            <div className={styles.Badge}>
-              <span className={styles.badgeStar}>✦</span>
-              Continue Exploring
-            </div>
-            <h2 className={styles.goDeeperTitle}>
-              Go deeper with Agent Kernel
-            </h2>
-            <p className={styles.goDeeperSubtitle}>
-              Explore the platform capabilities and real-world workflows behind secure,
-              production-ready AI agents.
-            </p>
-
-            <div className={styles.goDeeperGrid}>
-              <Link
-                className={styles.goDeeperCard}
-                to="/features"
-                style={{ '--card-accent': '#26A64D' } as React.CSSProperties}
-              >
-                <h3 className={styles.goDeeperCardTitle}>Features</h3>
-                <p className={styles.goDeeperCardBody}>
-                  Explore the core runtime, memory, guardrails, testing,
-                  integrations, and deployment capabilities that make Agent
-                  Kernel production-ready.
+            <div className="container">
+              <div className={styles.goDeeperInner}>
+                <div className={styles.Badge}>
+                  <span className={styles.badgeStar}>✦</span>
+                  Continue Exploring
+                </div>
+                <h2 className={styles.goDeeperTitle}>
+                  Go deeper with Agent Kernel
+                </h2>
+                <p className={styles.goDeeperSubtitle}>
+                  Explore the platform capabilities and real-world workflows behind secure,
+                  production-ready AI agents.
                 </p>
-                <span className={styles.goDeeperCardCta}>Read More</span>
-              </Link>
 
-              <Link
-                className={styles.goDeeperCard}
-                to="/use-cases"
-                style={{ '--card-accent': '#26A64D' } as React.CSSProperties}
-              >
-                <h3 className={styles.goDeeperCardTitle}>Use Cases</h3>
-                <p className={styles.goDeeperCardBody}>
-                  See how teams use Agent Kernel to build assistants,
-                  automate workflows, monitor systems, and ship reliable AI
-                  agents faster.
-                </p>
-                <span className={styles.goDeeperCardCta}>Read More</span>
-              </Link>
+                <div className={styles.goDeeperGrid}>
+                  <a
+                    className={styles.goDeeperCard}
+                    href="/features"
+                    style={{
+                      '--card-accent': '#26A64D',
+                      '--card-glow-color': '#037052'
+                    } as React.CSSProperties}
+                  >
+                    <h3 className={styles.goDeeperCardTitle}>Features</h3>
+                    <p className={styles.goDeeperCardBody}>
+                      Explore the core runtime, memory, guardrails, testing,
+                      integrations, and deployment capabilities that make Agent
+                      Kernel production-ready.
+                    </p>
+                    <span className={styles.goDeeperCardCta}>Read More</span>
+                  </a>
+
+                  <a
+                    className={styles.goDeeperCard}
+                    href="/use-cases"
+                    style={{
+                      '--card-accent': '#26A64D',
+                      '--card-glow-color': '#037052'
+                    } as React.CSSProperties}
+                  >
+                    <h3 className={styles.goDeeperCardTitle}>Use Cases</h3>
+                    <p className={styles.goDeeperCardBody}>
+                      See how teams use Agent Kernel to build assistants,
+                      automate workflows, monitor systems, and ship reliable AI
+                      agents faster.
+                    </p>
+                    <span className={styles.goDeeperCardCta}>Read More</span>
+                  </a>
+                </div>
+
+                <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center' }}>
+                  <button
+                    type="button"
+                    className={`button button--primary button--md ${styles.terraformLink}`}
+                    onClick={() => {
+                      history.push('/');
+                      setTimeout(() => {
+                        document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
+                  >
+                    Back to Path Selection
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
       </section>
 
       <section className={styles.ctaSection}>
-        <div className={styles.topGlow} />
         <div className="container">
           <div className={styles.ctaContent}>
             <h2 className={styles.ctaTitle}>
@@ -1222,21 +1240,17 @@ export default function AIEngineerPage() {
             </p>
             <div className={styles.ctaButtons}>
               <Link
-                className={`button button--primary button--lg ${styles.btnPrimary}`}
+                className={`button button--primary button--lg ${styles.heroBtnSecondary}`}
                 to="/docs"
               >
-                <span className={styles.btnIcon}>→</span>
                 Get Started Free
               </Link>
               <Link
-                className={`button button--secondary button--lg ${styles.btnSecondary}`}
+                className={styles.heroBtnLink}
                 to="https://github.com/yaalalabs/agent-kernel"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className={styles.btnIconSecondary}>
-                  <FaGithub />
-                </span>
                 View On GitHub
               </Link>
             </div>

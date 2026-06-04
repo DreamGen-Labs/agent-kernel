@@ -322,9 +322,9 @@ function IconCell({ color, children }: { color: string; children: React.ReactNod
     <div
       className={styles.iconCell}
       style={{ '--icon-color': color } as React.CSSProperties}
+      aria-hidden="true"
     >
-      <div className={styles.iconCellBg} />
-      <span className={styles.iconCellGlyph}>{children}</span>
+      {children}
     </div>
   );
 }
@@ -499,7 +499,7 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
   return (
     <section className={styles.diffSection}>
       {/* Top border + gradient glow */}
-      <div className={styles.topGlow} />
+      <div className={styles.shortTopGlow} />
 
       <div className="container">
         <div className={styles.sectionHeader}>
@@ -568,21 +568,17 @@ function Community({ sectionRef }: CommunityProps) {
           </p>
           <div className={indexStyles.ctaButtons}>
             <Link
-              className={`button button--primary button--lg ${indexStyles.btnPrimary}`}
+              className={`button button--primary button--lg ${indexStyles.heroBtnSecondary}`}
               to="/docs"
             >
-              <span className={indexStyles.btnIcon}>→</span>
               Get Started Free
             </Link>
             <Link
-              className={`button button--secondary button--lg ${indexStyles.btnSecondary}`}
+              className={indexStyles.heroBtnLink}
               to="https://github.com/yaalalabs/agent-kernel"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className={indexStyles.btnIconSecondary}>
-                <FaGithub />
-              </span>
               View On GitHub
             </Link>
           </div>
