@@ -56,6 +56,10 @@ export default function FooterLayout({
   links,
   copyright,
 }: Props): ReactNode {
+  const logoHorizontalColor = useBaseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg");
+  const lfMembership = useBaseUrl("/img/lf_membership.svg");
+  const aaifMembership = useBaseUrl("/img/aaif_membership.svg");
+
   const { pathname } = useLocation();
   const showCTA = pathname.startsWith('/docs') || pathname.startsWith('/blog');
 
@@ -72,7 +76,7 @@ export default function FooterLayout({
           <div className="footer__brand">
             <Link to="/" className="footer__brand-logo-link" aria-label="Agent Kernel home">
               <img
-                src={useBaseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg")}
+                src={logoHorizontalColor}
                 alt="Agent Kernel"
                 className="footer__brand-logo"
                 width={140}
@@ -106,7 +110,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src={useBaseUrl("/img/lf_membership.svg")}
+                    src={lfMembership}
                     alt="Linux Foundation Member"
                     className="footer__badge"
                   />
@@ -117,7 +121,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src={useBaseUrl("/img/aaif_membership.svg")}
+                    src={aaifMembership}
                     alt="Agentic AI Foundation Member"
                     className="footer__badge"
                   />

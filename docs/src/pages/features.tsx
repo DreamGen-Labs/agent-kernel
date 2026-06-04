@@ -215,6 +215,7 @@ function FeaturesPageMap({
 }: {
   plantParticlesBackgroundRef: React.RefObject<PlantParticlesBackgroundHandle>;
 }) {
+  const heroVideo = useBaseUrl("/video/hero.mp4");
   const gradId = useId().replace(/:/g, "");
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -388,7 +389,7 @@ function FeaturesPageMap({
             style={{ backgroundColor: "#010002" }}
           >
             <video
-              src={useBaseUrl("/video/hero.mp4")}
+              src={heroVideo}
               className={styles.pageMapHubIcon}
               autoPlay
               loop
@@ -1033,6 +1034,14 @@ function CoreFeatures() {
 /* ─── Framework Support ─────────────────────────────────────────────────── */
 
 function FrameworkSupport() {
+  const imgChatGPT = useBaseUrl("/img/integrations/chatgpt.png");
+  const imgLangGraph = useBaseUrl("/img/integrations/langgraph.png");
+  const imgGoogleADK = useBaseUrl("/img/integrations/googleADK.png");
+  const imgCrewAI = useBaseUrl("/img/integrations/crewai.png");
+  const imgSmolagents = useBaseUrl("/img/integrations/smolagents.png");
+  const imgLiveKit = useBaseUrl("/img/integrations/livekit.png");
+  const imgAgentKernelColor = useBaseUrl("/img/branding/agent-kernel-icon-color.svg");
+
   const sectionRef = useRef<HTMLElement>(null);
 
   const integrations = [
@@ -1044,7 +1053,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/openai",
       logo: (
         <img
-          src={useBaseUrl("/img/integrations/chatgpt.png")}
+          src={imgChatGPT}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={145}
@@ -1060,7 +1069,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/langgraph",
       logo: (
         <img
-          src={useBaseUrl("/img/integrations/langgraph.png")}
+          src={imgLangGraph}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={150}
@@ -1076,7 +1085,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/google-adk",
       logo: (
         <img
-          src={useBaseUrl("/img/integrations/googleADK.png")}
+          src={imgGoogleADK}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={150}
@@ -1092,7 +1101,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/crewai",
       logo: (
         <img
-          src={useBaseUrl("/img/integrations/crewai.png")}
+          src={imgCrewAI}
           alt=""
           className={styles.frameworkLogoImg}
           width={168}
@@ -1109,7 +1118,7 @@ function FrameworkSupport() {
       external: true,
       logo: (
         <img
-          src={useBaseUrl("/img/integrations/smolagents.png")}
+          src={imgSmolagents}
           alt=""
           className={styles.frameworkLogoImg}
           width={150}
@@ -1126,7 +1135,7 @@ function FrameworkSupport() {
       external: true,
       logo: (
         <img
-          src={useBaseUrl("/img/integrations/livekit.png")}
+          src={imgLiveKit}
           alt=""
           className={styles.frameworkLogoImg}
           width={38}
@@ -1144,7 +1153,7 @@ function FrameworkSupport() {
     badge: "Agent Kernel",
     logo: (
       <img
-        src={useBaseUrl("/img/branding/agent-kernel-icon-color.svg")}
+        src={imgAgentKernelColor}
         alt=""
         className={styles.frameworkLogoImg}
         width={100}
@@ -1831,6 +1840,7 @@ function CTASection({
 }: {
   sectionRef: React.RefObject<HTMLElement>;
 }) {
+  const ctaBg = useBaseUrl("/img/cta-bg.png");
   return (
     <section
       ref={sectionRef}
@@ -1867,7 +1877,7 @@ function CTASection({
           </div>
 
           <div className={indexStyles.ctaImageWrapper}>
-            <img src="/img/cta-bg.png" alt="Agent Kernel" className={indexStyles.ctaImage} />
+            <img src={ctaBg} alt="Agent Kernel" className={indexStyles.ctaImage} />
           </div>
         </div>
       </div>

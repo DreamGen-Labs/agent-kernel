@@ -162,6 +162,7 @@ const segments = [
 /* ─── Segment Modal ─────────────────────────────────────────────────────── */
 
 function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClose: () => void }) {
+  const logoColor = useBaseUrl("/img/branding/agent-kernel-icon-color.svg");
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
@@ -203,7 +204,7 @@ function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClo
           <div className={styles.diagramArrow}>→</div>
           <div className={`${styles.diagramStep} ${styles.diagramStepCenter}`}>
             <img
-              src={useBaseUrl("/img/branding/agent-kernel-icon-color.svg")}
+              src={logoColor}
               alt="Agent Kernel"
               className={styles.diagramStepIcon}
             />
@@ -442,6 +443,7 @@ function RealWorldUseCases() {
 }
 
 function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<ParticleBackgroundHandle | null> }) {
+  const heroVideo = useBaseUrl("/video/hero.mp4");
   const containerRef = useRef<HTMLDivElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
   const observerStateRef = useRef(false);
@@ -527,7 +529,7 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
           {/* Central hub */}
           <div ref={hubRef} className={styles.orbitHub}>
             <video
-              src={useBaseUrl("/video/hero.mp4")}
+              src={heroVideo}
               aria-label="Agent Kernel"
               className={styles.orbitHubIcon}
               autoPlay
@@ -548,6 +550,7 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
+  const ctaBg = useBaseUrl("/img/cta-bg.png");
   return (
     <section ref={sectionRef} className={indexStyles.ctaSection}>
       <div className="container">
@@ -580,7 +583,7 @@ function Community({ sectionRef }: CommunityProps) {
           </div>
 
           <div className={indexStyles.ctaImageWrapper}>
-            <img src={useBaseUrl("/img/cta-bg.png")} alt="Agent Kernel" className={indexStyles.ctaImage} />
+            <img src={ctaBg} alt="Agent Kernel" className={indexStyles.ctaImage} />
           </div>
         </div>
       </div>

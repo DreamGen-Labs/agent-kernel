@@ -33,6 +33,11 @@ const FloatingChatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const logoMonoWhite = useBaseUrl("/img/branding/agent-kernel-icon-mono-white.svg");
+  const logoHorizontalColor = useBaseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg");
+  const logoColor = useBaseUrl("/img/branding/agent-kernel-icon-color.svg");
+
+
   useEffect(() => {
     setSessionId(`session_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`);
   }, []);
@@ -185,7 +190,7 @@ const FloatingChatbot: React.FC = () => {
                   <span className={styles.orbVignette} />
                 </div>
                 <img
-                  src={useBaseUrl("/img/branding/agent-kernel-icon-mono-white.svg")}
+                  src={logoMonoWhite}
                   alt=""
                   className={styles.buttonLogo}
                 />
@@ -202,7 +207,7 @@ const FloatingChatbot: React.FC = () => {
           <div className={styles.chatHeader}>
             <div className={styles.headerLeft}>
               <img
-                src={useBaseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg")}
+                src={logoHorizontalColor}
                 alt="Agent Kernel"
                 className={styles.headerLogo}
               />
@@ -263,7 +268,7 @@ const FloatingChatbot: React.FC = () => {
                 </div>
                 <div className={styles.welcomeIcon}>
                   <img
-                    src={useBaseUrl("/img/branding/agent-kernel-icon-color.svg")}
+                    src={logoColor}
                     alt="Agent Kernel"
                     className={styles.welcomeLogo}
                   />

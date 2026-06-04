@@ -101,6 +101,7 @@ function WhatsNewBanner() {
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
 function Hero() {
+  const heroVideo = useBaseUrl("/video/hero.mp4");
   const leftRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -274,7 +275,7 @@ function Hero() {
         <div ref={videoRef} className={styles.right}>
           <video
             className={styles.heroVideo}
-            src={useBaseUrl("/video/hero.mp4")}
+            src={heroVideo}
             autoPlay
             loop
             muted
@@ -301,6 +302,13 @@ function Hero() {
 /* ─── Frameworks Strip ──────────────────────────────────────────────────── */
 
 function FrameworksStrip() {
+  const chatgptLogo = useBaseUrl("/img/integrations/chatgpt.png");
+  const langgraphLogo = useBaseUrl("/img/integrations/langgraph.png");
+  const crewaiLogo = useBaseUrl("/img/integrations/crewai.png");
+  const googleADKLogo = useBaseUrl("/img/integrations/googleADK.png");
+  const smolagentsLogo = useBaseUrl("/img/integrations/smolagents.png");
+  const livekitLogo = useBaseUrl("/img/integrations/livekit.png");
+
   const frameworksRef = useRef(null);
   const labelRef = useRef(null);
   const badgeRef = useRef(null);
@@ -309,32 +317,32 @@ function FrameworksStrip() {
   const frameworks = [
     {
       name: "Open AI Agents SDK",
-      logo: "/img/integrations/chatgpt.png",
+      logo: chatgptLogo,
       link: "/docs/frameworks/openai",
     },
     {
       name: "LangGraph",
-      logo: "/img/integrations/langgraph.png",
+      logo: langgraphLogo,
       link: "/docs/frameworks/langgraph",
     },
     {
       name: "CrewAI",
-      logo: "/img/integrations/crewai.png",
+      logo: crewaiLogo,
       link: "/docs/frameworks/crewai",
     },
     {
       name: "Google ADK",
-      logo: "/img/integrations/googleADK.png",
+      logo: googleADKLogo,
       link: "/docs/frameworks/google-adk",
     },
     {
       name: "Smolagents",
-      logo: "/img/integrations/smolagents.png",
+      logo: smolagentsLogo,
       link: "https://huggingface.co/docs/smolagents/index",
     },
     {
       name: "LiveKit",
-      logo: "/img/integrations/livekit.png",
+      logo: livekitLogo,
       link: "https://docs.livekit.io/",
     },
   ];
@@ -392,7 +400,7 @@ function FrameworksStrip() {
             className={styles.frameworkItem}
           >
             <img
-              src={useBaseUrl(framework.logo)}
+              src={framework.logo}
               alt={framework.name}
               className={styles.frameworkLogo}
             />
@@ -406,6 +414,8 @@ function FrameworksStrip() {
 /* ─── Affiliations Strip ────────────────────────────────────────────────── */
 
 function AffiliationsStrip() {
+  const lfMembership = useBaseUrl("/img/lf_membership.svg");
+  const aaifMembership = useBaseUrl("/img/aaif_membership.svg");
   const sectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -470,7 +480,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src={useBaseUrl("/img/lf_membership.svg")}
+              src={lfMembership}
               alt="Linux Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -483,7 +493,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src={useBaseUrl("/img/aaif_membership.svg")}
+              src={aaifMembership}
               alt="Agentic AI Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -1009,6 +1019,7 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
+  const ctaBg = useBaseUrl("/img/cta-bg.png");
   return (
     <section ref={sectionRef} className={styles.ctaSection}>
       <div className="container">
@@ -1043,7 +1054,7 @@ function Community({ sectionRef }: CommunityProps) {
 
           <div className={styles.ctaImageWrapper}>
             <img
-              src={useBaseUrl("/img/cta-bg.png")}
+              src={ctaBg}
               alt="Agent Kernel"
               className={styles.ctaImage}
             />
@@ -1064,6 +1075,11 @@ interface Level {
 }
 
 function Levels() {
+  const imgBusinessLeader = useBaseUrl("/img/business_leader.png");
+  const imgDeveloper = useBaseUrl("/img/developer.png");
+  const imgAI = useBaseUrl("/img/ai.png");
+  const pathBgVideo = useBaseUrl("/video/path-bg.mp4");
+
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -1075,21 +1091,21 @@ function Levels() {
     {
       id: "01",
       title: "Business Leader",
-      image: "/img/business_leader.png",
+      image: imgBusinessLeader,
       description:
         "You run or work in a business/enterprise and want to incorporate AI agents that actually work into your business workflows without needing to understand.",
     },
     {
       id: "02",
       title: "Developer",
-      image: "/img/developer.png",
+      image: imgDeveloper,
       description:
         "You build software but haven't built AI agents yet. You want to ship something robust and real without learning a new stack from scratch.",
     },
     {
       id: "03",
       title: "AI Engineer",
-      image: "/img/ai.png",
+      image: imgAI,
       description:
         "You already work with LLMs and agentic frameworks. You need a production-grade AI agent execution framework that doesn't get in your way.",
     },
@@ -1185,7 +1201,7 @@ function Levels() {
             transformOrigin: "center center",
           }}
         >
-          <source src={useBaseUrl("/video/path-bg.mp4")} type="video/mp4" />
+          <source src={pathBgVideo} type="video/mp4" />
         </video>
       )}
 
@@ -1214,7 +1230,7 @@ function Levels() {
                   <div className={styles.flipCardFront}>
                     <div className={styles.levelCardImageArea}>
                       <img
-                        src={useBaseUrl(level.image)}
+                        src={level.image}
                         alt={level.title}
                         className={styles.levelCardImage}
                       />
