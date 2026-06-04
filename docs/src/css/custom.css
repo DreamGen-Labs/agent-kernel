@@ -286,6 +286,42 @@ article {
   opacity: 1;
 }
 
+/* Center Navbar Links on Desktop */
+@media (min-width: 997px) {
+  .navbar__inner {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .navbar__brand {
+    position: absolute;
+    left: 2rem;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar__inner > .navbar__items:first-child {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-right: 0 !important;
+  }
+
+  .navbar__items--right {
+    position: absolute;
+    right: 2rem;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    margin-left: 0 !important;
+  }
+}
+
 /* =============================================================================
    Footer
    ============================================================================= */
@@ -1630,8 +1666,9 @@ article {
   }
 
   .blog-post-page .main-wrapper>.container>.row>div:last-child {
-    flex: 0 0 20% !important;
-    max-width: 20% !important;
+    flex: 0 0 calc(20% - 1.5rem) !important;
+    max-width: calc(20% - 1.5rem) !important;
+    margin-right: 1.5rem !important;
     background: #020203;
     border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 1rem;
@@ -1697,3 +1734,121 @@ article {
   margin-top: 2.5rem !important;
   margin-bottom: 2.5rem !important;
 }
+
+/* Blog Back Button Floating Link */
+.blog-back-btn-container {
+  position: absolute;
+  left: -70px; /* default for large screens (>= 1400px) */
+  top: 10px;   /* align with the top part of the article title */
+  bottom: 0;
+  width: 42px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.blog-back-btn {
+  position: sticky;
+  top: 100px; /* stick 100px from viewport top while scrolling */
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--ak-border-accent);
+  background: rgba(1, 0, 2, 0.8);
+  backdrop-filter: blur(8px);
+  color: var(--ak-text-secondary);
+  cursor: pointer;
+  outline: none;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.blog-back-btn:hover {
+  background: var(--ak-blue-glow);
+  border-color: var(--ak-blue);
+  color: var(--ak-blue);
+  box-shadow: 0 0 12px 2px rgba(0, 221, 255, 0.25);
+  transform: translateX(-4px); /* nudge left slightly on hover */
+}
+
+/* Adjust for laptop and L laptop screens (997px to 1399px) to prevent button going off-screen */
+@media (min-width: 997px) and (max-width: 1399px) {
+  .blog-post-content-wrapper {
+    padding-left: 60px; /* shift text content to the right */
+  }
+
+  .blog-back-btn-container {
+    left: 10px; /* place button inside the padded area */
+  }
+}
+
+/* Mobile & Tablet Viewport Style */
+@media (max-width: 996px) {
+  .blog-post-content-wrapper {
+    padding-left: 0;
+  }
+
+  .blog-back-btn-container {
+    position: relative;
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    pointer-events: auto;
+    z-index: 10;
+  }
+
+  .blog-back-btn {
+    position: relative;
+    top: 0;
+    width: 38px;
+    height: 38px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .blog-back-btn:hover {
+    transform: none; /* disable horizontal hover shift on mobile */
+  }
+}
+
+/* Navbar Version Dropdown Matte Badge Style */
+.navbar-version-dropdown {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  height: 30px !important;
+  line-height: 1 !important;
+  transition: all 0.25s ease !important;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 0.75rem;
+}
+
+.navbar-version-dropdown:hover {
+  background: rgba(0, 221, 255, 0.08) !important;
+  border-color: rgba(0, 221, 255, 0.35) !important;
+  color: var(--ak-blue) !important;
+  text-decoration: none !important;
+}
+
+/* Caret alignment inside the version badge */
+.navbar-version-dropdown::after {
+  margin-left: 0.35rem !important;
+  vertical-align: middle !important;
+  transition: transform 0.25s ease !important;
+}
+
+.navbar-version-dropdown:hover::after {
+  transform: translateY(1px);
+}
