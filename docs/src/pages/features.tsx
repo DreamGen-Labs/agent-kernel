@@ -642,7 +642,7 @@ function ProblemTable() {
     >
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionLabel}>01 | The Problem</p>
+          <p className={styles.sectionLabel}>01: The Problem</p>
           <h2 className={styles.sectionTitle}>The Problem Agent Kernel Solves</h2>
           <p className={styles.sectionSubtitle}>
             Building production AI agents today involves solving many hard
@@ -827,7 +827,7 @@ function CoreFeatures() {
         "Starburst Galaxy — SQL over MongoDB, Sheets, PostgreSQL",
         "semantic_map keeps agent prompts portable",
       ],
-      link: "/docs/architecture/memory-management",
+      link: "/docs/architecture/knowledge-bases",
     },
     {
       icon: <MdCloud />,
@@ -992,7 +992,7 @@ function CoreFeatures() {
     >
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionLabel}>02 | Core Capabilities</p>
+          <p className={styles.sectionLabel}>02: Core Capabilities</p>
           <h2 className={styles.sectionTitle}>Core Capabilities</h2>
           <p className={styles.sectionSubtitle}>
             Everything you need to build, run, and scale production AI agents
@@ -1291,7 +1291,7 @@ function FrameworkSupport() {
     >
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionLabel}>03 | Framework Support</p>
+          <p className={styles.sectionLabel}>03: Framework Support</p>
           <h2 className={styles.sectionTitle}>One Runtime, Any Framework</h2>
           <p className={styles.sectionSubtitle}>
             Use the best framework for each job, and run them all together in a
@@ -1486,7 +1486,7 @@ function TestingSection() {
     >
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionLabel}>04 | Testing</p>
+          <p className={styles.sectionLabel}>04: Testing</p>
           <h2 className={styles.sectionTitle}>Testing Framework</h2>
           <p className={styles.sectionSubtitle}>
             Test your agents like any other code. CLI testing for development,
@@ -1658,7 +1658,7 @@ function MessagingSection() {
     >
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionLabel}>05 | Messaging</p>
+          <p className={styles.sectionLabel}>05: Messaging</p>
           <h2 className={styles.sectionTitle}>Messaging Integrations</h2>
           <p className={styles.sectionSubtitle}>
             Your agents meet users on the channels they already use. Every
@@ -1803,7 +1803,7 @@ function ProtocolSupport() {
     >
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionLabel}>06 | Protocol</p>
+          <p className={styles.sectionLabel}>06: Protocol</p>
           <h2 className={styles.sectionTitle}>Protocol Support</h2>
           <p className={styles.sectionSubtitle}>
             Standard protocols for tool connectivity and multi-agent
