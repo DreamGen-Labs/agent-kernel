@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./index.module.css";
 import gsap from "gsap";
 import { ScrambleTextPlugin } from "gsap/dist/ScrambleTextPlugin";
@@ -273,7 +274,7 @@ function Hero() {
         <div ref={videoRef} className={styles.right}>
           <video
             className={styles.heroVideo}
-            src="/video/hero.mp4"
+            src={useBaseUrl("/video/hero.mp4")}
             autoPlay
             loop
             muted
@@ -391,7 +392,7 @@ function FrameworksStrip() {
             className={styles.frameworkItem}
           >
             <img
-              src={framework.logo}
+              src={useBaseUrl(framework.logo)}
               alt={framework.name}
               className={styles.frameworkLogo}
             />
@@ -469,7 +470,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src="/img/lf_membership.svg"
+              src={useBaseUrl("/img/lf_membership.svg")}
               alt="Linux Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -482,7 +483,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src="/img/aaif_membership.svg"
+              src={useBaseUrl("/img/aaif_membership.svg")}
               alt="Agentic AI Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -1042,7 +1043,7 @@ function Community({ sectionRef }: CommunityProps) {
 
           <div className={styles.ctaImageWrapper}>
             <img
-              src="/img/cta-bg.png"
+              src={useBaseUrl("/img/cta-bg.png")}
               alt="Agent Kernel"
               className={styles.ctaImage}
             />
@@ -1184,7 +1185,7 @@ function Levels() {
             transformOrigin: "center center",
           }}
         >
-          <source src="/video/path-bg.mp4" type="video/mp4" />
+          <source src={useBaseUrl("/video/path-bg.mp4")} type="video/mp4" />
         </video>
       )}
 
@@ -1213,7 +1214,7 @@ function Levels() {
                   <div className={styles.flipCardFront}>
                     <div className={styles.levelCardImageArea}>
                       <img
-                        src={level.image}
+                        src={useBaseUrl(level.image)}
                         alt={level.title}
                         className={styles.levelCardImage}
                       />

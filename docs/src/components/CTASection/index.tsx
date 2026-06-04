@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { FaGithub } from "react-icons/fa";
 import styles from "../../pages/index.module.css";
 
@@ -37,7 +38,7 @@ export default function CTASection() {
 
           <div className={styles.ctaImageWrapper}>
             <img
-              src="/img/cta-bg.png"
+              src={useBaseUrl("/img/cta-bg.png")}
               alt="Agent Kernel"
               className={styles.ctaImage}
             />

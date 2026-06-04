@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./features.module.css";
 import indexStyles from "./index.module.css";
 import {
@@ -387,7 +388,7 @@ function FeaturesPageMap({
             style={{ backgroundColor: "#010002" }}
           >
             <video
-              src="/video/hero.mp4"
+              src={useBaseUrl("/video/hero.mp4")}
               className={styles.pageMapHubIcon}
               autoPlay
               loop
@@ -1043,7 +1044,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/openai",
       logo: (
         <img
-          src="/img/integrations/chatgpt.png"
+          src={useBaseUrl("/img/integrations/chatgpt.png")}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={145}
@@ -1059,7 +1060,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/langgraph",
       logo: (
         <img
-          src="/img/integrations/langgraph.png"
+          src={useBaseUrl("/img/integrations/langgraph.png")}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={150}
@@ -1075,7 +1076,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/google-adk",
       logo: (
         <img
-          src="/img/integrations/googleADK.png"
+          src={useBaseUrl("/img/integrations/googleADK.png")}
           alt=""
           className={`${styles.frameworkLogoImg} ${styles.frameworkLogoImgInvert}`}
           width={150}
@@ -1091,7 +1092,7 @@ function FrameworkSupport() {
       link: "/docs/frameworks/crewai",
       logo: (
         <img
-          src="/img/integrations/crewai.png"
+          src={useBaseUrl("/img/integrations/crewai.png")}
           alt=""
           className={styles.frameworkLogoImg}
           width={168}
@@ -1108,7 +1109,7 @@ function FrameworkSupport() {
       external: true,
       logo: (
         <img
-          src="/img/integrations/smolagents.png"
+          src={useBaseUrl("/img/integrations/smolagents.png")}
           alt=""
           className={styles.frameworkLogoImg}
           width={150}
@@ -1125,7 +1126,7 @@ function FrameworkSupport() {
       external: true,
       logo: (
         <img
-          src="/img/integrations/livekit.png"
+          src={useBaseUrl("/img/integrations/livekit.png")}
           alt=""
           className={styles.frameworkLogoImg}
           width={38}
@@ -1143,7 +1144,7 @@ function FrameworkSupport() {
     badge: "Agent Kernel",
     logo: (
       <img
-        src="/img/branding/agent-kernel-icon-color.svg"
+        src={useBaseUrl("/img/branding/agent-kernel-icon-color.svg")}
         alt=""
         className={styles.frameworkLogoImg}
         width={100}
@@ -1543,43 +1544,43 @@ function TestingSection() {
 const MESSAGING_PLATFORMS = [
   {
     name: "Slack",
-    icon: <img src="/img/integrations/slack-logo.png" alt="" width={28} height={28} />,
+    icon: <img src="/agent-kernel/img/integrations/slack-logo.png" alt="" width={28} height={28} />,
     color: "#EC407A",
     link: "/docs/integrations/slack",
   },
   {
     name: "Microsoft Teams",
-    icon: <img src="/img/integrations/teams-logo.png" alt="" width={28} height={24} />,
+    icon: <img src="/agent-kernel/img/integrations/teams-logo.png" alt="" width={28} height={24} />,
     color: "#A8B2FF",
     link: "/docs/next/integrations/teams",
   },
   {
     name: "WhatsApp",
-    icon: <img src="/img/integrations/whatsapp-logo.png" alt="" width={28} height={28} />,
+    icon: <img src="/agent-kernel/img/integrations/whatsapp-logo.png" alt="" width={28} height={28} />,
     color: "#3DFF9A",
     link: "/docs/integrations/whatsapp",
   },
   {
     name: "Messenger",
-    icon: <img src="/img/integrations/messenger-logo.png" alt="" width={28} height={28} />,
+    icon: <img src="/agent-kernel/img/integrations/messenger-logo.png" alt="" width={28} height={28} />,
     color: "#1AACFF",
     link: "/docs/integrations/messenger",
   },
   {
     name: "Telegram",
-    icon: <img src="/img/integrations/telegram-logo.png" alt="" width={28} height={28} />,
+    icon: <img src="/agent-kernel/img/integrations/telegram-logo.png" alt="" width={28} height={28} />,
     color: "#40BFFF",
     link: "/docs/integrations/telegram",
   },
   {
     name: "Instagram",
-    icon: <img src="/img/integrations/instagram-logo.png" alt="" width={26} height={26} />,
+    icon: <img src="/agent-kernel/img/integrations/instagram-logo.png" alt="" width={26} height={26} />,
     color: "#FF6BA3",
     link: "/docs/integrations/instagram",
   },
   {
     name: "Gmail",
-    icon: <img src="/img/integrations/gmail-logo.png" alt="" width={26} height={20} />,
+    icon: <img src="/agent-kernel/img/integrations/gmail-logo.png" alt="" width={26} height={20} />,
     color: "#FF7B6E",
     link: "/docs/integrations/gmail",
   },

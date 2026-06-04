@@ -3,6 +3,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { StepTimeline } from "../components/StepTimeline";
 import { useHistory } from "@docusaurus/router";
 import styles from "./index.module.css";
@@ -1167,9 +1168,9 @@ export default function AIEngineerPage() {
                 </p>
 
                 <div className={styles.goDeeperGrid}>
-                  <a
+                  <Link
                     className={styles.goDeeperCard}
-                    href="/features"
+                    to="/features"
                     style={{
                       '--card-accent': '#26A64D',
                       '--card-glow-color': '#037052'
@@ -1182,11 +1183,11 @@ export default function AIEngineerPage() {
                       Kernel production-ready.
                     </p>
                     <span className={styles.goDeeperCardCta}>Read More</span>
-                  </a>
+                  </Link>
 
-                  <a
+                  <Link
                     className={styles.goDeeperCard}
-                    href="/use-cases"
+                    to="/use-cases"
                     style={{
                       '--card-accent': '#26A64D',
                       '--card-glow-color': '#037052'
@@ -1199,7 +1200,7 @@ export default function AIEngineerPage() {
                       agents faster.
                     </p>
                     <span className={styles.goDeeperCardCta}>Read More</span>
-                  </a>
+                  </Link>
                 </div>
 
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center' }}>
@@ -1255,7 +1256,7 @@ export default function AIEngineerPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src="/img/cta-bg.png"
+                src={useBaseUrl("/img/cta-bg.png")}
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

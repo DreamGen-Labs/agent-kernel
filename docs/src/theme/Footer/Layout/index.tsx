@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import type {Props} from '@theme/Footer/Layout';
 import {FaDiscord, FaXTwitter, FaEnvelope} from 'react-icons/fa6';
 import { useLocation } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import CTASection from '../../../components/CTASection';
 
 type SocialLink = {
@@ -68,14 +70,14 @@ export default function FooterLayout({
         <div className="footer__top">
           {/* Left brand column */}
           <div className="footer__brand">
-            <a href="/" className="footer__brand-logo-link" aria-label="Agent Kernel home">
+            <Link to="/" className="footer__brand-logo-link" aria-label="Agent Kernel home">
               <img
-                src="/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg"
+                src={useBaseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg")}
                 alt="Agent Kernel"
                 className="footer__brand-logo"
                 width={140}
               />
-            </a>
+            </Link>
             <p className="footer__brand-tagline">
               The open-source runtime and orchestration layer for scalable, compliant enterprise AI agents.
             </p>
@@ -104,7 +106,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src="/img/lf_membership.svg"
+                    src={useBaseUrl("/img/lf_membership.svg")}
                     alt="Linux Foundation Member"
                     className="footer__badge"
                   />
@@ -115,7 +117,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src="/img/aaif_membership.svg"
+                    src={useBaseUrl("/img/aaif_membership.svg")}
                     alt="Agentic AI Foundation Member"
                     className="footer__badge"
                   />
@@ -136,9 +138,9 @@ export default function FooterLayout({
             {copyright}
           </div>
           <div className="footer__legal-links">
-            <a href="/privacy-policy" className="footer__legal-link">Privacy Policy</a>
-            <a href="/terms-of-use" className="footer__legal-link">Terms of Use</a>
-            <a href="/cookie-policy" className="footer__legal-link">Cookie Policy</a>
+            <Link to="/privacy-policy" className="footer__legal-link">Privacy Policy</Link>
+            <Link to="/terms-of-use" className="footer__legal-link">Terms of Use</Link>
+            <Link to="/cookie-policy" className="footer__legal-link">Cookie Policy</Link>
           </div>
         </div>
       </div>

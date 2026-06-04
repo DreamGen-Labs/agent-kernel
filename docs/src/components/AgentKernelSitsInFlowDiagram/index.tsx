@@ -17,7 +17,7 @@ type FlowNode = {
 
 const AK_ICON = (
   <img
-    src="/img/branding/agent-kernel-icon-color.svg"
+    src="/agent-kernel/img/branding/agent-kernel-icon-color.svg"
     alt=""
     aria-hidden="true"
     className={styles.akNodeIcon}

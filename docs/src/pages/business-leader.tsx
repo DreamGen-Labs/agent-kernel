@@ -3,6 +3,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useHistory } from "@docusaurus/router";
 import {
   MdRocketLaunch,
@@ -492,9 +493,9 @@ export default function BusinessLeaderPage() {
                   </p>
 
                   <div className={styles.goDeeperGrid}>
-                    <a
+                    <Link
                       className={styles.goDeeperCard}
-                      href="/features"
+                      to="/features"
                       style={{
                         '--card-accent': '#6F45CC',
                         '--card-glow-color': '#230E23'
@@ -507,11 +508,11 @@ export default function BusinessLeaderPage() {
                         Kernel production-ready.
                       </p>
                       <span className={styles.goDeeperCardCta}>Read More</span>
-                    </a>
+                    </Link>
 
-                    <a
+                    <Link
                       className={styles.goDeeperCard}
-                      href="/use-cases"
+                      to="/use-cases"
                       style={{
                         '--card-accent': '#6F45CC',
                         '--card-glow-color': '#230E23'
@@ -524,7 +525,7 @@ export default function BusinessLeaderPage() {
                         agents faster.
                       </p>
                       <span className={styles.goDeeperCardCta}>Read More</span>
-                    </a>
+                    </Link>
                   </div>
 
                   <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center' }}>
@@ -581,7 +582,7 @@ export default function BusinessLeaderPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src="/img/cta-bg.png"
+                src={useBaseUrl("/img/cta-bg.png")}
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

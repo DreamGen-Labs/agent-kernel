@@ -11,7 +11,7 @@ const config = {
   title: 'Agent Kernel',
   tagline: 'An Operating System for Scalable & Compliant Enterprise AI Agents.',
   favicon: 'img/favicon.ico',
-  url: 'https://kernel.yaala.ai',
+  url: 'https://dreamgen-labs.github.io',
   baseUrl: '/agent-kernel/',
 
   // GitHub pages deployment config.
