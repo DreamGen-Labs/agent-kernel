@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import type {Props} from '@theme/Footer/Layout';
 import {FaDiscord, FaXTwitter, FaEnvelope} from 'react-icons/fa6';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useLocation } from '@docusaurus/router';
+import CTASection from '../../../components/CTASection';
 
 type SocialLink = {
   href: string;
@@ -54,12 +56,16 @@ export default function FooterLayout({
   copyright,
 }: Props): ReactNode {
   const baseUrl = useBaseUrl;
+  const { pathname } = useLocation();
+  const showCTA = pathname.startsWith('/docs') || pathname.startsWith('/blog');
   return (
-    <footer
-      className={clsx('footer', {
-        'footer--dark': style === 'dark',
-      })}>
-      <div className="footer__inner">
+    <>
+      {showCTA && <CTASection />}
+      <footer
+        className={clsx('footer', {
+          'footer--dark': style === 'dark',
+        })}>
+        <div className="footer__inner">
         <div className="footer__top">
           {/* Left brand column */}
           <div className="footer__brand">
@@ -138,5 +144,6 @@ export default function FooterLayout({
         </div>
       </div>
     </footer>
+    </>
   );
 }
