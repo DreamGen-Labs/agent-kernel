@@ -197,7 +197,7 @@ export function StepTimeline({ levelId, contentRef }: StepTimelineProps) {
       <button
         className={styles.backBtn}
         onClick={() => {
-          history.push('/');
+          history.push('/agent-kernel/');
           setTimeout(() => {
             document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' });
           }, 100);

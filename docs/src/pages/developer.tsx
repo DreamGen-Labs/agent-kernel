@@ -677,7 +677,7 @@ export default function DeveloperPage() {
                       type="button"
                       className={`button button--primary button--md ${styles.terraformLink}`}
                       onClick={() => {
-                        history.push('/');
+                        history.push('/agent-kernel/');
                         setTimeout(() => {
                           document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' });
                         }, 100);
