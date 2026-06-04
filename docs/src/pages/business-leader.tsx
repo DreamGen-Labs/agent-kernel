@@ -23,6 +23,8 @@ export default function BusinessLeaderPage() {
   const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const featuresUrl = useBaseUrl("/features");
+  const useCasesUrl = useBaseUrl("/use-cases");
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -493,9 +495,9 @@ export default function BusinessLeaderPage() {
                   </p>
 
                   <div className={styles.goDeeperGrid}>
-                    <Link
+                    <a
                       className={styles.goDeeperCard}
-                      to="/features"
+                      href={featuresUrl}
                       style={{
                         '--card-accent': '#6F45CC',
                         '--card-glow-color': '#230E23'
@@ -508,11 +510,11 @@ export default function BusinessLeaderPage() {
                         Kernel production-ready.
                       </p>
                       <span className={styles.goDeeperCardCta}>Read More</span>
-                    </Link>
+                    </a>
 
-                    <Link
+                    <a
                       className={styles.goDeeperCard}
-                      to="/use-cases"
+                      href={useCasesUrl}
                       style={{
                         '--card-accent': '#6F45CC',
                         '--card-glow-color': '#230E23'
@@ -525,7 +527,7 @@ export default function BusinessLeaderPage() {
                         agents faster.
                       </p>
                       <span className={styles.goDeeperCardCta}>Read More</span>
-                    </Link>
+                    </a>
                   </div>
 
                   <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center' }}>

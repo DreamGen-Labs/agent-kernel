@@ -41,6 +41,8 @@ import { FaGithub } from "react-icons/fa";
 export default function AIEngineerPage() {
   const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
+  const featuresUrl = useBaseUrl("/features");
+  const useCasesUrl = useBaseUrl("/use-cases");
   const [activeTab, setActiveTab] = useState<"building" | "running" | "kernel">("building");
   const [displayedTab, setDisplayedTab] = useState<"building" | "running" | "kernel">("building");
   const arrowRef = useRef<HTMLDivElement>(null);
@@ -1168,9 +1170,9 @@ export default function AIEngineerPage() {
                 </p>
 
                 <div className={styles.goDeeperGrid}>
-                  <Link
+                  <a
                     className={styles.goDeeperCard}
-                    to="/features"
+                    href={featuresUrl}
                     style={{
                       '--card-accent': '#26A64D',
                       '--card-glow-color': '#037052'
@@ -1183,11 +1185,11 @@ export default function AIEngineerPage() {
                       Kernel production-ready.
                     </p>
                     <span className={styles.goDeeperCardCta}>Read More</span>
-                  </Link>
+                  </a>
 
-                  <Link
+                  <a
                     className={styles.goDeeperCard}
-                    to="/use-cases"
+                    href={useCasesUrl}
                     style={{
                       '--card-accent': '#26A64D',
                       '--card-glow-color': '#037052'
@@ -1200,7 +1202,7 @@ export default function AIEngineerPage() {
                       agents faster.
                     </p>
                     <span className={styles.goDeeperCardCta}>Read More</span>
-                  </Link>
+                  </a>
                 </div>
 
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center' }}>
