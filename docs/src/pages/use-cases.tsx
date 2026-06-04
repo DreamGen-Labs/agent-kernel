@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import styles from './use-cases.module.css';
 import indexStyles from './index.module.css';
@@ -57,7 +56,7 @@ const segments = [
     title: 'Established Software Companies',
     subtitle: 'Services / Dev Houses',
     profile: 'Development houses and IT services firms with existing clients who are asking for AI-powered solutions. They have developers on staff but lack AI agent platform expertise.',
-    diagramLeft: { label: 'Client AI Request', desc: 'Existing clients asking for agents' },
+    diagramLeft:  { label: 'Client AI Request', desc: 'Existing clients asking for agents' },
     diagramRight: { label: 'Shipped in Weeks', desc: 'Production agents, on time' },
     painPoints: [
       'Need to stand up AI agent capabilities quickly without a 6-month R&D cycle',
@@ -83,7 +82,7 @@ const segments = [
     title: 'Software Companies Enhancing Products',
     subtitle: 'SaaS / Enterprise Software',
     profile: 'Product companies with existing SaaS or enterprise software who want to embed conversational AI, intelligent automation, or agent-driven workflows into their products.',
-    diagramLeft: { label: 'Existing SaaS', desc: 'Your current product' },
+    diagramLeft:  { label: 'Existing SaaS', desc: 'Your current product' },
     diagramRight: { label: 'AI-Enhanced Product', desc: 'Agents embedded, zero lock-in' },
     painPoints: [
       'Need to add AI agent capabilities without massive re-architecture',
@@ -110,7 +109,7 @@ const segments = [
     title: 'AI Startups',
     subtitle: 'Early to Growth Stage',
     profile: 'Early to growth-stage startups building AI-native products. Small engineering teams that need to move fast and can\'t afford to build platform infrastructure.',
-    diagramLeft: { label: 'MVP Idea', desc: 'Prototype stage, lean team' },
+    diagramLeft:  { label: 'MVP Idea', desc: 'Prototype stage, lean team' },
     diagramRight: { label: 'Production in Days', desc: 'Multi-cloud, fully deployed' },
     painPoints: [
       'Engineering bandwidth is the scarcest resource — every hour on infrastructure is an hour not spent on core AI',
@@ -137,7 +136,7 @@ const segments = [
     title: 'Domain Experts',
     subtitle: 'Finance, Healthcare, Legal, Education…',
     profile: 'Subject matter experts or small teams with deep domain knowledge who want to build AI products but lack (or want to minimize) expensive software engineering overhead.',
-    diagramLeft: { label: 'Domain Knowledge', desc: 'Your expertise and use case' },
+    diagramLeft:  { label: 'Domain Knowledge', desc: 'Your expertise and use case' },
     diagramRight: { label: 'AI Product', desc: 'Deployed without a DevOps team' },
     painPoints: [
       'Know what they want their AI agent to do — but building the software platform around it requires expensive engineering',
@@ -162,7 +161,6 @@ const segments = [
 /* ─── Segment Modal ─────────────────────────────────────────────────────── */
 
 function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClose: () => void }) {
-  const baseUrl = useBaseUrl;
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
@@ -204,7 +202,7 @@ function SegmentModal({ segment, onClose }: { segment: typeof segments[0]; onClo
           <div className={styles.diagramArrow}>→</div>
           <div className={`${styles.diagramStep} ${styles.diagramStepCenter}`}>
             <img
-              src={baseUrl('/img/branding/agent-kernel-icon-color.svg')}
+              src="/img/branding/agent-kernel-icon-color.svg"
               alt="Agent Kernel"
               className={styles.diagramStepIcon}
             />
@@ -334,7 +332,7 @@ const REAL_WORLD_USE_CASES = [
     title: 'Agentic AI Assisted Market Surveillance',
     description:
       'A scalable surveillance system for monitor real-time order and trade feeds of a carbon credit market. Agent Kernel enables, AI agents to monitor orders and flag potential / suspicious trades which violate regulations.',
-    link: '#',
+    link: '/blog/agent-kernel-live-at-climate-impact-x',
   },
   {
     title: 'AI First SDLC',
@@ -351,7 +349,6 @@ const REAL_WORLD_USE_CASES = [
 ];
 
 function RealWorldUseCases() {
-  const baseUrl = useBaseUrl;
   const sectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -444,7 +441,6 @@ function RealWorldUseCases() {
 }
 
 function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<ParticleBackgroundHandle | null> }) {
-  const baseUrl = useBaseUrl;
   const containerRef = useRef<HTMLDivElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
   const observerStateRef = useRef(false);
@@ -530,7 +526,7 @@ function Differentiators({ backgroundRef }: { backgroundRef: React.RefObject<Par
           {/* Central hub */}
           <div ref={hubRef} className={styles.orbitHub}>
             <video
-              src={baseUrl("/video/hero.mp4")}
+              src="/video/hero.mp4"
               aria-label="Agent Kernel"
               className={styles.orbitHubIcon}
               autoPlay
@@ -551,7 +547,6 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
-  const baseUrl = useBaseUrl;
   return (
     <section ref={sectionRef} className={indexStyles.ctaSection}>
       <div className="container">
@@ -584,7 +579,7 @@ function Community({ sectionRef }: CommunityProps) {
           </div>
 
           <div className={indexStyles.ctaImageWrapper}>
-            <img src={baseUrl("/img/cta-bg.png")} alt="Agent Kernel" className={indexStyles.ctaImage} />
+            <img src="/img/cta-bg.png" alt="Agent Kernel" className={indexStyles.ctaImage} />
           </div>
         </div>
       </div>
@@ -610,13 +605,13 @@ export default function UseCases() {
     <Layout
       title="Use Cases"
       description="Who is Agent Kernel built for? Explore use cases for software companies, AI startups, domain experts, and product teams building production AI agents.">
-
+    
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 0, pointerEvents: 'auto' }}>
         <Hero />
       </div>
-
+      
       <div style={{ height: '100vh' }} />
-
+      
       {/* Content that scroll over the hero section */}
       <main style={{ position: 'relative', zIndex: 10, backgroundColor: '#010002' }}>
         <UseCaseJourneyMap />
@@ -624,7 +619,7 @@ export default function UseCases() {
         <Differentiators backgroundRef={backgroundRef} />
         <Community />
       </main>
-
+      
       {activeSegment && (
         <SegmentModal segment={activeSegment} onClose={() => setActiveSegment(null)} />
       )}

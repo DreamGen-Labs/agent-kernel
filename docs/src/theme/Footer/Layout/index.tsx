@@ -2,7 +2,6 @@ import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import type {Props} from '@theme/Footer/Layout';
 import {FaDiscord, FaXTwitter, FaEnvelope} from 'react-icons/fa6';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from '@docusaurus/router';
 import CTASection from '../../../components/CTASection';
 
@@ -55,9 +54,9 @@ export default function FooterLayout({
   links,
   copyright,
 }: Props): ReactNode {
-  const baseUrl = useBaseUrl;
   const { pathname } = useLocation();
   const showCTA = pathname.startsWith('/docs') || pathname.startsWith('/blog');
+
   return (
     <>
       {showCTA && <CTASection />}
@@ -71,7 +70,7 @@ export default function FooterLayout({
           <div className="footer__brand">
             <a href="/" className="footer__brand-logo-link" aria-label="Agent Kernel home">
               <img
-                src={baseUrl("/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg")}
+                src="/img/branding/agent-kernel-icon-horizontal-color-dark-bg.svg"
                 alt="Agent Kernel"
                 className="footer__brand-logo"
                 width={140}
@@ -105,7 +104,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src={baseUrl("/img/lf_membership.svg")}
+                    src="/img/lf_membership.svg"
                     alt="Linux Foundation Member"
                     className="footer__badge"
                   />
@@ -116,7 +115,7 @@ export default function FooterLayout({
                   rel="noopener noreferrer"
                   className="footer__badge-link">
                   <img
-                    src={baseUrl("/img/aaif_membership.svg")}
+                    src="/img/aaif_membership.svg"
                     alt="Agentic AI Foundation Member"
                     className="footer__badge"
                   />

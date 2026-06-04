@@ -3,7 +3,6 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useHistory } from "@docusaurus/router";
 import {
   MdRocketLaunch,
@@ -20,7 +19,6 @@ import HeroAnimation from "../components/HeroAnimation";
 import { FaGithub } from "react-icons/fa";
 
 export default function BusinessLeaderPage() {
-  const baseUrl = useBaseUrl;
   const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -257,8 +255,8 @@ export default function BusinessLeaderPage() {
         title="Scale AI Agents Across Your Organization"
         subtitle="Agent Kernel helps business teams move from AI experimentation to production outcomes. Launch compliant AI agents quickly, connect to real channels, and deploy across AWS, Azure, GCP, or your own infrastructure without rebuilding your platform each time."
       /> */}
+      <StepTimeline levelId="01" contentRef={contentRef} />
       <section ref={sectionRef} className={styles.blPageSection}>
-        <StepTimeline levelId="01" contentRef={contentRef} />
         <div className="container">
           <div ref={contentRef} className={styles.levelContent}>
             {/* ── STEP 01 ── */}
@@ -583,7 +581,7 @@ export default function BusinessLeaderPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src={baseUrl("/img/cta-bg.png")}
+                src="/img/cta-bg.png"
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

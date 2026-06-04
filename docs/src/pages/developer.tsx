@@ -3,7 +3,6 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useHistory } from "@docusaurus/router";
 import {
   MdTerminal,
@@ -121,7 +120,6 @@ const DEV_FEATURE_GROUPS = [
 ];
 
 export default function DeveloperPage() {
-  const baseUrl = useBaseUrl;
   const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -358,8 +356,8 @@ export default function DeveloperPage() {
         title="Build AI Agents Without Rebuilding Infrastructure"
         subtitle="Agent Kernel gives developers a production-ready runtime so you can focus on agent logic. Use your preferred framework, expose agents through API or messaging channels, and deploy to cloud environments fast with enterprise-grade building blocks included."
       /> */}
+      <StepTimeline levelId="02" contentRef={contentRef} />
       <section ref={sectionRef} className={styles.devPageSection}>
-        <StepTimeline levelId="02" contentRef={contentRef} />
         <div className="container">
           <div ref={contentRef} className={styles.developerContent}>
             {/* Step 01 — Developer Analogy */}
@@ -727,7 +725,7 @@ export default function DeveloperPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src={baseUrl("/img/cta-bg.png")}
+                src="/img/cta-bg.png"
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

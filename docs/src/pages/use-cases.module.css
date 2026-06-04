@@ -48,9 +48,9 @@
   height: 1px;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(120, 180, 255, 0.25) 20%,
-      rgba(160, 210, 255, 0.7) 50%,
-      rgba(120, 180, 255, 0.25) 80%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0.15) 80%,
       transparent 100%);
 }
 
@@ -1080,6 +1080,7 @@
   .ctaButtons a {
     width: 100%;
     text-align: center;
+    justify-content: center;
   }
 }
 

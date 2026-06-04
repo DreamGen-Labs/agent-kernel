@@ -3,7 +3,6 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import { StepTimeline } from "../components/StepTimeline";
 import { useHistory } from "@docusaurus/router";
 import styles from "./index.module.css";
@@ -39,7 +38,6 @@ import heroStyles from "../components/HeroAnimation/styles.module.css";
 import { FaGithub } from "react-icons/fa";
 
 export default function AIEngineerPage() {
-  const baseUrl = useBaseUrl;
   const history = useHistory();
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<"building" | "running" | "kernel">("building");
@@ -640,8 +638,8 @@ export default function AIEngineerPage() {
         title="Run Advanced Agent Systems on a Unified Runtime"
         subtitle="Bring your existing agentic code and operate it with production discipline. Agent Kernel unifies execution, memory, hooks, observability, integrations, and multi-cloud deployment so AI engineering teams can ship compliant, scalable systems faster."
       /> */}
+      <StepTimeline levelId="03" contentRef={contentRef} />
       <section ref={contentRef} className={styles.aiEngineerSection}>
-        <StepTimeline levelId="03" contentRef={contentRef} />
         <div className="container">
           {/* Step 01 — AI Engineer Analogy */}
           <div
@@ -1257,7 +1255,7 @@ export default function AIEngineerPage() {
 
             <div className={styles.ctaImageWrapper}>
               <img
-                src={baseUrl("/img/cta-bg.png")}
+                src="/img/cta-bg.png"
                 alt="Agent Kernel"
                 className={styles.ctaImage}
               />

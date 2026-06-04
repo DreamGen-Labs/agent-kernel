@@ -15,25 +15,26 @@
   opacity: 1;
   visibility: visible;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   align-items: center;
   padding: 0 48px;
 
-  /* Premium Dark Surface */
-  background-color: rgba(6, 6, 9, 0.65);
+  /* Premium Dark Surface - transparent by default */
+  background-color: rgba(6, 6, 9, 0);
   border-bottom: 1px solid rgba(255, 255, 255, 0);
 
-  /* Frosted glass */
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  /* Frosted glass - transparent by default */
+  backdrop-filter: saturate(180%) blur(0px);
+  -webkit-backdrop-filter: saturate(180%) blur(0px);
 
   /* Transition for smooth background fade and positioning */
   transition:
     top 0.3s ease,
     background-color 0.35s ease,
     border-bottom-color 0.35s ease,
-    visibility 0.35s;
+    backdrop-filter 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease;
 }
 
 .bar--navbar-visible {
@@ -41,12 +42,11 @@
 }
 
 .bar--visible {
-  height: 90px;
-  margin-bottom: 1rem;
-  opacity: 1;
-  visibility: visible;
   pointer-events: auto;
+  background-color: rgba(6, 6, 9, 0.65);
   border-bottom-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
 }
 
 /* ── Inner layout ────────────────────────────────────────────────────── */
@@ -74,6 +74,9 @@
 
 .bar--visible .inner {
   transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* ── Connector line ──────────────────────────────────────────────────── */
@@ -229,6 +232,7 @@
   left: 80px;
   top: 50%;
   transform: translateY(-50%);
+  pointer-events: auto;
 
   display: flex;
   align-items: center;

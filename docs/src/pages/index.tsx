@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import styles from "./index.module.css";
 import gsap from "gsap";
@@ -25,7 +24,7 @@ import {
   FaMicrosoft,
 } from "react-icons/fa";
 import { SiTerraform, SiGmail, SiGooglecloud } from "react-icons/si";
-import { useHistory, useLocation } from "@docusaurus/router";
+import { useHistory } from "@docusaurus/router";
 
 /* ─── What's New Banner ─────────────────────────────────────────────────── */
 
@@ -71,7 +70,7 @@ function WhatsNewBanner() {
             width="16"
             height="16"
             viewBox="0 0 24 24"
-            fill="none"
+            fill="currentColor"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
@@ -101,7 +100,6 @@ function WhatsNewBanner() {
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
 function Hero() {
-  const baseUrl = useBaseUrl;
   const leftRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -275,7 +273,7 @@ function Hero() {
         <div ref={videoRef} className={styles.right}>
           <video
             className={styles.heroVideo}
-            src={baseUrl("/video/hero.mp4")}
+            src="/video/hero.mp4"
             autoPlay
             loop
             muted
@@ -285,35 +283,23 @@ function Hero() {
 
         {/* ── Scroll label ────────────────────── */}
         <div ref={scrollLabelRef} className={styles.scrollLabel} aria-hidden="true">
-          <span className={styles.scrollLine} />
-          <span className={styles.scrollText}>Scroll down to <strong>Begin</strong></span>
+          <div className={styles.scrollLabelInner}>
+            <span className={styles.scrollLine} />
+            <span className={styles.scrollText}>
+              Scroll down to
+              <br />
+              <strong>Begin</strong>
+            </span>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function ScrollToLevelsOnHash() {
-  const location = useLocation();
-  const homePath = useBaseUrl('/');
-
-  useEffect(() => {
-    if (location.pathname !== homePath || location.hash !== '#levels') return;
-
-    const timer = window.setTimeout(() => {
-      document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
-
-    return () => window.clearTimeout(timer);
-  }, [location.pathname, location.hash, homePath]);
-
-  return null;
-}
-
 /* ─── Frameworks Strip ──────────────────────────────────────────────────── */
 
 function FrameworksStrip() {
-  const baseUrl = useBaseUrl;
   const frameworksRef = useRef(null);
   const labelRef = useRef(null);
   const badgeRef = useRef(null);
@@ -322,32 +308,32 @@ function FrameworksStrip() {
   const frameworks = [
     {
       name: "Open AI Agents SDK",
-      logo: baseUrl("/img/integrations/chatgpt.png"),
+      logo: "/img/integrations/chatgpt.png",
       link: "/docs/frameworks/openai",
     },
     {
       name: "LangGraph",
-      logo: baseUrl("/img/integrations/langgraph.png"),
+      logo: "/img/integrations/langgraph.png",
       link: "/docs/frameworks/langgraph",
     },
     {
       name: "CrewAI",
-      logo: baseUrl("/img/integrations/crewai.png"),
+      logo: "/img/integrations/crewai.png",
       link: "/docs/frameworks/crewai",
     },
     {
       name: "Google ADK",
-      logo: baseUrl("/img/integrations/googleADK.png"),
+      logo: "/img/integrations/googleADK.png",
       link: "/docs/frameworks/google-adk",
     },
     {
       name: "Smolagents",
-      logo: baseUrl("/img/integrations/smolagents.png"),
+      logo: "/img/integrations/smolagents.png",
       link: "https://huggingface.co/docs/smolagents/index",
     },
     {
       name: "LiveKit",
-      logo: baseUrl("/img/integrations/livekit.png"),
+      logo: "/img/integrations/livekit.png",
       link: "https://docs.livekit.io/",
     },
   ];
@@ -419,7 +405,6 @@ function FrameworksStrip() {
 /* ─── Affiliations Strip ────────────────────────────────────────────────── */
 
 function AffiliationsStrip() {
-  const baseUrl = useBaseUrl;
   const sectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -484,7 +469,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src={baseUrl("/img/lf_membership.svg")}
+              src="/img/lf_membership.svg"
               alt="Linux Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -497,7 +482,7 @@ function AffiliationsStrip() {
             className={styles.affiliationItem}
           >
             <img
-              src={baseUrl("/img/aaif_membership.svg")}
+              src="/img/aaif_membership.svg"
               alt="Agentic AI Foundation Member"
               className={styles.affiliationLogo}
             />
@@ -981,7 +966,7 @@ function Deployment() {
               <ul className={styles.cloudModes}>
                 {c.modes.map((m, j) => (
                   <li key={j}>
-                    <span className={styles.checkmark}>✓</span>
+                    <MdCheck className={styles.checkmark} />
                     {m}
                   </li>
                 ))}
@@ -1023,7 +1008,6 @@ interface CommunityProps {
 }
 
 function Community({ sectionRef }: CommunityProps) {
-  const baseUrl = useBaseUrl;
   return (
     <section ref={sectionRef} className={styles.ctaSection}>
       <div className="container">
@@ -1058,7 +1042,7 @@ function Community({ sectionRef }: CommunityProps) {
 
           <div className={styles.ctaImageWrapper}>
             <img
-              src={baseUrl("/img/cta-bg.png")}
+              src="/img/cta-bg.png"
               alt="Agent Kernel"
               className={styles.ctaImage}
             />
@@ -1078,41 +1062,33 @@ interface Level {
   description: string;
 }
 
-const LEVEL_PAGES: Record<string, string> = {
-  "01": "business-leader",
-  "02": "developer",
-  "03": "ai-engineer",
-};
-
 function Levels() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const cardsWrapRef = useRef<HTMLDivElement>(null);
-  const baseUrl = useBaseUrl;
   const [isDesktop, setIsDesktop] = useState(false);
-  const desktopVideoSrc = baseUrl("/video/path-bg.mp4");
 
   const levels: Level[] = [
     {
       id: "01",
       title: "Business Leader",
-      image: baseUrl("/img/business_leader.png"),
+      image: "/img/business_leader.png",
       description:
         "You run or work in a business/enterprise and want to incorporate AI agents that actually work into your business workflows without needing to understand.",
     },
     {
       id: "02",
       title: "Developer",
-      image: baseUrl("/img/developer.png"),
+      image: "/img/developer.png",
       description:
         "You build software but haven't built AI agents yet. You want to ship something robust and real without learning a new stack from scratch.",
     },
     {
       id: "03",
       title: "AI Engineer",
-      image: baseUrl("/img/ai.png"),
+      image: "/img/ai.png",
       description:
         "You already work with LLMs and agentic frameworks. You need a production-grade AI agent execution framework that doesn't get in your way.",
     },
@@ -1208,7 +1184,7 @@ function Levels() {
             transformOrigin: "center center",
           }}
         >
-          <source src={desktopVideoSrc} type="video/mp4" />
+          <source src="/video/path-bg.mp4" type="video/mp4" />
         </video>
       )}
 
@@ -1216,7 +1192,7 @@ function Levels() {
         <div className={styles.levelsHeader}>
           <div ref={badgeRef} className={styles.Badge}>
             <span className={styles.badgeStar}>✦</span>
-            Just like any other operating system
+            Built for Everyone
           </div>
           <h2 ref={titleRef} className={styles.levelsTitle}>
             <span>Agent Kernel is designed</span>
@@ -1228,35 +1204,37 @@ function Levels() {
           </p>
         </div>
 
-        <div ref={cardsWrapRef} className={styles.levelsGrid}>
-          {levels.map((level) => (
-            <div key={level.id} className={styles.flipCardWrapper}>
-              <div className={styles.flipCardInner}>
-                {/* Front Face */}
-                <div className={styles.flipCardFront}>
-                  <div className={styles.levelCardImageArea}>
-                    <img
-                      src={level.image}
-                      alt={level.title}
-                      className={styles.levelCardImage}
-                    />
+        <div className={styles.levelsOuterContainer}>
+          <div ref={cardsWrapRef} className={styles.levelsGrid}>
+            {levels.map((level) => (
+              <div key={level.id} className={styles.flipCardWrapper}>
+                <div className={styles.flipCardInner}>
+                  {/* Front Face */}
+                  <div className={styles.flipCardFront}>
+                    <div className={styles.levelCardImageArea}>
+                      <img
+                        src={level.image}
+                        alt={level.title}
+                        className={styles.levelCardImage}
+                      />
+                    </div>
+                    <div className={styles.levelCardContent}>
+                      <h3 className={styles.levelCardTitle}>{level.title}</h3>
+                    </div>
                   </div>
-                  <div className={styles.levelCardContent}>
-                    <h3 className={styles.levelCardTitle}>{level.title}</h3>
-                  </div>
-                </div>
 
-                {/* Back Face */}
-                <div className={styles.flipCardBack}>
-                  <h3 className={styles.flipCardTitleBack}>{level.title}</h3>
-                  <p className={styles.flipCardDescription}>{level.description}</p>
-                  <Link className={styles.flipCardLinkBtn} to={levelPages[level.id]}>
-                    Read More
-                  </Link>
+                  {/* Back Face */}
+                  <div className={styles.flipCardBack}>
+                    <h3 className={styles.flipCardTitleBack}>{level.title}</h3>
+                    <p className={styles.flipCardDescription}>{level.description}</p>
+                    <Link className={styles.flipCardLinkBtn} to={levelPages[level.id]}>
+                      Read More
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1333,7 +1311,6 @@ export default function Home() {
       description="Agent Kernel is an open-source, framework-agnostic, multi-cloud runtime for production AI agents. Build, test, and deploy with OpenAI, LangGraph, CrewAI, or Google ADK to AWS or Azure — in days, not months."
     >
       {/* <PlantParticlesBackground ref={backgroundRef} /> */}
-      <ScrollToLevelsOnHash />
       <WhatsNewBanner />
       <Hero />
       <main>
