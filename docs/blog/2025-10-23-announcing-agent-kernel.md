@@ -11,7 +11,7 @@ image: /img/card.png
 We're thrilled to announce **Agent Kernel (AK)** - an open-source, versatile runtime solution that revolutionizes how you develop, test, and deploy AI agents across any framework and environment!
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/card.png" alt="Agent Kernel" style={{maxWidth: '100%', borderRadius: '8px'}} />
+  <img src={require('@site/static/img/card.png').default} alt="Agent Kernel" style={{maxWidth: '100%', borderRadius: '8px'}} />
 </div>
 
 <!-- truncate -->

@@ -11,9 +11,9 @@ image: /img/card.png
 We're thrilled to announce that Agent Kernel now seamlessly integrates with the world's most popular messaging platforms - **Slack**, **WhatsApp**, and **Facebook Messenger**! Deploy your AI agents where your users already are, and deliver intelligent conversational experiences across multiple channels.
 
 <div style={{display: 'flex', justifyContent: 'center', gap: '3rem', margin: '2rem 0', flexWrap: 'wrap', alignItems: 'center'}}>
-  <img src="/img/integrations/slack-logo.png" alt="Slack" style={{height: '60px', objectFit: 'contain'}} />
-  <img src="/img/integrations/whatsapp-logo.png" alt="WhatsApp" style={{height: '60px', objectFit: 'contain'}} />
-  <img src="/img/integrations/messenger-logo.png" alt="Messenger" style={{height: '60px', objectFit: 'contain'}} />
+  <img src={require('@site/static/img/integrations/slack-logo.png').default} alt="Slack" style={{height: '60px', objectFit: 'contain'}} />
+  <img src={require('@site/static/img/integrations/whatsapp-logo.png').default} alt="WhatsApp" style={{height: '60px', objectFit: 'contain'}} />
+  <img src={require('@site/static/img/integrations/messenger-logo.png').default} alt="Messenger" style={{height: '60px', objectFit: 'contain'}} />
 </div>
 
 <!-- truncate -->
@@ -137,15 +137,15 @@ We're actively working on integrations for:
 
 <div style={{display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0', flexWrap: 'wrap', alignItems: 'center'}}>
   <div style={{textAlign: 'center'}}>
-    <img src="/img/integrations/instagram-logo.png" alt="Instagram" style={{height: '50px', objectFit: 'contain', opacity: 0.7}} />
+    <img src={require('@site/static/img/integrations/instagram-logo.png').default} alt="Instagram" style={{height: '50px', objectFit: 'contain', opacity: 0.7}} />
     <p style={{marginTop: '0.5rem', fontSize: '0.9rem'}}>Instagram</p>
   </div>
   <div style={{textAlign: 'center'}}>
-    <img src="/img/integrations/gmail-logo.png" alt="Gmail" style={{height: '50px', objectFit: 'contain', opacity: 0.7}} />
+    <img src={require('@site/static/img/integrations/gmail-logo.png').default} alt="Gmail" style={{height: '50px', objectFit: 'contain', opacity: 0.7}} />
     <p style={{marginTop: '0.5rem', fontSize: '0.9rem'}}>Gmail</p>
   </div>
   <div style={{textAlign: 'center'}}>
-    <img src="/img/integrations/telegram-logo.png" alt="Telegram" style={{height: '50px', objectFit: 'contain', opacity: 0.7}} />
+    <img src={require('@site/static/img/integrations/telegram-logo.png').default} alt="Telegram" style={{height: '50px', objectFit: 'contain', opacity: 0.7}} />
     <p style={{marginTop: '0.5rem', fontSize: '0.9rem'}}>Telegram</p>
   </div>
 </div>

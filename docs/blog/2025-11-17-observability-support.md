@@ -12,10 +12,10 @@ We're excited to announce that Agent Kernel now includes comprehensive observabi
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', margin: '2rem 0'}}>
   <div style={{display: 'flex', justifyContent: 'center'}}>
-    <img src="/img/blog/langfuse-logo.png" alt="Langfuse" style={{width: '250px', maxWidth: '100%', height: 'auto', objectFit: 'contain'}} />
+    <img src={require('@site/static/img/blog/langfuse-logo.png').default} alt="Langfuse" style={{width: '250px', maxWidth: '100%', height: 'auto', objectFit: 'contain', filter: 'invert(1) hue-rotate(180deg)'}} />
   </div>
   <div style={{display: 'flex', justifyContent: 'center'}}>
-    <img src="/img/blog/openllmetry-logo.png" alt="OpenLLMetry" style={{width: '250px', maxWidth: '100%', height: 'auto', objectFit: 'contain'}} />
+    <img src={require('@site/static/img/blog/openllmetry-logo.png').default} alt="OpenLLMetry" style={{width: '250px', maxWidth: '100%', height: 'auto', objectFit: 'contain', filter: 'invert(1) hue-rotate(180deg)'}} />
   </div>
 </div>
 
@@ -84,7 +84,7 @@ We're giving you the flexibility to choose the observability platform that best 
 Perfect for teams that want a specialized LLM-focused observability solution with rich evaluation capabilities.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/blog/langfuse-dashboard-screenshot.png" alt="Langfuse Dashboard" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid #ddd'}} />
+  <img src={require('@site/static/img/blog/langfuse-dashboard-screenshot.png').default} alt="Langfuse Dashboard" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'}} />
   <p style={{fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginTop: '0.5rem'}}>Langfuse dashboard showing agent traces and analytics</p>
 </div>
 
@@ -102,7 +102,7 @@ Perfect for teams that want a specialized LLM-focused observability solution wit
 Ideal for teams already using OpenTelemetry or wanting to integrate AI agent observability into existing monitoring infrastructure.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/blog/openllmetry-dashboard-screenshot.png" alt="OpenLLMetry Dashboard" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid #ddd'}} />
+  <img src={require('@site/static/img/blog/openllmetry-dashboard-screenshot.png').default} alt="OpenLLMetry Dashboard" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'}} />
   <p style={{fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginTop: '0.5rem'}}>OpenLLMetry dashboard showing distributed traces</p>
 </div>
 
@@ -178,13 +178,13 @@ Agent Kernel provides comprehensive tracing across all framework integrations:
 - **Error Tracking** - Capture and analyze failures for debugging
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/blog/single-trace-example.png" alt="Example Trace" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid #ddd'}} />
+  <img src={require('@site/static/img/blog/single-trace-example.png').default} alt="Example Trace" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'}} />
   <p style={{fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginTop: '0.5rem'}}>Example trace showing detailed agent execution flow</p>
 </div>
 
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/blog/trace-example-screenshot.png" alt="Example Trace" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid #ddd'}} />
+  <img src={require('@site/static/img/blog/trace-example-screenshot.png').default} alt="Example Trace" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'}} />
   <p style={{fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginTop: '0.5rem'}}>Example trace showing details of multiple agent invocations of one session (thread)</p>
 </div>
 
@@ -286,11 +286,11 @@ Once tracing is enabled, you'll see detailed execution traces in your platform d
 
 <div style={{display: 'flex', justifyContent: 'space-between', gap: '1rem', margin: '2rem 0', flexWrap: 'wrap'}}>
   <div style={{flex: '1', minWidth: '300px'}}>
-    <img src="/img/blog/langfuse-trace-detail.png" alt="Langfuse Trace Detail" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid #ddd'}} />
+    <img src={require('@site/static/img/blog/langfuse-trace-detail.png').default} alt="Langfuse Trace Detail" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'}} />
     <p style={{fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginTop: '0.5rem', textAlign: 'center'}}>Langfuse trace detail view</p>
   </div>
   <div style={{flex: '1', minWidth: '300px'}}>
-    <img src="/img/blog/openllmetry-trace-detail.png" alt="OpenLLMetry Trace Detail" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid #ddd'}} />
+    <img src={require('@site/static/img/blog/openllmetry-trace-detail.png').default} alt="OpenLLMetry Trace Detail" style={{maxWidth: '100%', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'}} />
     <p style={{fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginTop: '0.5rem', textAlign: 'center'}}>OpenLLMetry trace detail view</p>
   </div>
 </div>
