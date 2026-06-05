@@ -2498,6 +2498,10 @@
     min-width: auto;
   }
 
+  .agentSkillsTopicButton:hover {
+    transform: none;
+  }
+
   .agentSkillsCodeBlock {
     font-size: 0.8rem;
     line-height: 1.7;
@@ -2510,7 +2514,13 @@
   .agentSkillsFooter {
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .agentSkillsFooterText {
+    text-align: center;
+    font-size: 0.88rem;
   }
 }
 

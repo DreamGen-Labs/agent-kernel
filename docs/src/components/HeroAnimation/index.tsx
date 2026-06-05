@@ -101,9 +101,9 @@ export default function HeroAnimation({
         const sy = m.y * H;
         const spotR = Math.max(W, H) * 0.5;
         const spot = ctx.createRadialGradient(sx, sy, 0, sx, sy, spotR);
-        spot.addColorStop(0, "rgba(0,119,255,0.10)");
-        spot.addColorStop(0.5, "rgba(0,119,255,0.05)");
-        spot.addColorStop(1, "rgba(0,119,255,0.00)");
+        spot.addColorStop(0, "rgba(255,255,255,0.10)");
+        spot.addColorStop(0.5, "rgba(255,255,255,0.05)");
+        spot.addColorStop(1, "rgba(255,255,255,0.00)");
 
         ctx.globalCompositeOperation = "screen";
         ctx.fillStyle = spot;

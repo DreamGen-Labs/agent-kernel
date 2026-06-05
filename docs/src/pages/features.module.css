@@ -2774,6 +2774,11 @@
   .frameworkCard {
     padding: 1.5rem 1.25rem;
     border-radius: 1.25rem;
+    text-align: center;
+  }
+
+  .frameworkCard .frameworkLink {
+    align-self: center;
   }
 
   .frameworkLogo {
@@ -2786,13 +2791,20 @@
 
   .frameworkFeaturedContent {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    text-align: center;
     padding: 1.5rem 1.25rem;
     gap: 1.25rem;
   }
 
+  .frameworkFeaturedMain {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   .frameworkFeaturedCta {
-    align-self: flex-start;
+    align-self: center;
     width: auto;
   }
 
